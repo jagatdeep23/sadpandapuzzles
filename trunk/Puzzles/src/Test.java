@@ -14,5 +14,7 @@ public class Test {
 			String word = iter.next();
 			System.out.println(word);
 		}
+		
+		Input.saveWords(words);
 	}
 }

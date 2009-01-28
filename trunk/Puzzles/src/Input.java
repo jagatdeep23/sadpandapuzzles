@@ -24,11 +24,34 @@ public class Input {
 		try {
 			getWords(file);
 		} catch (IOException e) {
-			System.out.println("Error: IO Exception was thrown.");
+			System.out.println("Error: IO Exception was thrown:" + e);
 		}
 		
 		return words;
 		
+	}
+	
+	public static void saveWords(ArrayList<String> list) throws IOException
+	{
+		chooser = new JFileChooser();
+		status = chooser.showSaveDialog(null);
+		
+		if (status == JFileChooser.APPROVE_OPTION)
+		{
+			file = chooser.getSelectedFile();
+			System.out.println("File chosen to save to: " + file.getName());
+			System.out.println("Full path to file: " + file.getAbsolutePath());
+		}
+		
+		try{
+			FileWriter fileWriter = new FileWriter(file);
+			BufferedWriter buffer = new BufferedWriter(fileWriter);
+			for(int i = 0; i < list.size(); i++)
+				buffer.write(list.get(i) + "\n");
+			buffer.close();
+		} catch (IOException e) {
+			System.out.println("Error: IO Exception was thrown: " + e);
+		}
 	}
 	
 	private static void getWords(File input) throws IOException
