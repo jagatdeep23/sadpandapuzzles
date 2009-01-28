@@ -27,31 +27,37 @@ public class Input {
 			System.out.println("Error: IO Exception was thrown:" + e);
 		}
 		
-		return words;
+		return words;	
+	}
+	
+	public static void save(ArrayList<String> list, File location) throws IOException
+	{
+		FileWriter fileWriter = new FileWriter(location);
+		BufferedWriter buffer = new BufferedWriter(fileWriter);
 		
+		for(int i = 0; i < list.size(); i++)
+			buffer.write(list.get(i) + "\n");
+		buffer.close();
 	}
 	
 	public static void saveWords(ArrayList<String> list) throws IOException
 	{
+		save(list, file);
+	}
+	
+	public static void saveWordsAs(ArrayList<String> list) throws IOException
+	{
+		File newFile = new File("empty");
 		chooser = new JFileChooser();
 		status = chooser.showSaveDialog(null);
 		
 		if (status == JFileChooser.APPROVE_OPTION)
 		{
-			file = chooser.getSelectedFile();
-			System.out.println("File chosen to save to: " + file.getName());
-			System.out.println("Full path to file: " + file.getAbsolutePath());
+			newFile = chooser.getSelectedFile();
+			System.out.println("File chosen to save to: " + newFile.getName());
+			System.out.println("Full path to file: " + newFile.getAbsolutePath());
 		}
-		
-		try{
-			FileWriter fileWriter = new FileWriter(file);
-			BufferedWriter buffer = new BufferedWriter(fileWriter);
-			for(int i = 0; i < list.size(); i++)
-				buffer.write(list.get(i) + "\n");
-			buffer.close();
-		} catch (IOException e) {
-			System.out.println("Error: IO Exception was thrown: " + e);
-		}
+		save(list, newFile);
 	}
 	
 	private static void getWords(File input) throws IOException

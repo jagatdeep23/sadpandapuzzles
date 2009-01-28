@@ -15,6 +15,6 @@ public class Test {
 			System.out.println(word);
 		}
 		
-		Input.saveWords(words);
+		Input.saveWordsAs(words);
 	}
 }
