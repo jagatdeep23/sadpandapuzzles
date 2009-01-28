@@ -30,14 +30,17 @@ public class Input {
 		return words;	
 	}
 	
-	public static void save(ArrayList<String> list, File location) throws IOException
+	private static void getWords(File input) throws IOException
 	{
-		FileWriter fileWriter = new FileWriter(location);
-		BufferedWriter buffer = new BufferedWriter(fileWriter);
+		FileReader fileReader = new FileReader(input);
+		BufferedReader buffer = new BufferedReader(fileReader);
+		String temp;
 		
-		for(int i = 0; i < list.size(); i++)
-			buffer.write(list.get(i) + "\n");
+		while ((temp = buffer.readLine()) != null)
+			words.add(temp);
 		buffer.close();
+		
+		Collections.sort(words, new byLineLength());
 	}
 	
 	public static void saveWords(ArrayList<String> list) throws IOException
@@ -60,17 +63,14 @@ public class Input {
 		save(list, newFile);
 	}
 	
-	private static void getWords(File input) throws IOException
+	public static void save(ArrayList<String> list, File location) throws IOException
 	{
-		FileReader fileReader = new FileReader(input);
-		BufferedReader buffer = new BufferedReader(fileReader);
-		String temp;
+		FileWriter fileWriter = new FileWriter(location);
+		BufferedWriter buffer = new BufferedWriter(fileWriter);
 		
-		while ((temp = buffer.readLine()) != null)
-			words.add(temp);
+		for(int i = 0; i < list.size(); i++)
+			buffer.write(list.get(i) + "\n");
 		buffer.close();
-		
-		Collections.sort(words, new byLineLength());
 	}
 	
 	public static class byLineLength implements java.util.Comparator<String> {
