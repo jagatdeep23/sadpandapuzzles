@@ -71,8 +71,8 @@ public class Input {
 		FileWriter fileWriter = new FileWriter(location);
 		BufferedWriter buffer = new BufferedWriter(fileWriter);
 		
-		for(int i = 0; i < list.size(); i++)
-			buffer.write(list.get(i) + "\n");
+		for(String word : list)
+			buffer.write(word + "\n");
 		buffer.close();
 	}
 	
