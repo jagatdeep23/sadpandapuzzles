@@ -19,5 +19,7 @@ public class Test {
 		}								//In fact, the for-each loop only works with
 										//things that implement Iterable
 		Input.saveWordsAs(words);
+		
+		System.out.print("RAWR");
 	}
 }
