@@ -45,7 +45,10 @@ public class Input {
 	
 	public static void saveWords(ArrayList<String> list) throws IOException
 	{
-		save(list, file);
+		if (file != null)
+			save(list, file);
+		else
+			saveWordsAs(list);
 	}
 	
 	public static void saveWordsAs(ArrayList<String> list) throws IOException
