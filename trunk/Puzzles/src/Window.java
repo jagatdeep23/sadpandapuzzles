@@ -10,8 +10,8 @@ public class Window extends JPanel{
 	JMenuBar menuBar;
 	JMenu fileMenu, optionsMenu, helpMenu;
 	JMenuItem newItem, loadItem, saveItem, exportItem, exitItem,
-	          wordsearchItem, crosswordItem,
 	          helpItem, aboutItem;
+	JCheckBoxMenuItem wordsearchItem, crosswordItem;
 	JTextArea wordListArea, outputArea;
 	JButton generateButton;
 	JLabel wordListLabel;
@@ -22,8 +22,8 @@ public class Window extends JPanel{
 		saveItem = new JMenuItem ("Save");
 		exportItem = new JMenuItem ("Export");
 		exitItem = new JMenuItem ("Exit");
-		wordsearchItem = new JMenuItem ("Word Search");
-		crosswordItem = new JMenuItem ("Crossword");
+		wordsearchItem = new JCheckBoxMenuItem ("Word Search");
+		crosswordItem = new JCheckBoxMenuItem ("Crossword");
 		helpItem = new JMenuItem ("Help!");
 		aboutItem = new JMenuItem ("About?");
 		
