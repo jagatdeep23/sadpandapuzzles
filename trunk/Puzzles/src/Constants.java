@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 
+//Edited some typo's in the comments -Kyle
 
 public class Constants {
 	//Direction - Defines the direction in which a word is oriented. 
 	public static enum Direction {N, NE, E, SE, S, SW, W, NW};
 	
 	/**
-	 * Generates a puzzle obejct, which is used to make crosswords and wordseaches.
+	 * Generates a puzzle object, which is used to make crosswords and word searches.
 	 * @param wordList - an array of words used in the puzzle;
 	 * @return Puzzle - a puzzle object.
 	 */
