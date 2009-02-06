@@ -1,8 +1,9 @@
+package io;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-public class Input {
+public class FileIO {
 	private static JFileChooser chooser;
 
 	private static File file;

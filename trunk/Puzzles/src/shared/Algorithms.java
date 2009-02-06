@@ -1,5 +1,12 @@
+package shared;
+
 import java.util.ArrayList;
 import java.util.Random;
+
+import puzzle.Puzzle;
+import puzzle.PuzzleCell;
+import puzzle.PuzzleWord;
+
 
 //Edited some typo's in the comments -Kyle
 
@@ -48,7 +55,7 @@ public class Algorithms {
 	    }
 	    for (int r = 0; r < colSize; r ++) {
 			for (int c = 0; c < rowSize; c ++) {
-				if (matrix[r][c].character == '\0') {
+				if (matrix[r][c].getCharacter() == '\0') {
 					matrix[r][c].addRandomChar();
 				}
 			}

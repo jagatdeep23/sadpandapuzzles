@@ -1,3 +1,7 @@
+package puzzle;
+import shared.Algorithms;
+import shared.Algorithms.Direction;
+
 public class PuzzleWord {
 	String word;
 	int row, col;
