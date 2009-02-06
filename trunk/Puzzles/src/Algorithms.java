@@ -1,22 +1,30 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 //Edited some typo's in the comments -Kyle
 
-public class Constants {
+public class Algorithms {
 	//Direction - Defines the direction in which a word is oriented. 
 	public static enum Direction {N, NE, E, SE, S, SW, W, NW};
-	
+	private static Random gen;
 	/**
 	 * Generates a puzzle object, which is used to make crosswords and word searches.
 	 * @param wordList - an array of words used in the puzzle;
 	 * @return Puzzle - a puzzle object.
 	 */
+	public static void prepGenerator() {
+		gen = new Random();
+	}
+	
 	public static Puzzle genWordSearch(ArrayList<String> wordList) {
-	    int length = wordList.get(0).length()*3/2;
+	    int length = wordList.get(0).length() * 3 / 2;
 		int colSize = length;
 	    int rowSize = length;
-	    int numWords = wordList.size();
+	    
+	    System.out.println ("Puzzle is " + length + " square.");
+	    
 	    ArrayList<PuzzleWord> puzzleWords = new ArrayList<PuzzleWord>();
+	    
 	    boolean isValid;
 	    
 	    PuzzleCell[][] matrix = generateMatrix(colSize, rowSize);
@@ -24,8 +32,10 @@ public class Constants {
 	        isValid = false;
 	        while (!isValid) {
 	            Direction dir = generateDirection();
-	            int [] point = generatePosition(word.length(), colSize, rowSize);
+	            System.out.println(word + "; " + dir.name() + " size: " + word.length());
+	            int [] point = generatePosition(word.length(), colSize, rowSize, dir);
 	            PuzzleWord pWord = new PuzzleWord ();
+	            System.out.println(point[0] + ", " + point[1]);
                 pWord.setColumn(point[0]);
                 pWord.setRow(point[1]);
                 pWord.setDirection(dir);
@@ -36,6 +46,14 @@ public class Constants {
 	            }
 	        }
 	    }
+	    for (int r = 0; r < colSize; r ++) {
+			for (int c = 0; c < rowSize; c ++) {
+				if (matrix[r][c].character == '\0') {
+					matrix[r][c].addRandomChar();
+				}
+			}
+		}
+	    
 	    
 	    Puzzle p = new Puzzle(puzzleWords, matrix);
 	    return p;
@@ -83,17 +101,18 @@ public class Constants {
 		int row = word.getRow();
 		int col = word.getColumn();
 		String w = word.getWord();
-		int i = 0;
-		while(i < w.length()){
-			if(!matrix[col][row].add(w.charAt(i))){
-				for(int j = i; j > 0; j--){
+		for (int i = 0; i < w.length(); i++){
+			System.out.println("Col " + col + ", Row " + row);
+			PuzzleCell cell = matrix[col][row];
+			char character = w.charAt(i);
+			if(!cell.add(character)){
+				for(int j = i-1; j >= 0; j--){
 					row -= dR;
 					col -= dC;
 					matrix[col][row].remove();
 				}
 				return false;
 			}
-			i++;
 			row += dR;
 			col += dC;
 		}
@@ -117,12 +136,42 @@ public class Constants {
 	 * @param rowSize - number of rows.
 	 * @return int[] - [0] is the x value, and [1] is the y value.
 	 */
-	public static int[] generatePosition(int length, int colSize, int rowSize) {
-		int col = colSize - length;
-		int row = rowSize - length;
+	public static int[] generatePosition(int length, int colSize, int rowSize, Direction dir) {
 		int[] point = new int[2];
-		point[0] = (int)(col * Math.random());
-		point[1] = (int)(row * Math.random());
+		switch(dir){
+		case N:
+			point[0] = gen.nextInt(colSize);
+			point[1] = length - 1 + gen.nextInt(rowSize - length);
+			break;
+		case NE:
+			point[0] = gen.nextInt(colSize - length);
+			point[1] = length - 1 + gen.nextInt(rowSize - length);
+			break;
+		case E:
+			point[0] = gen.nextInt(colSize - length);
+			point[1] = gen.nextInt(rowSize);
+			break;
+		case SE:
+			point[0] = gen.nextInt(colSize - length);
+			point[1] = gen.nextInt(rowSize - length);
+			break;
+		case S:
+			point[0] = gen.nextInt(colSize);
+			point[1] = gen.nextInt(rowSize - length);
+			break;
+		case SW:
+			point[0] = length - 1 + gen.nextInt(colSize - length);
+			point[1] = gen.nextInt(rowSize - length);
+			break;
+		case W:
+			point[0] = length - 1 + gen.nextInt(colSize - length);
+			point[1] = gen.nextInt(rowSize);
+			break;
+		case NW:
+			point[0] = length - 1 + gen.nextInt(colSize - length);
+			point[1] = length - 1 + gen.nextInt(rowSize - length);
+			break;	
+		}
 		return point;
 	}
 	

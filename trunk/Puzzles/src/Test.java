@@ -8,18 +8,19 @@ public class Test {
 		
 		ArrayList<String> words = Input.getFile();
 		
-		// Iterator<String> iter = words.iterator();
-		// while(iter.hasNext())
-		// {
-		//  	String word = iter.next();
-		//  	System.out.println(word);
-		// }
+		Algorithms.prepGenerator();
+		Puzzle P = Algorithms.genWordSearch(words);
+		
+		System.out.println(P.toString());
+		
+		System.out.println();
+		
 		for (String word : words) {		//Josh, Java has a nifty for-each loop that 
 			System.out.println (word);  //eliminates the need for the Iterator object.
 		}								//In fact, the for-each loop only works with
 										//things that implement Iterable
-		Input.saveWordsAs(words);
+		//Input.saveWordsAs(words);
 		
-		System.out.print("RAWR");
+		//System.out.print("RAWR");
 	}
 }

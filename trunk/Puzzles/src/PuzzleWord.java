@@ -1,7 +1,15 @@
 public class PuzzleWord {
 	String word;
 	int row, col;
-	Constants.Direction dir;
+	Algorithms.Direction dir;
+	
+	public PuzzleWord()
+	{
+		row = 0;
+		col = 0;
+		dir = Algorithms.Direction.E;
+		word = "";
+	}
 	
 	public int getColumn() {
 		return col;
@@ -9,10 +17,10 @@ public class PuzzleWord {
 	public void setColumn(int col) {
 		this.col = col;
 	}
-	public Constants.Direction getDirection() {
+	public Algorithms.Direction getDirection() {
 		return dir;
 	}
-	public void setDirection(Constants.Direction dir) {
+	public void setDirection(Algorithms.Direction dir) {
 		this.dir = dir;
 	}
 	public int getRow() {
