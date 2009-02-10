@@ -15,14 +15,59 @@ import puzzle.PuzzleWord;
  * @version 1.0
  */
 public class Algorithms {
-	//Direction - Defines the direction in which a word is oriented. 
-	public static enum Direction {N, NE, E, SE, S, SW, W, NW};
+	/**
+	 * Direction - Defines the direction in which a word is oriented. 
+	 * @author Sad Panda Software
+	 */
+	public static enum Direction {
+		/**
+		 * North Direction
+		 */
+		N,
+		
+		/**
+		 * North-East Direction
+		 */
+		NE,
+		
+		/**
+		 * East Direction
+		 */
+		E,
+		
+		/**
+		 * South-East Direction
+		 */
+		SE,
+		
+		/**
+		 * South Direction
+		 */
+		S,
+		
+		/**
+		 * South-West Direction
+		 */
+		SW,
+		
+		/**
+		 * West Direction
+		 */
+		W,
+		
+		/**
+		 * North-West Direction
+		 */
+		NW
+	}
+	
+	/**
+	 * A random number generator
+	 */
 	private static Random gen;
 	
 	/**
-	 * Generates a puzzle object, which is used to make crosswords and word searches.
-	 * @param wordList - an array of words used in the puzzle;
-	 * @return Puzzle - a puzzle object.
+	 * prepares the random number generator for use
 	 */
 	public static void prepGenerator() {
 		gen = new Random();
