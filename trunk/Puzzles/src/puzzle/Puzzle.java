@@ -1,7 +1,13 @@
 package puzzle;
 import java.util.ArrayList;
 
+/**
+ * A Puzzle stores the list of words and the location of them in a PuzzleCell matrix
+ * @author Sad Panda Software
+ * @version 1.0
+ */
 public class Puzzle {
+
 	PuzzleCell[][] matrix;
 
 	ArrayList<PuzzleWord> wordList;
@@ -9,7 +15,7 @@ public class Puzzle {
 	int numWords, arraySize;
 
 	/**
-	 * 
+	 * The constructor for declaring a Puzzle Object
 	 * @param list -
 	 *            list of words that will be in the puzzle
 	 * @param matrix -
@@ -36,7 +42,7 @@ public class Puzzle {
 	}
 
 	/**
-	 * 
+	 * Returns the size of the matrix.
 	 * @return arraySize - the dimension of the matrix
 	 */
 	public int getArraySize() {
@@ -44,7 +50,7 @@ public class Puzzle {
 	}
 
 	/**
-	 * 
+	 * Return the puzzle's matrix.
 	 * @return matrix - a 2D array of PuzzleCells
 	 */
 	public PuzzleCell[][] getMatrix() {
@@ -52,7 +58,7 @@ public class Puzzle {
 	}
 
 	/**
-	 * 
+	 * Returns the number of words in the puzzle.
 	 * @return numWords - number of words in the puzzle
 	 */
 	public int getNumWords() {
@@ -60,13 +66,17 @@ public class Puzzle {
 	}
 
 	/**
-	 * 
+	 * Returns an array of puzzle words.
 	 * @return wordList - a list of PuzzleWords
 	 */
 	public ArrayList<PuzzleWord> getWordList() {
 		return wordList;
 	}
 
+	/**
+	 * Gets the puzzle as a string
+	 * @return s - Returns the puzzle as a string
+	 */
 	public String toString() {
 		String s = "";
 		for (int r = 0; r < matrix.length; r++) {

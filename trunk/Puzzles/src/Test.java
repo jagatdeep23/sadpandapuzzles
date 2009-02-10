@@ -6,9 +6,17 @@ import java.io.*;
 import puzzle.Puzzle;
 import shared.Algorithms;
 
-
+/**
+ * 
+ * @author wkkillian
+ *
+ */
 public class Test {
-	
+	/**
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException
 	{
 		

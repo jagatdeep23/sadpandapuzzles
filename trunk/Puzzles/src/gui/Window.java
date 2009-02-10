@@ -5,10 +5,16 @@ import java.awt.Container;
 
 import javax.swing.*;
 
-
+/**
+ * The main GUI component.  It is used to be a container for all of the GUI items
+ * @author Sad Panda Software
+ * @version 1.0
+ */
 public class Window extends JPanel{
 	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * constructor for the window
+	 */
 	public Window () {
 		
 		

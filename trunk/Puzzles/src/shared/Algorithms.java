@@ -9,11 +9,16 @@ import puzzle.PuzzleWord;
 
 
 //Edited some typo's in the comments -Kyle
-
+/**
+ * Algorithms used in various places throughout the program
+ * @author Sad Panda Software
+ * @version 1.0
+ */
 public class Algorithms {
 	//Direction - Defines the direction in which a word is oriented. 
 	public static enum Direction {N, NE, E, SE, S, SW, W, NW};
 	private static Random gen;
+	
 	/**
 	 * Generates a puzzle object, which is used to make crosswords and word searches.
 	 * @param wordList - an array of words used in the puzzle;
@@ -23,6 +28,11 @@ public class Algorithms {
 		gen = new Random();
 	}
 	
+	/**
+	 * Generates a word search puzzle based on a list of words.
+	 * @param wordList - a list of words
+	 * @return a generated puzzle in the form of a word search
+	 */
 	public static Puzzle genWordSearch(ArrayList<String> wordList) {
 	    int length = wordList.get(0).length() * 3 / 2;
 		int colSize = length;
@@ -67,7 +77,7 @@ public class Algorithms {
 	}
 	
 	/**
-	 * 
+	 * Adds and word and validates to ensure that it will fit into the grid
 	 * @param word - puzzleword to be added.
 	 * @param matrix - our current puzzle grid.
 	 * @return boolean - Whether the add was a success or not.
@@ -183,7 +193,7 @@ public class Algorithms {
 	}
 	
 	/**
-	 * 
+	 * Generates an empty two-dimensional array used for generating Puzzles
 	 * @param colSize - number of columns.
 	 * @param rowSize - number of rows.
 	 * @return puzzleCell[][] - this matrix will contain the puzzle.

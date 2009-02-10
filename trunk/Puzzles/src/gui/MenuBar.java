@@ -5,10 +5,18 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+/**
+ * Holds the contents of a MenuBar
+ * @author Sad Panda Software
+ * @version 1.0
+ */
 public class MenuBar extends JMenuBar{
 
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * default constructor for the MenuBar
+	 */
 	public MenuBar() {
 		WindowItems.newItem = new JMenuItem ("New");
 		WindowItems.loadItem = new JMenuItem ("Load");
@@ -33,6 +41,11 @@ public class MenuBar extends JMenuBar{
 		this.add (WindowItems.helpMenu);
 	}
 	
+	/**
+	 * adds a list of items to a specified menu
+	 * @param menu
+	 * @param items
+	 */
 	private static void addToMenu (JMenu menu, JMenuItem ... items) {
 		for (JMenuItem i: items) //Will being lazy
 			menu.add(i);

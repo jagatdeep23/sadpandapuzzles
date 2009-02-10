@@ -8,6 +8,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 
+/**
+ * All of the GUI items
+ * @author Sad Panda Software
+ * @version 1.0
+ */
 public class WindowItems {
 	public static JMenuBar menuBar;
 	public static JMenu fileMenu, optionsMenu, helpMenu;
