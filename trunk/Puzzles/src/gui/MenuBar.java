@@ -43,8 +43,8 @@ public class MenuBar extends JMenuBar{
 	
 	/**
 	 * adds a list of items to a specified menu
-	 * @param menu
-	 * @param items
+	 * @param menu - the menu to have items appended to
+	 * @param items - the items to be appended to the menu
 	 */
 	private static void addToMenu (JMenu menu, JMenuItem ... items) {
 		for (JMenuItem i: items) //Will being lazy

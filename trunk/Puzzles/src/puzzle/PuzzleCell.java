@@ -8,7 +8,13 @@ package puzzle;
  * 
  */
 public class PuzzleCell {
+	/**
+	 * number of words associated with this PuzzleCell
+	 */
 	int numWords;
+	/**
+	 * the character associated with this PuzzleCell
+	 */
 	private char character;
 	
 	/**

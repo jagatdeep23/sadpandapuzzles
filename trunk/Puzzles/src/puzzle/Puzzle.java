@@ -8,11 +8,24 @@ import java.util.ArrayList;
  */
 public class Puzzle {
 
+	/**
+	 * the two-dimensional array used to store arranged letters from PuzzleWords
+	 */
 	PuzzleCell[][] matrix;
 
+	/**
+	 * the word list of PuzzleWords that are in the Puzzle
+	 */
 	ArrayList<PuzzleWord> wordList;
 
-	int numWords, arraySize;
+		/**
+		 * the number of words in the puzzle
+		 */
+	int numWords,
+		/**
+		 * the height and width of the puzzle
+		 */
+		arraySize;
 
 	/**
 	 * The constructor for declaring a Puzzle Object

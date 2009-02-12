@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -38,5 +40,16 @@ public class Window extends JPanel{
 		WindowItems.outputArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		this.add( new JScrollPane (WindowItems.outputArea), BorderLayout.CENTER);
 		
+	}
+	
+	private class ItemListener implements ActionListener {
+		
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+	
 	}
 }

@@ -8,8 +8,21 @@ import shared.Algorithms.Direction;
  * @version 1.0
  */
 public class PuzzleWord {
+	/**
+	 * the word string
+	 */
 	String word;
-	int row, col;
+	/**
+	 * the row of the location of the word
+	 */
+	int row,
+	/**
+	 * the column of the location of the word
+	 */
+		col;
+	/**
+	 * the direction associated with the word
+	 */
 	Algorithms.Direction dir;
 	
 	/**
