@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -85,7 +84,7 @@ public class Window extends JPanel {
 					// Do nothing
 				} else {
 					if (result == JOptionPane.YES_OPTION) {
-						save();
+						FileIO.saveWords (controller.getWordList());
 					} else if (result == JOptionPane.NO_OPTION) {
 						// Do nothing
 					}
@@ -106,7 +105,7 @@ public class Window extends JPanel {
 					// Do nothing
 				} else {
 					if (result == JOptionPane.YES_OPTION) {
-						save();
+						FileIO.saveWords (controller.getWordList());
 					} else if (result == JOptionPane.NO_OPTION) {
 						// Do nothing
 					}
@@ -121,7 +120,7 @@ public class Window extends JPanel {
 			}
 			if (o.equals(WindowItems.saveItem)) {
 				// save item
-				save();
+				FileIO.saveWords (controller.getWordList());
 			}
 			if (o.equals(WindowItems.exportItem)) {
 				// disabled
@@ -175,15 +174,6 @@ public class Window extends JPanel {
 						
 					}
 				}
-			}
-		}
-		
-		private void save() {
-			try {
-				FileIO.saveWords (controller.getWordList());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}

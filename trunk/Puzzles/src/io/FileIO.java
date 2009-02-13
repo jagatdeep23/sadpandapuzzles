@@ -68,10 +68,15 @@ public class FileIO {
 	 * @param list ArrayList<String>
 	 * @throws IOException
 	 */
-	public static void saveWords(ArrayList<String> list) throws IOException {
+	public static void saveWords(ArrayList<String> list) {
 		if (file != null)
-			save(list, file);
-		else
+		{
+			try {
+				save(list, file);
+			} catch (IOException e) {
+				System.out.println("Error: IO Exception was thrown:" + e);
+			}
+		}else
 			saveWordsAs(list);
 	}
 	
@@ -82,7 +87,7 @@ public class FileIO {
 	 * @param list ArrayList<String>
 	 * @throws IOException
 	 */
-	public static void saveWordsAs(ArrayList<String> list) throws IOException {
+	public static void saveWordsAs(ArrayList<String> list) {
 		File newFile = new File("empty");
 		chooser = new JFileChooser();
 		status = chooser.showSaveDialog(null);
@@ -92,7 +97,11 @@ public class FileIO {
 			System.out.println("File chosen to save to: " + newFile.getName());
 			System.out.println("Full path to file: " + newFile.getAbsolutePath());
 		}
-		save(list, newFile);
+		try {
+			save(list, newFile);
+		} catch (IOException e) {
+			System.out.println("Error: IO Exception was thrown:" + e);
+		}
 	}
 
 	/**
@@ -102,8 +111,7 @@ public class FileIO {
 	 * @param location Location of file
 	 * @throws IOException
 	 */
-	public static void save(ArrayList<String> list, File location)
-			throws IOException {
+	public static void save(ArrayList<String> list, File location) throws IOException {
 		FileWriter fileWriter = new FileWriter(location);
 		BufferedWriter buffer = new BufferedWriter(fileWriter);
 
