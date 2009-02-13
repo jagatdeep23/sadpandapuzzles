@@ -44,7 +44,7 @@ public class Puzzle {
 		 * list.get(0).getWord().length()*3/2; this.matrix = new
 		 * PuzzleCell[arraySize][arraySize];
 		 */
-		arraySize = list.get(0).getWord().length() * 3 / 2;
+		arraySize = list.get(0).getWord().length() * 2;
 		this.matrix = new PuzzleCell[arraySize][arraySize];
 
 		for (int r = 0; r < matrix.length; r++) {

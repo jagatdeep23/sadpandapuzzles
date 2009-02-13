@@ -2,6 +2,7 @@ package shared;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import puzzle.Puzzle;
 import puzzle.PuzzleCell;
@@ -79,7 +80,7 @@ public class Algorithms {
 	 * @return a generated puzzle in the form of a word search
 	 */
 	public static Puzzle genWordSearch(ArrayList<String> wordList) {
-	    int length = wordList.get(0).length() * 3 / 2;
+	    int length = wordList.get(0).length() * 2;
 		int colSize = length;
 	    int rowSize = length;
 	    
@@ -95,7 +96,10 @@ public class Algorithms {
 	        while (!isValid) {
 	            Direction dir = generateDirection();
 	            System.out.println(word + "; " + dir.name() + " size: " + word.length());
-	            int [] point = generatePosition(word.length(), colSize, rowSize, dir);
+	            int [] point = generatePosition(word.length(),
+	            		colSize,
+	            		rowSize,
+	            		dir);
 	            PuzzleWord pWord = new PuzzleWord ();
 	            System.out.println(point[0] + ", " + point[1]);
                 pWord.setColumn(point[0]);
@@ -116,9 +120,7 @@ public class Algorithms {
 			}
 		}
 	    
-	    
-	    Puzzle p = new Puzzle(puzzleWords, matrix);
-	    return p;
+	    return (new Puzzle(puzzleWords, matrix));
 	}
 	
 	/**
@@ -178,7 +180,7 @@ public class Algorithms {
 			row += dR;
 			col += dC;
 		}
-		return true;
+		return (true);
 		
 	}
 	
@@ -234,7 +236,7 @@ public class Algorithms {
 			point[1] = length - 1 + gen.nextInt(rowSize - length);
 			break;	
 		}
-		return point;
+		return (point);
 	}
 	
 	/**
@@ -252,6 +254,36 @@ public class Algorithms {
 				matrix[r][c] = new PuzzleCell();
 			}
 		}
-		return matrix;
+		return (matrix);
+	}
+	
+	public static String arrayToString (ArrayList<String> a) {
+		String s = "";
+		for (String word: a) {
+			s += word + "\n";
+		}
+		return (s);
+	}
+	
+	public static ArrayList<String> stringToArray (String s) {
+		ArrayList<String> list = new ArrayList<String>();
+		Scanner parse = new Scanner (s);
+		parse.useDelimiter("\n");
+		while (parse.hasNext()) {
+			String next = parse.next();
+			System.out.println (next);
+			if (next.length() > 0){ 
+				list.add(next);
+			}
+		}
+		return (list);
+	}
+	
+	
+	public static class SortByLineLength implements java.util.Comparator<String> {
+
+		public int compare(String one, String two) {
+			return (two.length() - one.length());
+		}
 	}
 }

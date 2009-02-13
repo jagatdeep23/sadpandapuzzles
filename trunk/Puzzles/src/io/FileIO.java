@@ -30,6 +30,10 @@ public class FileIO {
 			file = chooser.getSelectedFile();
 			System.out.println("File selected to open: " + file.getName());
 			System.out.println("Full path name: " + file.getAbsolutePath());
+		} else
+		{
+			words.clear();
+			return words;
 		}
 
 		try {
@@ -55,8 +59,6 @@ public class FileIO {
 		while ((temp = buffer.readLine()) != null)
 			words.add(temp);
 		buffer.close();
-
-		Collections.sort(words, new byLineLength());
 	}
 
 	/**
@@ -115,11 +117,6 @@ public class FileIO {
 	 * @author Sad Panda Software
 	 * @version 1.0
 	 */
-	public static class byLineLength implements java.util.Comparator<String> {
-
-		public int compare(String one, String two) {
-			return (two.length() - one.length());
-		}
-	}
+	
 
 }
