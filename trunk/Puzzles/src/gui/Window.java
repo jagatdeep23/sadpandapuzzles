@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 import java.util.Collections;
 
 import javax.swing.*;
@@ -130,7 +130,7 @@ public class Window extends JPanel {
 				// yes / no / cancel
 				int result = JOptionPane.showConfirmDialog(null,
 						"Would you like to save the current word list?",
-						"Load", JOptionPane.YES_NO_CANCEL_OPTION,
+						"Quit", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 
 				if (result == JOptionPane.CANCEL_OPTION) {
@@ -141,7 +141,7 @@ public class Window extends JPanel {
 					} else if (result == JOptionPane.NO_OPTION) {
 						// Do nothing
 					}
-					// exit
+					System.exit(0);
 				}
 			}
 
@@ -166,13 +166,15 @@ public class Window extends JPanel {
 				if (controller.getDoWordSearch() || controller.getDoCrossword()) {
 					WindowItems.outputArea.setText("");
 					if (controller.getDoWordSearch()) {
-						controller.setWordSearchPuzzle (Algorithms.genWordSearch (controller.getWordList()));
+						controller.generateWordSearchPuzzle();
 						WindowItems.outputArea.append(controller.getWordSearch().toString() + "\n\n");
 					}
 					
 					if (controller.getDoCrossword()) {
 						
 					}
+					
+					WindowItems.outputArea.append(Algorithms.arrayToString(controller.getWordList()));
 				}
 			}
 		}

@@ -28,7 +28,7 @@ public class Controller {
 	private ArrayList<String> wordList;
 	
 	public Controller() {
-		wordSearchPuzzle = null;
+		wordSearchPuzzle = new Puzzle();
 		crosswordPuzzle = null;
 		doWordSearch = false;
 		doCrossword = false;
@@ -43,12 +43,12 @@ public class Controller {
 		doCrossword = !doCrossword;
 	}
 	 
-	public void setWordSearchPuzzle (Puzzle p) {
-		wordSearchPuzzle = p;
+	public void generateWordSearchPuzzle () {
+		wordSearchPuzzle.genWordSearch(wordList);
 	}
 	
-	public void setCrosswordPuzzle (Puzzle p) {
-		crosswordPuzzle = p;
+	public void generateCrosswordPuzzle () {
+		crosswordPuzzle.genCrossword(wordList);
 	}
 	
 	public boolean getDoWordSearch () {

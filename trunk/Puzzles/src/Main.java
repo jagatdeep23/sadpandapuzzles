@@ -1,7 +1,6 @@
 import gui.Window;
 import javax.swing.JFrame;
 
-import shared.Algorithms;
 import shared.Controller;
 /**
  * Main class to execute program
@@ -15,7 +14,6 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		Algorithms.prepGenerator();
 		Controller controller = new Controller();
 		JFrame frame = new JFrame("Program Name");
 		frame.getContentPane().add(new Window(controller));

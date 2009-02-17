@@ -1,6 +1,4 @@
 package puzzle;
-import shared.Algorithms;
-import shared.Algorithms.Direction;
 
 /**
  * A word that is used in a Puzzle
@@ -23,7 +21,7 @@ public class PuzzleWord {
 	/**
 	 * the direction associated with the word
 	 */
-	Algorithms.Direction dir;
+	Puzzle.Direction dir;
 	
 	/**
 	 * Default constructor.
@@ -32,7 +30,7 @@ public class PuzzleWord {
 	{
 		row = 0;
 		col = 0;
-		dir = Algorithms.Direction.E;
+		dir = Puzzle.Direction.E;
 		word = "";
 	}
 	
@@ -56,7 +54,7 @@ public class PuzzleWord {
 	 * Returns the direction the word is traveling.
 	 * @return dir - returns the direction the word is traveling.
 	 */
-	public Algorithms.Direction getDirection() {
+	public Puzzle.Direction getDirection() {
 		return dir;
 	}
 	
@@ -64,7 +62,7 @@ public class PuzzleWord {
 	 * Sets the direction the word is traveling.
 	 * @param dir - Sets the direction the word is traveling.
 	 */
-	public void setDirection(Algorithms.Direction dir) {
+	public void setDirection(Puzzle.Direction dir) {
 		this.dir = dir;
 	}
 	
