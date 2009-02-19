@@ -5,6 +5,8 @@ import gui.Window;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import puzzle.Puzzle;
 
@@ -129,7 +131,28 @@ public class Controller {
 	 * Builds the main GUI window
 	 */
 	private void buildWindow () {
-		JFrame frame = new JFrame("Program Name");
+		if (System.getProperty("mrj.version") != null) {
+			System.setProperty("apple.laf.useScreenMenuBar","true");
+		}
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+        JFrame.setDefaultLookAndFeelDecorated(true);
+		JFrame frame = new JFrame("Puzzle Generator 1.0 - Sad Panda Software");
 		frame.getContentPane().add(new Window(this));
 		frame.pack();
 		frame.setSize(800, 600);

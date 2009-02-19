@@ -11,6 +11,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		//creates a new controller to manage the GUI and model
 		new Controller();
 	}
 }
