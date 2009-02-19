@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.*;
@@ -122,12 +123,16 @@ public class Window extends JPanel {
 					WindowItems.outputArea.setText("");
 					
 					// load contents
-					controller.setWordList(FileIO.getFile());
-					WindowItems.wordListArea.setText(Algorithms.arrayToString(controller.getWordList()));
+					ArrayList<String> wordList = FileIO.getFile();
+					System.out.println (wordList.size());
+					controller.setWordList(wordList);
+					System.out.println ("Setting words");
+					WindowItems.wordListArea.setText(Algorithms.arrayToString(wordList));
 				}
 			}
 			if (o.equals(WindowItems.saveItem)) {
 				// save item
+				controller.setWordList(Algorithms.stringToArray(WindowItems.wordListArea.getText()));
 				FileIO.saveWords (controller.getWordList());
 			}
 			if (o.equals(WindowItems.exportItem)) {
