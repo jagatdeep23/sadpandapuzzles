@@ -93,8 +93,6 @@ public class Puzzle {
 	 */
 	public void genWordSearch(ArrayList<String> wordList) {
 	    int length = generateDimension(wordList);
-		int colSize = length;
-	    int rowSize = length;
 	    
 	    System.out.println ("Puzzle is " + length + " square.");
 	    
@@ -102,20 +100,20 @@ public class Puzzle {
 	    
 	    boolean isValid;
 	    
-	    PuzzleCell[][] matrix = new PuzzleCell[colSize][rowSize];
-		for (int r = 0; r < colSize; r ++)
-			for (int c = 0; c < rowSize; c ++)
+	    PuzzleCell[][] matrix = new PuzzleCell[length][length];
+	    
+	    //Fills the PuzzleCell matrix with default PuzzleCells
+		for (int r = 0; r < length; r ++)
+			for (int c = 0; c < length; c ++)
 				matrix[r][c] = new PuzzleCell();
 		
+		//Adds words to the puzzle
 	    for(String word: wordList) {
 	        isValid = false;
 	        while (!isValid) {
 	            Direction dir = generateDirection();
 	            System.out.println(word + "; " + dir.name() + " size: " + word.length());
-	            int [] point = generatePosition(word.length(),
-	            		colSize,
-	            		rowSize,
-	            		dir);
+	            int [] point = generatePosition(word.length(), length, length, dir);
 	            PuzzleWord pWord = new PuzzleWord ();
 	            System.out.println(point[0] + ", " + point[1]);
                 pWord.setColumn(point[0]);
@@ -128,11 +126,14 @@ public class Puzzle {
 	            }
 	        }
 	    }
-	    for (int r = 0; r < colSize; r ++)
-			for (int c = 0; c < rowSize; c ++)
+	    
+	    //Fills in the remaining cells with random characters
+	    for (int r = 0; r < length; r ++)
+			for (int c = 0; c < length; c ++)
 				if (matrix[r][c].getCharacter() == '\0')
 					matrix[r][c].addRandomChar();
 	    
+	    //assigns values to this puzzle object
 	    this.arraySize = length;
 	    this.numWords = puzzleWords.size();
 	    this.matrix = matrix;
@@ -140,11 +141,13 @@ public class Puzzle {
 	}
 	
 	/**
-	 * 
+	 * Generates a crossword puzzle
 	 * @param wordList
 	 */
 	public void genCrossword (ArrayList<String> wordList) {
-		
+		/**
+		 * TODO
+		 */
 	}
 	
 	/**
@@ -264,12 +267,19 @@ public class Puzzle {
 	}
 	
 	/**
-	 * 
+	 * Generates the dimension to be used in the word search matrix
 	 * @param list
-	 * @return
+	 * @return an integer specifying the dimension to be used by the Puzzle
 	 */
 	private int generateDimension (ArrayList<String> list) {
-		return (list.get(0).length());
+		int sum = 0;
+		for (String s : list)
+			sum += s.length();
+		sum = (int)(Math.ceil(Math.sqrt(sum * 3)));
+		if (sum + 2 < list.get(0).length()) {
+			sum = list.get(0).length() * 3 / 2;
+		}
+		return (sum);
 	}
 	
 	/**
@@ -304,6 +314,10 @@ public class Puzzle {
 		return wordList;
 	}
 	
+	/**
+	 * A Singleton object used by any instance of puzzle as a number generator
+	 * @return a random number generator
+	 */
 	public Random getNumberGenerator () {
 		if (gen == null) {
 			gen = new Random();

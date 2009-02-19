@@ -9,12 +9,24 @@ import javax.swing.*;
  * @version 1.0
  */
 public class FileIO {
+	/**
+	 * A file chooser
+	 */
 	private static JFileChooser chooser;
 
+	/**
+	 * The file that is to be loaded
+	 */
 	private static File file;
 
+	/**
+	 * A flag to determine if a file has been loaded
+	 */
 	private static int status;
 
+	/**
+	 * The array list of words
+	 */
 	private static ArrayList<String> words = new ArrayList<String>();
 
 	/**

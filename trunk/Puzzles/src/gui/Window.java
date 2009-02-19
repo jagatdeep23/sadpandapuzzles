@@ -39,8 +39,8 @@ public class Window extends JPanel {
 		WindowItems.outputArea = new JTextArea("");
 		WindowItems.generateButton = new JButton("Generate Puzzle(s)");
 
-		WindowItems.wordListArea.setFont(new Font ("Courier New", Font.PLAIN, 16));
-		WindowItems.outputArea.setFont(new Font("Courier New", Font.PLAIN, 22));
+		WindowItems.wordListArea.setFont(new Font ("Courier New", Font.PLAIN, 12));
+		WindowItems.outputArea.setFont(new Font("Courier New", Font.PLAIN, 16));
 		WindowItems.outputArea.setEditable(false);
 
 		WindowItems.menuBar = new MenuBar(listener);
@@ -66,8 +66,16 @@ public class Window extends JPanel {
 
 	}
 
+	/**
+	 * The listener for GUI events in the window
+	 * @author Sad Panda Software
+	 * @version 1.0
+	 */
 	private class ItemListener implements ActionListener {
 
+		/**
+		 * based on the <tt>ActionEvent</tt> that is passed as the argument, different actions will be performed through the controller
+		 */
 		public void actionPerformed(ActionEvent arg0) {
 
 			Object o = arg0.getSource();
@@ -154,10 +162,14 @@ public class Window extends JPanel {
 			}
 
 			if (o.equals(WindowItems.helpItem)) {
-
+				/**
+				 * TODO
+				 */
 			}
 			if (o.equals(WindowItems.aboutItem)) {
-
+				/**
+				 * TODO
+				 */
 			}
 			if (o.equals(WindowItems.generateButton)) {
 				controller.setWordList(Algorithms.stringToArray (WindowItems.wordListArea.getText()));
@@ -171,10 +183,12 @@ public class Window extends JPanel {
 					}
 					
 					if (controller.getDoCrossword()) {
-						
+						/**
+						 * TODO
+						 */
 					}
 					
-					WindowItems.outputArea.append(Algorithms.arrayToString(controller.getWordList()));
+					//WindowItems.outputArea.append(Algorithms.arrayToString(controller.getWordList()));
 				}
 			}
 		}

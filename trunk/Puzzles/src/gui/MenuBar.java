@@ -40,11 +40,11 @@ public class MenuBar extends JMenuBar{
 		
 		addToMenu (WindowItems.fileMenu, l, WindowItems.newItem, WindowItems.loadItem, WindowItems.saveItem, WindowItems.exportItem, WindowItems.exitItem);
 		addToMenu (WindowItems.optionsMenu, l, WindowItems.wordsearchItem, WindowItems.crosswordItem);
-		addToMenu (WindowItems.helpMenu, l, WindowItems.helpItem, WindowItems.aboutItem);
+		//addToMenu (WindowItems.helpMenu, l, WindowItems.helpItem, WindowItems.aboutItem);
 	
 		this.add (WindowItems.fileMenu);
 		this.add (WindowItems.optionsMenu);
-		this.add (WindowItems.helpMenu);
+		//this.add (WindowItems.helpMenu);
 	}
 	
 	/**
