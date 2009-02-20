@@ -273,13 +273,16 @@ public class Puzzle {
 	 */
 	private int generateDimension (ArrayList<String> list) {
 		int sum = 0;
-		for (String s : list)
+		int max = 0;
+		for (String s : list) {
 			sum += s.length();
-		sum = (int)(Math.ceil(Math.sqrt(sum * 3)));
-		if (sum + 2 < list.get(0).length()) {
-			sum = list.get(0).length() * 3 / 2;
+			max = Math.max(max, s.length());
 		}
-		return (sum);
+		sum = (int)(Math.ceil(Math.sqrt(sum * 3)));
+		if (sum < max) {
+			sum = max * 3 / 2;
+		}
+		return (++sum);
 	}
 	
 	/**
