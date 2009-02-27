@@ -1,201 +1,125 @@
 package gui;
 
+
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
-import javax.swing.*;
+/** @author Sad Panda Software */
 
-import io.FileIO;
-
-import shared.Algorithms;
-import shared.Controller;
-
-/**
- * The main GUI component. It is used to be a container for all of the GUI items
- * 
- * @author Sad Panda Software
- * @version 1.0
- */
+@SuppressWarnings("serial")
 public class Window extends JPanel {
-	private Controller controller;
+  protected Controller controller;
+  
+  public Window (Controller controller) {
+    this.controller = controller;
+    EventListener listener = new EventListener ();
+    
+    setLayout (new BorderLayout ());
+    
+    add (Components.buildToolbar (), BorderLayout.NORTH);
+    
+    JSplitPane windowPane = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, Components.buildSidebar (), Components.getOutputPanel ());
+    windowPane.getLeftComponent ().setPreferredSize (new Dimension (150, 50));
+    
+    add (windowPane, BorderLayout.CENTER);
+    
+    Components.Buttons.addActionListener (listener);
+  }
+  
+  public class EventListener implements ActionListener {
+    
+    public void actionPerformed (ActionEvent event) {
+      
+      Object obj = event.getSource ();
+      
+      if (obj.equals (Components.Buttons.newButton)) {
+        
+        System.out.println ("new");
+        if (save ("New")) {
+          
+        }
+        
+      } else if (obj.equals (Components.Buttons.openButton)) {
+        
+        System.out.println ("open");
+        if (save ("Open")) {
+          
+        }
+        
+      } else if (obj.equals (Components.Buttons.saveButton)) {
+        
+        save ("Save");
+        
+      } else if (obj.equals (Components.Buttons.exportButton)) {
+        
+        System.out.println ("export");
+        
+      } else if (obj.equals (Components.Buttons.quitButton)) {
+        
+        if (save ("Quit")) {
+          System.exit (0);
+        }
+        
+      } else if (obj.equals (Components.Buttons.helpButton)) {
+        
+        System.out.println ("help");
+        
+      } else if (obj.equals (Components.Buttons.generateButton)) {
+        
+        System.out.println ("generate");
+        controller.buildPuzzle (Components.getSelectedPuzzleOption ());
+        Components.getOutputPanel().repaint();
 
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * constructor for the window
-	 */
-	public Window(Controller c) {
-
-		controller = c;
-		ActionListener listener = new ItemListener();
-
-		WindowItems.wordListLabel = new JLabel("Word List");
-		WindowItems.wordListArea = new JTextArea("");
-		WindowItems.outputArea = new JTextArea("");
-		WindowItems.generateButton = new JButton("Generate Puzzle(s)");
-
-		WindowItems.wordListArea.setFont(new Font ("Courier New", Font.PLAIN, 12));
-		WindowItems.outputArea.setFont(new Font("Courier New", Font.PLAIN, 16));
-		WindowItems.outputArea.setEditable(false);
-
-		WindowItems.menuBar = new MenuBar(listener);
-		WindowItems.generateButton.addActionListener(listener);
-
-		this.setLayout(new BorderLayout());
-		this.add(WindowItems.menuBar, BorderLayout.NORTH);
-
-		WindowItems.wordsearchItem.setSelected(true);
-		controller.toggleWordSearchOption();
-		
-		Container wordListPane = new Container();
-		wordListPane.setLayout(new BorderLayout());
-		wordListPane.add(WindowItems.wordListLabel, BorderLayout.NORTH);
-		wordListPane.add(new JScrollPane(WindowItems.wordListArea),
-				BorderLayout.CENTER);
-		wordListPane.add(WindowItems.generateButton, BorderLayout.SOUTH);
-
-		this.add(wordListPane, BorderLayout.WEST);
-		WindowItems.outputArea.setBorder(BorderFactory.createEmptyBorder(10,
-				10, 10, 10));
-		this.add(new JScrollPane(WindowItems.outputArea), BorderLayout.CENTER);
-
-	}
-
-	/**
-	 * The listener for GUI events in the window
-	 * @author Sad Panda Software
-	 * @version 1.0
-	 */
-	private class ItemListener implements ActionListener {
-
-		/**
-		 * based on the <tt>ActionEvent</tt> that is passed as the argument, different actions will be performed through the controller
-		 */
-		public void actionPerformed(ActionEvent arg0) {
-
-			Object o = arg0.getSource();
-
-			if (o.equals(WindowItems.newItem)) {
-				// Save the current puzzle?
-				// yes / no / cancel
-				int result = JOptionPane.showConfirmDialog(null,
-						"Would you like to save the current word list?", "New",
-						JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (result == JOptionPane.CANCEL_OPTION) {
-					// Do nothing
-				} else {
-					if (result == JOptionPane.YES_OPTION) {
-						FileIO.saveWords (controller.getWordList());
-					} else if (result == JOptionPane.NO_OPTION) {
-						// Do nothing
-					}
-					controller.getWordList().clear();
-					WindowItems.outputArea.setText("");
-					WindowItems.wordListArea.setText("");
-				}
-			}
-			if (o.equals(WindowItems.loadItem)) {
-				// Save the current puzzle?
-				// yes / no / cancel
-				int result = JOptionPane.showConfirmDialog(null,
-						"Would you like to save the current word list?",
-						"Load", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (result == JOptionPane.CANCEL_OPTION) {
-					// Do nothing
-				} else {
-					if (result == JOptionPane.YES_OPTION) {
-						FileIO.saveWords (controller.getWordList());
-					} else if (result == JOptionPane.NO_OPTION) {
-						// Do nothing
-					}
-					// clear contents
-					controller.getWordList().clear();
-					WindowItems.outputArea.setText("");
-					
-					// load contents
-					ArrayList<String> wordList = FileIO.getFile();
-					System.out.println (wordList.size());
-					controller.setWordList(wordList);
-					System.out.println ("Setting words");
-					WindowItems.wordListArea.setText(Algorithms.arrayToString(wordList));
-				}
-			}
-			if (o.equals(WindowItems.saveItem)) {
-				// save item
-				controller.setWordList(Algorithms.stringToArray(WindowItems.wordListArea.getText()));
-				FileIO.saveWords (controller.getWordList());
-			}
-			if (o.equals(WindowItems.exportItem)) {
-				// disabled
-			}
-			if (o.equals(WindowItems.exitItem)) {
-				// Save the current puzzle?
-				// yes / no / cancel
-				int result = JOptionPane.showConfirmDialog(null,
-						"Would you like to save the current word list?",
-						"Quit", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
-
-				if (result == JOptionPane.CANCEL_OPTION) {
-					// Do nothing
-				} else {
-					if (result == JOptionPane.YES_OPTION) {
-						// Prompt to save
-					} else if (result == JOptionPane.NO_OPTION) {
-						// Do nothing
-					}
-					System.exit(0);
-				}
-			}
-
-			if (o.equals(WindowItems.wordsearchItem)) {
-				controller.toggleWordSearchOption();
-			}
-			if (o.equals(WindowItems.crosswordItem)) {
-				controller.toggleCrosswordOption();
-				// disabled
-			}
-
-			if (o.equals(WindowItems.helpItem)) {
-				/**
-				 * TODO
-				 */
-			}
-			if (o.equals(WindowItems.aboutItem)) {
-				/**
-				 * TODO
-				 */
-			}
-			if (o.equals(WindowItems.generateButton)) {
-				controller.setWordList(Algorithms.stringToArray (WindowItems.wordListArea.getText()));
-				Collections.sort(controller.getWordList(), new Algorithms.SortByLineLength());
-				
-				if (controller.getDoWordSearch() || controller.getDoCrossword()) {
-					WindowItems.outputArea.setText("");
-					if (controller.getDoWordSearch()) {
-						controller.generateWordSearchPuzzle();
-						WindowItems.outputArea.append(controller.getWordSearch().toString() + "\n\n");
-					}
-					
-					if (controller.getDoCrossword()) {
-						/**
-						 * TODO
-						 */
-					}
-					
-					//WindowItems.outputArea.append(Algorithms.arrayToString(controller.getWordList()));
-				}
-			}
-		}
-	}
+      } else if (obj.equals (Components.Buttons.addWordToList)) {
+        
+        System.out.println ("add");
+        controller.addWord (Components.getWordFieldText());
+        Components.wordField.setText ("");
+        //add word to list
+        
+      } else if (obj.equals (Components.Buttons.removeWordFromList)) {
+        
+        System.out.println ("remove");
+        controller.removeWord ();
+        
+      } else if (obj.equals (Components.Buttons.clearList)) {
+        
+        System.out.println ("clear");
+        controller.clearWordList();
+        controller.getModel().clearPuzzle ();
+        
+      } else if (obj.equals (Components.wordField)) {
+        controller.addWord (Components.getWordFieldText());
+        Components.wordField.setText ("");
+      }
+    }
+    
+    private boolean save (String title) {
+      if (title == "Save") {
+        controller.savePuzzle ();
+        return true;
+      } else {
+        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current word list?", title, JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+        
+        if (result == JOptionPane.CANCEL_OPTION) {
+          return (false);
+        } else {
+          if (result == JOptionPane.YES_OPTION) {
+            controller.savePuzzle ();
+          } else if (result == JOptionPane.NO_OPTION) {
+            // Do nothing
+          }
+          return (true);
+        }
+      }
+    }
+  }
 }

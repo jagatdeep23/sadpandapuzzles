@@ -53,12 +53,8 @@ public class PuzzleCell {
 	 * then removes the character from the puzzle cell.
 	 */
 	public void remove () {
-	
 		if (--numWords == 0) {
 			setCharacter('\0');
-			numWords--;
-		}else{
-			numWords--;
 		}
 	}
 	
@@ -67,7 +63,7 @@ public class PuzzleCell {
 	 * @return string - Returns the contents of the puzzle cell as a string.
 	 */
 	public String toString () {
-		return (getCharacter() + "");
+		return ((getCharacter() + "").toUpperCase());
 	}
 
 	/**

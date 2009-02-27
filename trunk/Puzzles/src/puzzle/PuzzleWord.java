@@ -1,68 +1,54 @@
 package puzzle;
 
+import puzzle.Puzzle.Direction;
+
 /**
  * A word that is used in a Puzzle
  * @author Sad Panda Software
  * @version 1.0
  */
 public class PuzzleWord {
-	/**
-	 * the word string
-	 */
+	/** the word string */
 	String word;
-	/**
-	 * the row of the location of the word
-	 */
-	int row,
-	/**
-	 * the column of the location of the word
-	 */
-		col;
-	/**
-	 * the direction associated with the word
-	 */
-	Puzzle.Direction dir;
 	
-	/**
-	 * Default constructor.
-	 */
-	public PuzzleWord()
-	{
+	/** the row of the location of the word */
+	int row;
+	
+	/** the column of the location of the word */
+	int	col;
+	
+	/** the direction associated with the word */
+	Direction dir;
+	
+	/** Default constructor */
+	public PuzzleWord() {
 		row = 0;
 		col = 0;
-		dir = Puzzle.Direction.E;
+		dir = Direction.EAST;
 		word = "";
 	}
 	
-	/**
-	 * Gets the number of columns
-	 * @return col - the number of columns
-	 */
-	public int getColumn() {
+	/** Gets the number of columns
+	 * @return col the number of columns */
+	public int getColumn () {
 		return col;
 	}
 	
-	/**
-	 * Sets the number of columns
-	 * @param col - sets the number of columns
-	 */
-	public void setColumn(int col) {
+	/** Sets the number of columns
+	 * @param col sets the number of columns */
+	public void setColumn (int col) {
 		this.col = col;
 	}
 	
-	/**
-	 * Returns the direction the word is traveling.
-	 * @return dir - returns the direction the word is traveling.
-	 */
-	public Puzzle.Direction getDirection() {
+	/** Returns the direction the word is traveling.
+	 * @return dir returns the direction the word is traveling. */
+	public Direction getDirection () {
 		return dir;
 	}
 	
-	/**
-	 * Sets the direction the word is traveling.
-	 * @param dir - Sets the direction the word is traveling.
-	 */
-	public void setDirection(Puzzle.Direction dir) {
+	/** Sets the direction the word is traveling.
+	 * @param dir Sets the direction the word is traveling. */
+	public void setDirection (Direction dir) {
 		this.dir = dir;
 	}
 	
