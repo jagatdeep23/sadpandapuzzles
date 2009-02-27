@@ -5,7 +5,7 @@ import gui.Controller;
  * Main class to execute program
  * 
  * @author Sad Panda Software
- * @version 1.0
+ * @version 2.0
  */
 public class Main {
   /**

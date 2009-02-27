@@ -5,9 +5,8 @@ package gui;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -38,6 +37,19 @@ public class Controller {
 	}
 	
   public void addWord (String word) {
+    word = word.toUpperCase ();
+    int count = 0;
+    String s = "";
+    for (int i = 0; i < word.length (); ++i) {
+      if (word.charAt (i) < 'A' || word.charAt (i) > 'Z') {
+        s += "\"" + word.charAt (i) + "\" ";
+        count ++;
+      }
+    }
+    if (count > 0) {
+      JOptionPane.showMessageDialog (null, "The word you have entered contained invalid characters\nInvalid characters are: " + s, "Error", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     model.addWord (word);
     Components.wordList.getContents().addElement (word);
   }

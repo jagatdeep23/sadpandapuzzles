@@ -49,9 +49,9 @@ public class Components {
 	
 	public static JPanel buildSidebar() {
 		wordField = new JTextField();
-		Buttons.addWordToList = new JButton ("Add");
-		Buttons.removeWordFromList = new JButton("Remove");
-		Buttons.clearList = new JButton ("Clear");
+		Buttons.addWordToList = new JButton ("Add New Word");
+		Buttons.removeWordFromList = new JButton("Remove Selected Word");
+		Buttons.clearList = new JButton ("Clear Word List");
 		wordListLabel = new JLabel("Word List");
 		wordListLabel.setHorizontalAlignment (JLabel.CENTER);
 		

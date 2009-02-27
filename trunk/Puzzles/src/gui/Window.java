@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 /** @author Sad Panda Software */
@@ -94,7 +93,7 @@ public class Window extends JPanel {
         System.out.println ("clear");
         controller.clearWordList();
         controller.getModel().clearPuzzle ();
-        
+        Components.getOutputPanel().repaint();
       } else if (obj.equals (Components.wordField)) {
         controller.addWord (Components.getWordFieldText());
         Components.wordField.setText ("");
