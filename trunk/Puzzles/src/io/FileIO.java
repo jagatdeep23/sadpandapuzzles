@@ -11,6 +11,8 @@ import java.util.Vector;
 
 import javax.swing.JFileChooser;
 
+import puzzle.Puzzle;
+
 
 /**
  * This class contains all of the File Input and Output methods.
@@ -117,5 +119,17 @@ public class FileIO {
       chooser = new JFileChooser();
     }
     return (chooser);
+  }
+  
+  public static void exportHTML (Puzzle puzzle) {
+    
+  }
+  
+  public static void savePuzzle (Puzzle puzzle) {
+    
+  }
+  
+  public static Puzzle loadPuzzle () {
+    return null;
   }
 }

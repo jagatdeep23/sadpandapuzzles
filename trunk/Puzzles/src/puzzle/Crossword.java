@@ -30,16 +30,12 @@ public class Crossword implements Puzzle {
   /** the width of the puzzle */
   int width;
   
-  /** the height and width of the puzzle */
-  int arraySize;
-  
   boolean toUpdate = true;
   
   public Crossword () {
     matrix = null;
     wordList = null;
     numWords = 0;
-    arraySize = 0;
     height = 0;
     width = 0;
     toUpdate = true;
@@ -66,13 +62,12 @@ public class Crossword implements Puzzle {
     g.setColor (Color.WHITE);
     g.drawRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
-    for (int r = 0; r < arraySize; r ++) {
-      for (int c = 0; c < arraySize; c ++) {
-        if (matrix[r][c].numWords > 0)
-          g.setColor (Color.RED);
-        else
-          g.setColor (Color.BLACK);
-        g.drawString (matrix[r][c].toString (), 30 + 24 * r, 30 + 24 * c);
+    for (int r = 0; r < height; r ++) {
+      for (int c = 0; c < width; c ++) {
+        if (matrix[r][c].numWords > 0) {
+          g.drawRect (30 + 24 * r, 30 + 24 * c, 24, 24);
+          g.drawString (matrix[r][c].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
+        }
       }
     }
   }
@@ -80,7 +75,7 @@ public class Crossword implements Puzzle {
   public void generate () {
     // TODO Auto-generated method stub
     if (words.size () > 0 && toUpdate) {
-      int length = generateDimension (words);
+      int length = generateDimension (words)[0];
       Collections.sort (words, new shared.Algorithms.SortByLineLength());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
@@ -108,7 +103,6 @@ public class Crossword implements Puzzle {
       }
       
       //assigns values to this puzzle object
-      this.arraySize = length;
       this.numWords = puzzleWords.size ();
       this.wordList = puzzleWords;
     }
@@ -117,19 +111,13 @@ public class Crossword implements Puzzle {
   public void setList (ArrayList <String> list) {
     words = list;
   }
-
-  /** Returns the size of the matrix.
-   * @return arraySize the dimension of the matrix */
-  public int getArraySize () {
-    return arraySize;
-  }
   
   public int getMatrixHeight () {
-    return arraySize;
+    return height;
   }
 
   public int getMatrixWidth () {
-    return arraySize;
+    return width;
   }
   
   
@@ -182,7 +170,7 @@ public class Crossword implements Puzzle {
   /** Generates the dimension to be used in the word search matrix
    * @param list
    * @return an integer specifying the dimension to be used by the Puzzle */
-  private int generateDimension (ArrayList <String> list) {
+  private int[] generateDimension (ArrayList <String> list) {
     int sum = 0;
     for (String s : list) {
       sum += s.length ();
@@ -193,7 +181,9 @@ public class Crossword implements Puzzle {
     } else {
       sum ++;
     }
-    return (sum);
+    int i[] = new int [2];
+    i[0] = i[1] = sum;
+    return (i);
   }
   
   /** Generates a random direction.
