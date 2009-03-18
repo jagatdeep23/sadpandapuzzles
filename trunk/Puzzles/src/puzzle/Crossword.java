@@ -292,7 +292,35 @@ public class Crossword implements Puzzle {
       col += dC;
     }
     return (true);
-    
   }
   
+  public PuzzleCell[][] getMatrix()
+  {
+    return matrix;
+  }
+  
+  public void setNumWords (int words)
+  {
+    numWords = words;
+  }
+
+  public void setMatrix(PuzzleCell[][] cells)
+  {
+    matrix = cells;
+  }
+  
+  public void setMatrixHeight(int i)
+  {
+    height = i;
+  }
+  
+  public void setMatrixWidth(int i)
+  {
+    width = i;
+  }
+  
+  public void setWordList(ArrayList<PuzzleWord> words)
+  {
+    wordList = words;
+  }
 }

@@ -297,4 +297,34 @@ public class WordSearch implements Puzzle {
     }
     return gen;
   }
+  
+  public PuzzleCell[][] getMatrix()
+  {
+    return matrix;
+  }
+  
+  public void setNumWords (int words)
+  {
+    numWords = words;
+  }
+  
+  public void setMatrixWidth(int i)
+  {
+    arraySize = i;
+  }
+  
+  public void setMatrixHeight(int i)
+  {
+    arraySize = i;
+  }
+
+  public void setMatrix(PuzzleCell[][] cells)
+  {
+    matrix = cells;
+  }
+  
+  public void setWordList(ArrayList<PuzzleWord> words)
+  {
+    wordList = words;
+  }
 }

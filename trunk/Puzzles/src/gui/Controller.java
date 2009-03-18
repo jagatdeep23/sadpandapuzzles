@@ -1,5 +1,7 @@
 package gui;
 
+import io.FileIO;
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 
@@ -31,7 +33,7 @@ public class Controller {
 	}
 	
 	public void savePuzzle () {
-	  
+	  FileIO.savePuzzle(model.getPuzzle ());
 	}
 	
   public void addWord (String word) {

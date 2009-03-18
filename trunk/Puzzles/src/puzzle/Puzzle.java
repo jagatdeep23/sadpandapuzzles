@@ -20,5 +20,12 @@ public interface Puzzle {
   public int getNumWords ();
   public int getMatrixHeight();
   public int getMatrixWidth();
+  public PuzzleCell[][] getMatrix();
+  
+  public void setNumWords (int i);
+  public void setMatrixHeight(int i);
+  public void setMatrixWidth(int i);
+  public void setMatrix(PuzzleCell[][] matrix);
+  public void setWordList(ArrayList<PuzzleWord> words);
    
 }

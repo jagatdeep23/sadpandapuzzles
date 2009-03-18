@@ -81,4 +81,14 @@ public class PuzzleCell {
 	public char getCharacter() {
 		return character;
 	}
+	
+	public int getNumWords()
+	{
+	  return numWords;
+	}
+	
+	public void setNumWords(int i)
+	{
+	  numWords = i;
+	}
 }
