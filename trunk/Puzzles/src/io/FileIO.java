@@ -299,4 +299,88 @@ public class FileIO {
     puzzle.setWordList(words);
     return puzzle;
   }
+  
+  public static void exportPuzzle (Puzzle puzzle) {
+    int status;
+    File newFile = new File ("empty");
+    status = getFileChooser().showSaveDialog (null);
+    
+    if (status == JFileChooser.APPROVE_OPTION) {
+      newFile = getFileChooser().getSelectedFile ();
+      File actualFile = new File(newFile.toString() + ".html");
+      System.out.println ("File chosen to save to: " + newFile.getName ());
+      System.out.println ("Full path to file: " + newFile.getAbsolutePath ());
+      if(puzzle instanceof WordSearch)
+      {
+        try {
+          saveSearchHTML(puzzle, actualFile);
+        } catch (IOException e) {
+          System.out.println ("Error: IO Exception was thrown:" + e);
+        }
+      }
+      else if(puzzle instanceof Crossword)
+      {
+        try {
+          saveCrossHTML(puzzle, actualFile);
+        } catch (IOException e) {
+          System.out.println ("Error: IO Exception was thrown:" + e);
+        }
+      }
+      else
+      {
+        System.out.println("No Puzzle to export.");
+      }
+    }   
+  }
+  
+  private static void saveCrossHTML(Puzzle puzzle, File location)throws IOException {
+	    BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
+	    ArrayList <PuzzleWord> list = puzzle.getWordList ();
+	    PuzzleCell[][] matrix = puzzle.getMatrix ();
+	    
+	    String s = "";
+	    s += "<html><body><table border=\"0\" bordercolor=\"ffffff\" cellpadding=\"0\" cellspacing=\"0\">";
+	    for (int r = 0; r < matrix.length; r++) {
+	      for (int c = 0; c < matrix[0].length; c++) {
+	        if(matrix[r][c] == null){
+	        	s += "<td> <center><tt> </tt></center>";  
+	        }else {
+	        	s += "<td> <table border=\"1\" cellpadding=\"3\" cellspacing=\"0\">  <td><tt>"
+	        		+ matrix[r][c] + "<tt></td>  </table>";
+	        }
+	      }
+	      s += "<tr>";
+	    }
+	    s += "</table><br><br>";
+	    buffer.write (s);
+	    
+	    for (PuzzleWord word : list) {
+		      buffer.write (word.getWord() + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().ordinal () + "<br>");
+		    }
+	    
+	    buffer.close ();
+
+  }
+  
+  private static void saveSearchHTML(Puzzle puzzle, File location)throws IOException {
+	    BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
+	    ArrayList <PuzzleWord> list = puzzle.getWordList ();
+	    PuzzleCell[][] matrix = puzzle.getMatrix ();
+	    
+	    String s = "<html><body><pre>";
+	    for (int r = 0; r < matrix.length; r++) {
+	      for (int c = 0; c < matrix[0].length; c++) {
+	        s += matrix[r][c] + "  ";
+	      }
+	      s += "\n\n";
+	    }
+	    
+	    
+	    for (PuzzleWord word : list) {
+		      s += word.getWord() + "\n";
+		    }
+	    s += "</pre></body></html>";
+	    buffer.write (s);
+	    buffer.close ();
+  }
 }
