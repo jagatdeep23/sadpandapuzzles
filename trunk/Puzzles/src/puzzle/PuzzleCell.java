@@ -18,6 +18,11 @@ public class PuzzleCell {
 	private char character;
 	
 	/**
+	 * Whether the cell is used by more than one word
+	 */
+	public boolean isCrossed = false;
+	
+	/**
 	 * Default constructor. 
 	 */
 	public PuzzleCell () {
@@ -26,13 +31,16 @@ public class PuzzleCell {
 	}
 	
 	/**
-	 * Attepmts to set the character value of this cell.
+	 * Attempts to set the character value of this cell.
 	 * @param c - the next character to be added.
-	 * @return boolean - weither or not the add was successful
+	 * @return boolean - whether or not the add was successful
 	 */
 	public boolean add (char c) {
 		if(c == getCharacter() || getCharacter() == '\0'){
-			numWords++;
+			if(c == getCharacter ()) {
+			  isCrossed = true;
+			}
+		  numWords++;
 			setCharacter(c);
 			return true;
 		}
