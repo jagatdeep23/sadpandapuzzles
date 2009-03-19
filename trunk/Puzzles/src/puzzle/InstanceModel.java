@@ -51,6 +51,14 @@ public class InstanceModel {
     return puzzle;
   }
   
+  public void setPuzzle (Puzzle p) {
+    puzzle = p;
+    wordList.clear ();
+    for (PuzzleWord w : puzzle.getWordList ()) {
+      wordList.add (w.getWord ());
+    }
+  }
+  
   public ArrayList<String> getWordList () {
     return wordList;
   }

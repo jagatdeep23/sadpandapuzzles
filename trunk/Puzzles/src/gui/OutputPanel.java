@@ -21,7 +21,9 @@ public class OutputPanel extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
     g2d.setColor (Color.BLACK);
     
-    if (controller.getPuzzle () != null)
+    if (controller.getPuzzle () != null) {
+      System.out.println ("Drawing Puzzle");
       controller.getPuzzle ().draw (g2d);
+    }
   }
 }

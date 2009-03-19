@@ -128,10 +128,6 @@ public class FileIO {
     return (chooser);
   }
   
-  public static void exportHTML (Puzzle puzzle) {
-    
-  }
-  
   public static void savePuzzle (Puzzle puzzle) {
     int status;
     File newFile = new File ("empty");
@@ -241,8 +237,7 @@ public class FileIO {
   private static Puzzle loadWordSearch(Scanner scan)
   {
     Puzzle puzzle = new WordSearch();
-    PuzzleWord word = new PuzzleWord();
-    PuzzleCell cell = new PuzzleCell();
+    
     int height, width;
     Scanner scan2 = new Scanner(scan.nextLine());
     puzzle.setNumWords (scan2.nextInt ());
@@ -252,8 +247,8 @@ public class FileIO {
     scan2 = new Scanner(scan.nextLine());
     width = scan2.nextInt ();
     ArrayList<PuzzleWord> words = new ArrayList<PuzzleWord>();
-    for(int i = 0; i < puzzle.getNumWords(); i++)
-    {
+    for(int i = 0; i < puzzle.getNumWords(); i++) {
+      PuzzleWord word = new PuzzleWord();
       scan2 = new Scanner(scan.nextLine());
       word.setWord (scan2.next ());
       word.setRow (scan2.nextInt ());
@@ -266,17 +261,19 @@ public class FileIO {
     for (int r = 0; r < matrix.length; r++) {
       scan2 = new Scanner(scan.nextLine());
       for (int c = 0; c < matrix[0].length; c++) {
-        cell.setCharacter (scan2.next ().charAt (0));
-        cell.setNumWords(scan2.nextInt ());
+        matrix[r][c] = new PuzzleCell();
+        matrix[r][c].setCharacter (scan2.next ().charAt (0));
+        matrix[r][c].setNumWords(scan2.nextInt ());
       }
     }
+    puzzle.setMatrix (matrix);
     return puzzle;
   }
   
   private static Puzzle loadCrossword(Scanner scan)
   {
     Puzzle puzzle = new WordSearch();
-    PuzzleWord word = new PuzzleWord();
+    
     int height, width;
     Scanner scan2 = new Scanner(scan.nextLine());
     puzzle.setNumWords (scan2.nextInt ());
@@ -287,8 +284,8 @@ public class FileIO {
     width = scan2.nextInt ();
     puzzle.setMatrixWidth (width);
     ArrayList<PuzzleWord> words = new ArrayList<PuzzleWord>();
-    for(int i = 0; i < puzzle.getNumWords(); i++)
-    {
+    for(int i = 0; i < puzzle.getNumWords(); i++) {
+      PuzzleWord word = new PuzzleWord();
       scan2 = new Scanner(scan.nextLine());
       word.setWord (scan2.next ());
       word.setRow (scan2.nextInt ());

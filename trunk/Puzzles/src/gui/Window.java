@@ -1,5 +1,6 @@
 package gui;
 
+import io.FileIO;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -49,9 +50,13 @@ public class Window extends JPanel {
         
         System.out.println ("open");
         if (save ("Open")) {
-          
+          controller.setPuzzle (FileIO.loadPuzzle());
+          Components.getOutputPanel ().repaint ();
+          Components.wordList.removeAll ();
+          for (String s: controller.getWordList()) {
+            Components.wordList.getContents().addElement (s);
+          }
         }
-        
       } else if (obj.equals (Components.Buttons.saveButton)) {
         
         save ("Save");

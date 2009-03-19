@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Scanner;
 
 public class WordSearch implements Puzzle {
   
@@ -320,7 +321,13 @@ public class WordSearch implements Puzzle {
 
   public void setMatrix(PuzzleCell[][] cells)
   {
-    matrix = cells;
+    matrix = new PuzzleCell[arraySize][arraySize];
+    for (int r = 0; r < cells.length; r++) {
+      for (int c = 0; c < cells[0].length; c++) {
+        matrix[r][c] = cells[r][c];
+        //System.out.println(matrix[r][c]);
+      }
+    }
   }
   
   public void setWordList(ArrayList<PuzzleWord> words)

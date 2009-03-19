@@ -78,6 +78,10 @@ public class Controller {
     return model.getPuzzle ();
   }
   
+  public void setPuzzle(Puzzle p) {
+    model.setPuzzle (p);
+  }
+  
   public ArrayList<String> getWordList () {
     return model.getWordList ();
   }
