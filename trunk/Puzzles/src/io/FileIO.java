@@ -367,14 +367,14 @@ public class FileIO {
 	    String s = "<html><body><pre>";
 	    for (int r = 0; r < matrix.length; r++) {
 	      for (int c = 0; c < matrix[0].length; c++) {
-	        s += matrix[r][c] + "  ";
+	        s += matrix[r][c] + " ";
 	      }
-	      s += "\n\n";
+	      s += "\n";
 	    }
 	    
 	    
 	    for (PuzzleWord word : list) {
-		      s += word.getWord() + "\n";
+		      s += "\n" + word.getWord();
 		    }
 	    s += "</pre></body></html>";
 	    buffer.write (s);

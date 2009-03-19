@@ -64,6 +64,7 @@ public class Window extends JPanel {
       } else if (obj.equals (Components.Buttons.exportButton)) {
         
         System.out.println ("export");
+        FileIO.exportPuzzle (controller.getPuzzle ());
         
       } else if (obj.equals (Components.Buttons.quitButton)) {
         
