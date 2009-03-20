@@ -37,21 +37,25 @@ public class Controller {
 	}
 	
   public void addWord (String word) {
-    word = word.toUpperCase ();
-    int count = 0;
-    String s = "";
-    for (int i = 0; i < word.length (); ++i) {
-      if (word.charAt (i) < 'A' || word.charAt (i) > 'Z') {
-        s += "\"" + word.charAt (i) + "\" ";
-        count ++;
+    if (word.length() > 1) {
+      word = word.toUpperCase ();
+      int count = 0;
+      String s = "";
+      for (int i = 0; i < word.length (); ++i) {
+        if (word.charAt (i) < 'A' || word.charAt (i) > 'Z') {
+          s += "\"" + word.charAt (i) + "\" ";
+          count ++;
+        }
       }
+      if (count > 0) {
+        JOptionPane.showMessageDialog (null, "The word you have entered contained invalid characters\nInvalid characters are: " + s, "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+      model.addWord (word);
+      Components.wordList.getContents().addElement (word);
+    } else {
+      JOptionPane.showMessageDialog (null, "The word you have entered does not meet the minimum requirement length of 2", "Error", JOptionPane.ERROR_MESSAGE);
     }
-    if (count > 0) {
-      JOptionPane.showMessageDialog (null, "The word you have entered contained invalid characters\nInvalid characters are: " + s, "Error", JOptionPane.ERROR_MESSAGE);
-      return;
-    }
-    model.addWord (word);
-    Components.wordList.getContents().addElement (word);
   }
   
   public void clearWordList () {
