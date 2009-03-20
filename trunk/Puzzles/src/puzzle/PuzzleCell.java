@@ -37,6 +37,7 @@ public class PuzzleCell {
 	 */
 	public boolean add (char c) {
 		if(c == getCharacter() || getCharacter() == '\0'){
+		  System.out.println(getCharacter () + "\n");
 			if(c == getCharacter ()) {
 			  isCrossed = true;
 			}

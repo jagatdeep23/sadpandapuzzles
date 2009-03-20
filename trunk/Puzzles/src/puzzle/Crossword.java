@@ -91,7 +91,7 @@ public class Crossword implements Puzzle {
         isValid = false;
         while (!isValid) {
           Direction dir = generateDirection ();
-          int [] point = generatePosition (word.length (), length, length, dir);
+          int [] point = generatePosition (word.length (), height, width, dir);
           PuzzleWord pWord = new PuzzleWord ();
           pWord.setColumn (point[0]);
           pWord.setRow (point[1]);
@@ -262,22 +262,39 @@ private boolean addAndValidate (PuzzleWord word) {
       for (int i = 0;  i < w.length (); i++) {
         PuzzleCell cell = matrix[col][row];
         char character = w.charAt (i);
+        System.out.println("Character is: " + character + "\n");
         if(!cell.add(character)) {
-          for (int j = i -1; j >= 0; j--) {
-            row -= dR;
-            col -= dC;
+          for (int j = i - 1; j >= 0; j--) {
+            System.out.println("i = " + i + " j = " + j + "\n");
+            System.out.println("dR = " + dR + " dC = " + dC + "\n");
+            System.out.println("row = " + row + " col = " + col + "\n");
+            if (row != 0) {
+              row -= dR;
+            } else {
+              row = 0;
+            }
+            if (col != 0) {
+              col -= dC;
+            } else {
+              row = 0;
+            }
+            
+            System.out.println("row = " + row + " col = " + col + "\n");
             matrix[col][row].remove();
           }
           return false;
         }
+        System.out.println(character + " added to puzzle\n");
         if (!crossed) {
           crossed = cell.isCrossed;
         }
       }
+      System.out.println("Any success?\n");
       row += dR;
       col += dC;
     }
     if (!crossed) {
+      System.out.println("I am not crossed\n");
       for (int i = 0; i < w.length (); i++) {
         for (int j = i; j >= 0; j--) {
           row -= dR;
