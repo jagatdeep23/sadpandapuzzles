@@ -74,6 +74,7 @@ public class Crossword implements Puzzle {
   }
   
   public void generate () {
+    int crazy = 0;
     // TODO Auto-generated method stub
     if (words.size () > 0 && toUpdate) {
       int length = generateDimension (words)[0];
@@ -101,17 +102,10 @@ public class Crossword implements Puzzle {
           if (isValid) {
             puzzleWords.add (pWord);
           }
+          crazy++;
+          if (crazy > 100)
+            break;
         }
-        /*System.out.println ("Puzzle was created, motherf*cker");
-        for (PuzzleWord p : puzzleWords) {
-          System.out.println (p.col + " " + p.row + " " + p.word + " : " + p.dir.name ());
-        }
-        for (int i = 0; i < this.height; ++i) {
-          for (int j = 0; j < this.width; ++j) {
-            System.out.print (this.matrix[i][j].getCharacter ());
-          }
-          System.out.println();
-        } */
       }
       
       //assigns values to this puzzle object
@@ -238,7 +232,7 @@ private boolean addAndValidate (PuzzleWord word) {
     int row = word.getRow ();
     int col = word.getColumn ();
     String w = word.getWord ();
-    boolean crossed = false;
+    boolean crossed = false, parallel = false;
     for (int i = 0;  i < w.length (); i++) {
       PuzzleCell cell = matrix[col][row];
       char character = w.charAt (i);
@@ -253,13 +247,22 @@ private boolean addAndValidate (PuzzleWord word) {
       if (!crossed) {
         crossed = (cell.getNumWords () > 1);
       }
+      if (!parallel) {
+        if (((matrix[row][col + 1].getCharacter () != '\0') && (matrix[row][col + 2].getCharacter () != '\0')) ||
+            ((matrix[row + 1][col].getCharacter () != '\0') && (matrix[row + 2][col].getCharacter () != '\0')) ||
+            ((matrix[row + 1][col + 1].getCharacter () != '\0') && (matrix[row + 1][col + 2].getCharacter () != '\0')) ||
+            ((matrix[row + 1][col + 1].getCharacter () != '\0') && (matrix[row + 2][col + 1].getCharacter () != '\0')) ||
+            ((matrix[row - 1][col - 1].getCharacter () != '\0') && (matrix[row - 1][col - 2].getCharacter () != '\0')) ||
+            ((matrix[row - 1][col - 1].getCharacter () != '\0') && (matrix[row - 2][col - 1].getCharacter () != '\0')))
+              parallel = true;
+      }
       row += dR;
       col += dC;
     }
     
-    if (!crossed && !firstWord) {
+    if ((!crossed && !firstWord) || parallel) {
       for (int i = 0; i < w.length (); i++) {
-        //System.out.println(matrix[col][row].getCharacter ());
+        System.out.println(matrix[col][row].getCharacter ());
         row -= dR;
         col -= dC;
         matrix[col][row].remove();
