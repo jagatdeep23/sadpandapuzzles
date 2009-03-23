@@ -270,6 +270,7 @@ private boolean addAndValidate (PuzzleWord word) {
            // System.out.println("i = " + i + " j = " + j + "\n");
            // System.out.println("dR = " + dR + " dC = " + dC + "\n");
            // System.out.println("row = " + row + " col = " + col + "\n");
+            System.out.println("J is = " + j + "\n");
             if (row != 0) {
               row -= dR;
             } else {
@@ -283,6 +284,7 @@ private boolean addAndValidate (PuzzleWord word) {
             
             //System.out.println("row = " + row + " col = " + col + "\n");
             matrix[col][row].remove();
+            System.out.println(matrix[col][row].getCharacter ());
           }
           return false;
         }
@@ -296,7 +298,7 @@ private boolean addAndValidate (PuzzleWord word) {
       //System.out.println("Any success?\n");
     }
     if (!crossed) {
-      //System.out.println("I am not crossed\n");
+      System.out.println("I am not crossed\n");
       for (int i = 0; i < w.length (); i++) {
         for (int j = i; j >= 0; j--) {
           if (row != 0) {
@@ -310,6 +312,7 @@ private boolean addAndValidate (PuzzleWord word) {
             row = 0;
           }
           matrix[col][row].remove();
+          System.out.println(matrix[col][row].getCharacter () + "\n");
         }
       }
       return false;
