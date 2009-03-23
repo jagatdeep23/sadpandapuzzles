@@ -96,14 +96,13 @@ public class Crossword implements Puzzle {
           pWord.setColumn (point[0]);
           pWord.setRow (point[1]);
           pWord.setDirection (dir);
-          System.out.println(word + "\n");
           pWord.setWord (word);
           isValid = addAndValidate (pWord);
           if (isValid) {
             puzzleWords.add (pWord);
           }
         }
-        System.out.println ("Puzzle was created, motherf*cker");
+        /*System.out.println ("Puzzle was created, motherf*cker");
         for (PuzzleWord p : puzzleWords) {
           System.out.println (p.col + " " + p.row + " " + p.word + " : " + p.dir.name ());
         }
@@ -112,7 +111,7 @@ public class Crossword implements Puzzle {
             System.out.print (this.matrix[i][j].getCharacter ());
           }
           System.out.println();
-        }
+        } */
       }
       
       //assigns values to this puzzle object
@@ -240,84 +239,36 @@ private boolean addAndValidate (PuzzleWord word) {
     int col = word.getColumn ();
     String w = word.getWord ();
     boolean crossed = false;
-    if (firstWord) {
-      //System.out.println ("made it here\n");
-      for (int i = 0; i < w.length (); i++) {
-        PuzzleCell cell = matrix[col][row];
-        char character = w.charAt (i);
-        if (!cell.add (character)) {
-          for (int j = i - 1; j >= 0; j--) {
-            row -= dR;
-            col -= dC;
-            matrix[col][row].remove ();
-          }
-          return false;
-        }
-        row += dR;
-        col += dC;
-      }
-      firstWord = false;
-      return true;
-    } else {
-      //System.out.println("shouldn't be here\n");
-      for (int i = 0;  i < w.length (); i++) {
-        PuzzleCell cell = matrix[col][row];
-        char character = w.charAt (i);
-        System.out.println("Character is: " + character + "\n");
-        if(!cell.add(character)) {
-          System.out.println("Character in cell is: " + cell.getCharacter ());
-          for (int j = i - 1; j >= 0; j--) {
-           // System.out.println("i = " + i + " j = " + j + "\n");
-           // System.out.println("dR = " + dR + " dC = " + dC + "\n");
-           // System.out.println("row = " + row + " col = " + col + "\n");
-            System.out.println("J is = " + j + "\n");
-            if (row != 0) {
-              row -= dR;
-            } else {
-              row = 0;
-            }
-            if (col != 0) {
-              col -= dC;
-            } else {
-              row = 0;
-            }
-            
-            //System.out.println("row = " + row + " col = " + col + "\n");
-            matrix[col][row].remove();
-            System.out.println(matrix[col][row].getCharacter ());
-          }
-          return false;
-        }
-        System.out.println(cell.getCharacter () + " added to puzzle\n");
-        if (!crossed) {
-          crossed = cell.isCrossed;
-        }
-        row += dR;
-        col += dC;
-      }
-      //System.out.println("Any success?\n");
-    }
-    if (!crossed) {
-      System.out.println("I am not crossed\n");
-      for (int i = 0; i < w.length (); i++) {
-        for (int j = i; j >= 0; j--) {
-          if (row != 0) {
-            row -= dR;
-          } else {
-            row = 0;
-          }
-          if (col != 0) {
-            col -= dC;
-          } else {
-            row = 0;
-          }
+    for (int i = 0;  i < w.length (); i++) {
+      PuzzleCell cell = matrix[col][row];
+      char character = w.charAt (i);
+      if(!cell.add(character)) {
+        for (int j = i - 1; j >= 0; j--) {
+          row -= dR;
+          col -= dC;
           matrix[col][row].remove();
-          System.out.println(matrix[col][row].getCharacter () + "\n");
         }
+        return false;
+      }
+      if (!crossed) {
+        crossed = (cell.getNumWords () > 1);
+      }
+      row += dR;
+      col += dC;
+    }
+    
+    if (!crossed && !firstWord) {
+      for (int i = 0; i < w.length (); i++) {
+        //System.out.println(matrix[col][row].getCharacter ());
+        row -= dR;
+        col -= dC;
+        matrix[col][row].remove();
       }
       return false;
     }
     
+    System.out.println(w + " added to puzzle\n");
+    firstWord = false;
     return true;
   }
   

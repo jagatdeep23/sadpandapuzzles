@@ -18,11 +18,6 @@ public class PuzzleCell {
 	private char character;
 	
 	/**
-	 * Whether the cell is used by more than one word
-	 */
-	public boolean isCrossed = false;
-	
-	/**
 	 * Default constructor. 
 	 */
 	public PuzzleCell () {
@@ -37,10 +32,6 @@ public class PuzzleCell {
 	 */
 	public boolean add (char c) {
 		if(c == getCharacter() || getCharacter() == '\0'){
-		  //System.out.println(getCharacter () + "\n");
-			if(c == getCharacter ()) {
-			  isCrossed = true;
-			}
 		  numWords++;
 			setCharacter(c);
 			return true;
