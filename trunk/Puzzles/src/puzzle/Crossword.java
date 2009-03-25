@@ -75,9 +75,8 @@ public class Crossword implements Puzzle {
   
   public void generate () {
     int crazy = 0;
-    // TODO Auto-generated method stub
     if (words.size () > 0 && toUpdate) {
-      int length = generateDimension (words)[0];
+      int length = generateDimension (words);
       height = width = length;
       Collections.sort (words, new shared.Algorithms.SortByLineLength ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
@@ -85,7 +84,7 @@ public class Crossword implements Puzzle {
       matrix = new PuzzleCell [height] [width];
       
       //Fills the PuzzleCell matrix with default PuzzleCells
-      fillMatrix (length, true);
+      fillMatrix (length);
       
       //Adds words to the puzzle
       for (String word : words) {
@@ -173,14 +172,10 @@ public class Crossword implements Puzzle {
     return s;
   }
   
-  private void fillMatrix (int length, boolean fillBlank) {
+  private void fillMatrix (int length) {
     for (int r = 0; r < length; r++) {
       for (int c = 0; c < length; c++) {
-        if (fillBlank) {
-          matrix[r][c] = new PuzzleCell ();
-        } else if (matrix[r][c].getCharacter () == '\0') {
-          matrix[r][c].addRandomChar ();
-        }
+        matrix[r][c] = new PuzzleCell ();
       }
     }
   }
@@ -191,14 +186,12 @@ public class Crossword implements Puzzle {
    * @param list
    * @return an integer specifying the dimension to be used by the Puzzle
    */
-  private int [] generateDimension (ArrayList <String> list) {
+  private int generateDimension (ArrayList <String> list) {
     int max = 0;
     for (String s : list) {
       max = Math.max (s.length (), max);
     }
-    int i[] = new int [2];
-    i[0] = i[1] = 2 * max;
-    return (i);
+    return (2 * max);
   }
   
   /**
@@ -289,34 +282,9 @@ public class Crossword implements Puzzle {
         crossed = (cell.getNumWords () > 1);
       }
       
-      parallel = checkParallel (row, col, word);
-      /*
-       * if (!parallel) { if (dC == 1) { try { if ((matrix[row][col +
-       * 1].getCharacter () != '\0') && (matrix[row][col + 2].getCharacter () !=
-       * '\0')) { parallel = true; } } catch (ArrayIndexOutOfBoundsException e)
-       * { System.err.println ("Array out of bounds"); } try { if ((matrix[row +
-       * 1][col].getCharacter () != '\0') && ((matrix[row + 1][col -
-       * 1].getCharacter () != '\0') || (matrix[row + 1][col + 1].getCharacter
-       * () != '\0'))) { parallel = true; } } catch
-       * (ArrayIndexOutOfBoundsException e) { System.err.println
-       * ("Array out of bounds"); } try { if ((matrix[row - 1][col].getCharacter
-       * () != '\0') && ((matrix[row - 1][col - 1].getCharacter () != '\0') ||
-       * (matrix[row - 1][col + 1].getCharacter () != '\0'))) { parallel = true;
-       * } } catch (ArrayIndexOutOfBoundsException e) { System.err.println
-       * ("Array out of bounds"); } } else if (dR == 1) { try { if ((matrix[row
-       * + 1][col].getCharacter () != '\0') && (matrix[row +
-       * 2][col].getCharacter () != '\0')) { parallel = true; } } catch
-       * (ArrayIndexOutOfBoundsException e) { System.err.println
-       * ("Array out of bounds"); } try { if ((matrix[row][col + 1].getCharacter
-       * () != '\0') && ((matrix[row - 1][col + 1].getCharacter () != '\0') ||
-       * (matrix[row + 1][col + 1].getCharacter () != '\0'))) { parallel = true;
-       * } } catch (ArrayIndexOutOfBoundsException e) { System.err.println
-       * ("Array out of bounds"); } try { if ((matrix[row][col - 1].getCharacter
-       * () != '\0') && ((matrix[row - 1][col - 1].getCharacter () != '\0') ||
-       * (matrix[row + 1][col - 1].getCharacter () != '\0'))) { parallel = true;
-       * } } catch (ArrayIndexOutOfBoundsException e) { System.err.println
-       * ("Array out of bounds"); } } }
-       */
+      //parallel = checkParallel (row, col, word);
+      parallel = false;
+      
       System.out.println ("Testing - " + parallel + "\n");
       row += dR;
       col += dC;
@@ -390,9 +358,9 @@ public class Crossword implements Puzzle {
           System.err.println ("Array out of bounds");
         }
         break;
-        
-        default:
-          parallel = false;
+      
+      default:
+        parallel = false;
     }
     return parallel;
   }
@@ -405,19 +373,25 @@ public class Crossword implements Puzzle {
     numWords = words;
   }
   
-  public void setMatrix (PuzzleCell [][] cells) {
-    matrix = cells;
+  public void setMatrixWidth (int i) {
+    width = i;
   }
   
   public void setMatrixHeight (int i) {
     height = i;
   }
   
-  public void setMatrixWidth (int i) {
-    width = i;
-  }
-  
   public void setWordList (ArrayList <PuzzleWord> words) {
     wordList = words;
+  }
+  
+  public void setMatrix (PuzzleCell [][] cells) {
+    int i = cells.length, j = cells[0].length;
+    matrix = new PuzzleCell [i] [j];
+    for (int r = 0; r < i; r++) {
+      for (int c = 0; c < j; c++) {
+        matrix[r][c] = cells[r][c];
+      }
+    }
   }
 }

@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.Scanner;
 
 public class WordSearch implements Puzzle {
   
@@ -299,39 +298,33 @@ public class WordSearch implements Puzzle {
     return gen;
   }
   
-  public PuzzleCell[][] getMatrix()
-  {
+  public PuzzleCell[][] getMatrix() {
     return matrix;
   }
   
-  public void setNumWords (int words)
-  {
+  public void setNumWords (int words) {
     numWords = words;
   }
   
-  public void setMatrixWidth(int i)
-  {
+  public void setMatrixWidth(int i) {
     arraySize = i;
   }
   
-  public void setMatrixHeight(int i)
-  {
+  public void setMatrixHeight(int i) {
     arraySize = i;
   }
 
-  public void setMatrix(PuzzleCell[][] cells)
-  {
-    matrix = new PuzzleCell[arraySize][arraySize];
-    for (int r = 0; r < cells.length; r++) {
-      for (int c = 0; c < cells[0].length; c++) {
+  public void setMatrix(PuzzleCell[][] cells) {
+    int i = cells.length, j = cells[0].length;
+    matrix = new PuzzleCell[i][j];
+    for (int r = 0; r < i; r++) {
+      for (int c = 0; c < j; c++) {
         matrix[r][c] = cells[r][c];
-        //System.out.println(matrix[r][c]);
       }
     }
   }
   
-  public void setWordList(ArrayList<PuzzleWord> words)
-  {
+  public void setWordList(ArrayList<PuzzleWord> words) {
     wordList = words;
   }
 }
