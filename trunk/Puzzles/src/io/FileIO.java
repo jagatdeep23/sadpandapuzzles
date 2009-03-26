@@ -334,16 +334,16 @@ public class FileIO {
 	    BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
 	    ArrayList <PuzzleWord> list = puzzle.getWordList ();
 	    PuzzleCell[][] matrix = puzzle.getMatrix ();
-	    
+      
 	    String s = "";
 	    s += "<html><body><table border=\"0\" bordercolor=\"ffffff\" cellpadding=\"0\" cellspacing=\"0\">";
 	    for (int r = 0; r < matrix.length; r++) {
 	      for (int c = 0; c < matrix[0].length; c++) {
-	        if(matrix[r][c] == null){
+	        if('\0' == matrix[c][r].getCharacter ()){
 	        	s += "<td> <center><tt> </tt></center>";  
 	        }else {
-	        	s += "<td> <table border=\"1\" cellpadding=\"3\" cellspacing=\"0\">  <td><tt>"
-	        		+ matrix[r][c] + "<tt></td>  </table>";
+	        	s += "<td> <table border=\"1\" cellpadding=\"3\" cellspacing=\"5\">  <td><tt>"
+	        		+ " " + "<tt></td>  </table>";
 	        }
 	      }
 	      s += "<tr>";
@@ -352,7 +352,7 @@ public class FileIO {
 	    buffer.write (s);
 	    
 	    for (PuzzleWord word : list) {
-		      buffer.write (word.getWord() + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().ordinal () + "<br>");
+		      buffer.write (word.getWord().toLowerCase () + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().ordinal () + "<br>");
 		    }
 	    
 	    buffer.close ();
