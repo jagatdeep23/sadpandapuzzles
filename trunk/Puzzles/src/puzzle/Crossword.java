@@ -267,34 +267,38 @@ public class Crossword implements Puzzle {
     int col = word.getColumn ();
     String w = word.getWord ();
     boolean crossed = false, parallel = false;
+    
     for (int i = 0; i < w.length (); i++) {
       PuzzleCell cell = matrix[col][row];
       char character = w.charAt (i);
-      if (!cell.add (character)) {
+      
+      if (!cell.add (character, word.getDirection ())) {
         for (int j = i - 1; j >= 0; j--) {
           row -= dR;
           col -= dC;
-          matrix[col][row].remove ();
+          matrix[col][row].remove (word.getDirection ());
         }
         return false;
       }
+      
       if (!crossed) {
         crossed = (cell.getNumWords () > 1);
       }
       
-      //parallel = checkParallel (row, col, word);
-      parallel = false;
-      
+      if (!firstWord) {
+        parallel = checkParallel (row, col, word.getDirection (), (i == 0 || i == w.length () - 1));
+      }
+        
       System.out.println ("Testing - " + parallel + "\n");
       row += dR;
       col += dC;
     }
     
-    if ((!crossed && !firstWord) || parallel) {
+    if (!firstWord && (!crossed || parallel)) {
       for (int i = 0; i < w.length (); i++) {
         row -= dR;
         col -= dC;
-        matrix[col][row].remove ();
+        matrix[col][row].remove (word.getDirection ());
       }
       return false;
     }
@@ -304,63 +308,31 @@ public class Crossword implements Puzzle {
     return true;
   }
   
-  private boolean checkParallel (int row, int col, PuzzleWord word) {
+  private boolean checkParallel (int row, int col, Direction dir, boolean firstOrLast) {
     boolean parallel = false;
-    switch (word.getDirection ()) {
+    switch (dir) {
       case EAST:
-        try {
-          if ((matrix[row][col + 1].getCharacter () != '\0') && (matrix[row][col + 2].getCharacter () != '\0')) {
-            parallel = true;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          System.err.println ("Array out of bounds");
-        }
-        try {
-          if ((matrix[row + 1][col].getCharacter () != '\0')
-              && ((matrix[row + 1][col - 1].getCharacter () != '\0') || (matrix[row + 1][col + 1].getCharacter () != '\0'))) {
-            parallel = true;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          System.err.println ("Array out of bounds");
-        }
-        try {
-          if ((matrix[row - 1][col].getCharacter () != '\0')
-              && ((matrix[row - 1][col - 1].getCharacter () != '\0') || (matrix[row - 1][col + 1].getCharacter () != '\0'))) {
-            parallel = true;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          System.err.println ("Array out of bounds");
+        parallel = matrix[row][col].hasDirection (Direction.EAST);
+        if (!firstOrLast && !parallel){
+          try {
+            parallel = parallel || matrix[row + 1][col].hasDirection (Direction.EAST);
+          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
+          try {
+            parallel = parallel || matrix[row - 1][col].hasDirection (Direction.EAST);
+          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
         }
         break;
-      
       case SOUTH:
-        try {
-          if ((matrix[row + 1][col].getCharacter () != '\0') && (matrix[row + 2][col].getCharacter () != '\0')) {
-            parallel = true;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          System.err.println ("Array out of bounds");
-        }
-        try {
-          if ((matrix[row][col + 1].getCharacter () != '\0')
-              && ((matrix[row - 1][col + 1].getCharacter () != '\0') || (matrix[row + 1][col + 1].getCharacter () != '\0'))) {
-            parallel = true;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          System.err.println ("Array out of bounds");
-        }
-        try {
-          if ((matrix[row][col - 1].getCharacter () != '\0')
-              && ((matrix[row - 1][col - 1].getCharacter () != '\0') || (matrix[row + 1][col - 1].getCharacter () != '\0'))) {
-            parallel = true;
-          }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          System.err.println ("Array out of bounds");
+        parallel = matrix[row][col].hasDirection (Direction.SOUTH);
+        if (!firstOrLast){
+          try {
+            parallel = parallel || matrix[row][col + 1].hasDirection (Direction.SOUTH);
+          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
+          try {
+            parallel = parallel || matrix[row][col + 1].hasDirection (Direction.SOUTH);
+          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
         }
         break;
-      
-      default:
-        parallel = false;
     }
     return parallel;
   }

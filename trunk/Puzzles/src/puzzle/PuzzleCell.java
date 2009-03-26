@@ -1,5 +1,9 @@
 package puzzle;
 
+import java.util.ArrayList;
+
+import puzzle.Puzzle.Direction;
+
 
 /**
  * A PuzzleCell is used as a specialized container for a character used in the generated puzzle
@@ -18,11 +22,17 @@ public class PuzzleCell {
 	private char character;
 	
 	/**
+	 * the list of directions associated with this Puzzle Cell
+	 */
+	private ArrayList<Direction> dirs;
+	
+	/**
 	 * Default constructor. 
 	 */
 	public PuzzleCell () {
 		numWords = 0;
 		setCharacter('\0');
+		dirs = new ArrayList<Direction>();
 	}
 	
 	/**
@@ -38,6 +48,16 @@ public class PuzzleCell {
 		}
 		return false;
 		
+	}
+	
+	public boolean add (char c, Direction dir) {
+	  if(c == getCharacter() || getCharacter() == '\0'){
+      numWords++;
+      setCharacter(c);
+      dirs.add (dir);
+      return true;
+    }
+    return false;
 	}
 	
 	/**
@@ -56,6 +76,14 @@ public class PuzzleCell {
 		if (--numWords == 0) {
 			setCharacter('\0');
 		}
+	}
+	
+	public void remove (Direction dir) {
+	  dirs.remove (dir);
+	  if (--numWords == 0) {
+	    dirs.clear ();
+      setCharacter('\0');
+    }
 	}
 	
 	/**
@@ -82,13 +110,15 @@ public class PuzzleCell {
 		return character;
 	}
 	
-	public int getNumWords()
-	{
+	public int getNumWords() {
 	  return numWords;
 	}
 	
-	public void setNumWords(int i)
-	{
+	public void setNumWords(int i) {
 	  numWords = i;
+	}
+	
+	public boolean hasDirection (Direction dir) {
+	  return (dirs.contains (dir));
 	}
 }
