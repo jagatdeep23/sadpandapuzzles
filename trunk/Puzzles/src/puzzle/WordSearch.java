@@ -90,7 +90,8 @@ public class WordSearch implements Puzzle {
           pWord.setRow (point[1]);
           pWord.setDirection (dir);
           pWord.setWord (word);
-          isValid = addAndValidate (pWord, matrix);
+          //isValid = addAndValidate (pWord, matrix);
+          isValid = addAndValidate (pWord);
           if (isValid) {
             puzzleWords.add (pWord);
           }
@@ -154,7 +155,8 @@ public class WordSearch implements Puzzle {
    * @param word puzzleword to be added.
    * @param matrix our current puzzle grid.
    * @return boolean Whether the add was a success or not. */
-  private boolean addAndValidate (PuzzleWord word, PuzzleCell [][] matrix) {
+//  private boolean addAndValidate (PuzzleWord word, PuzzleCell [][] matrix)
+  public boolean addAndValidate (PuzzleWord word){
     int dC = 0;
     int dR = 0;
     switch (word.getDirection ()) {

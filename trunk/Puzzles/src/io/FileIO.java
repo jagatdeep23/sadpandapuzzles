@@ -272,7 +272,7 @@ public class FileIO {
   
   private static Puzzle loadCrossword(Scanner scan)
   {
-    Puzzle puzzle = new WordSearch();
+    Puzzle puzzle = new Crossword();
     
     int height, width;
     Scanner scan2 = new Scanner(scan.nextLine());
@@ -283,6 +283,13 @@ public class FileIO {
     scan2 = new Scanner(scan.nextLine());
     width = scan2.nextInt ();
     puzzle.setMatrixWidth (width);
+    PuzzleCell[][] matrix = new PuzzleCell[height][width];
+    for (int r = 0; r < height; r++) {
+      for (int c = 0; c < width; c++) {
+        matrix[r][c] = new PuzzleCell();
+      }
+    }
+    puzzle.setMatrix(matrix);
     ArrayList<PuzzleWord> words = new ArrayList<PuzzleWord>();
     for(int i = 0; i < puzzle.getNumWords(); i++) {
       PuzzleWord word = new PuzzleWord();
@@ -292,6 +299,7 @@ public class FileIO {
       word.setColumn (scan2.nextInt ());
       word.setDirection (Direction.values()[scan2.nextInt()]);
       words.add (word);
+      puzzle.addAndValidate(word);
     }
     puzzle.setWordList(words);
     return puzzle;

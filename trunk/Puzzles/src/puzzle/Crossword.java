@@ -252,7 +252,7 @@ public class Crossword implements Puzzle {
    *          our current puzzle grid.
    * @return boolean Whether the add was a success or not.
    */
-  private boolean addAndValidate (PuzzleWord word) {
+  public boolean addAndValidate (PuzzleWord word) {
     int dC = 0;
     int dR = 0;
     switch (word.getDirection ()) {

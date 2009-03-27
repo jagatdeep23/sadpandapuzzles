@@ -10,6 +10,7 @@ public interface Puzzle {
   public void generate ();
   public void draw (Graphics g);
   public void setList (ArrayList<String> list);
+  public boolean addAndValidate(PuzzleWord word);
   
   public void addWordToList (String word);
   public void removeWordFromList (String word);
