@@ -352,7 +352,7 @@ public class FileIO {
 	    buffer.write (s);
 	    
 	    for (PuzzleWord word : list) {
-		      buffer.write (word.getWord().toLowerCase () + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().ordinal () + "<br>");
+		      buffer.write (word.getWord().toLowerCase () + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().name ().toLowerCase () + "<br>");
 		    }
 	    
 	    buffer.close ();

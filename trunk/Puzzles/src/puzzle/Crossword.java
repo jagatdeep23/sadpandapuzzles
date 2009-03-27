@@ -1,5 +1,7 @@
 package puzzle;
 
+// Will is working on this.... please do not edit
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -221,7 +223,6 @@ public class Crossword implements Puzzle {
     switch (dir) {
       case EAST:
         if (firstWord) {
-          System.out.println ("here1\n");
           point[0] = (colSize / 2) - (length / 2);
           point[1] = rowSize / 2;
         } else {
@@ -231,7 +232,6 @@ public class Crossword implements Puzzle {
         break;
       case SOUTH:
         if (firstWord) {
-          System.out.println ("here2\n");
           point[0] = colSize / 2;
           point[1] = (rowSize / 2) - (length / 2);
         } else {
@@ -263,44 +263,59 @@ public class Crossword implements Puzzle {
         dR = 1;
         break;
     }
+    
     int row = word.getRow ();
     int col = word.getColumn ();
+    Direction dir = word.getDirection ();
     String w = word.getWord ();
-    boolean crossed = false, parallel = false;
+    char character;
     
+    if (dir == Direction.EAST) {
+      if (checkParallel (row - 1, col, dir, false) || checkParallel (row - 1, col, Direction.SOUTH, false)) {
+        return false;
+      }
+    }
+    if (dir == Direction.SOUTH) {
+      if (checkParallel (row, col - 1, dir, false) || checkParallel (row, col - 1, Direction.EAST, false)) {
+        return false;
+      }
+    }
     for (int i = 0; i < w.length (); i++) {
-      PuzzleCell cell = matrix[col][row];
-      char character = w.charAt (i);
-      
-      if (!cell.add (character, word.getDirection ())) {
-        for (int j = i - 1; j >= 0; j--) {
+      character = w.charAt (i);
+      if (!matrix[col][row].add (character, dir)) {
+        row -= dR;
+        col -= dC;
+        while (i > 0) {
+          matrix[col][row].remove (dir);
           row -= dR;
           col -= dC;
-          matrix[col][row].remove (word.getDirection ());
+          -- i;
         }
         return false;
       }
       
-      if (!crossed) {
-        crossed = (cell.getNumWords () > 1);
+      if (!firstWord && checkParallel (row, col, dir, (i > 0 && i < w.length () - 1))) {
+        while (i >= 0) {
+          matrix[col][row].remove (dir);
+          row -= dR;
+          col -= dC;
+          -- i;
+        }
+        return false;
       }
       
-      if (!firstWord) {
-        parallel = checkParallel (row, col, word.getDirection (), (i == 0 || i == w.length () - 1));
-      }
-        
-      System.out.println ("Testing - " + parallel + "\n");
       row += dR;
       col += dC;
     }
-    
-    if (!firstWord && (!crossed || parallel)) {
-      for (int i = 0; i < w.length (); i++) {
-        row -= dR;
-        col -= dC;
-        matrix[col][row].remove (word.getDirection ());
+    if (dir == Direction.EAST) {
+      if (checkParallel (row + 1, col, dir, false) || checkParallel (row + 1, col, Direction.SOUTH, false)) {
+        return false;
       }
-      return false;
+    }
+    if (dir == Direction.SOUTH) {
+      if (checkParallel (row, col + 1, dir, false) || checkParallel (row, col + 1, Direction.EAST, false)) {
+        return false;
+      }
     }
     
     System.out.println (w + " added to puzzle\n");
@@ -308,31 +323,30 @@ public class Crossword implements Puzzle {
     return true;
   }
   
-  private boolean checkParallel (int row, int col, Direction dir, boolean firstOrLast) {
+  private boolean checkParallel (int row, int col, Direction dir, boolean middle) {
     boolean parallel = false;
-    switch (dir) {
-      case EAST:
-        parallel = matrix[row][col].hasDirection (Direction.EAST);
-        if (!firstOrLast && !parallel){
-          try {
-            parallel = parallel || matrix[row + 1][col].hasDirection (Direction.EAST);
-          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
-          try {
-            parallel = parallel || matrix[row - 1][col].hasDirection (Direction.EAST);
-          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
-        }
-        break;
-      case SOUTH:
-        parallel = matrix[row][col].hasDirection (Direction.SOUTH);
-        if (!firstOrLast){
-          try {
-            parallel = parallel || matrix[row][col + 1].hasDirection (Direction.SOUTH);
-          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
-          try {
-            parallel = parallel || matrix[row][col + 1].hasDirection (Direction.SOUTH);
-          } catch (ArrayIndexOutOfBoundsException e) { System.err.println ("Array Out of Bounds"); }
-        }
-        break;
+    try {
+      matrix[row][col].hasDirection (dir);
+    } catch (ArrayIndexOutOfBoundsException e) { return false; }
+    if (middle && !parallel) {
+      switch (dir) {
+        case EAST:
+            try {
+              parallel = parallel || matrix[col][row + 1].hasDirection (Direction.EAST);
+            } catch (ArrayIndexOutOfBoundsException e) {}
+            try {
+              parallel = parallel || matrix[col][row - 1].hasDirection (Direction.EAST);
+            } catch (ArrayIndexOutOfBoundsException e) {}
+          break;
+        case SOUTH:
+            try {
+              parallel = parallel || matrix[col + 1][row].hasDirection (Direction.SOUTH);
+            } catch (ArrayIndexOutOfBoundsException e) {}
+            try {
+              parallel = parallel || matrix[col + 1][row].hasDirection (Direction.SOUTH);
+            } catch (ArrayIndexOutOfBoundsException e) {}
+          break;
+      }
     }
     return parallel;
   }
