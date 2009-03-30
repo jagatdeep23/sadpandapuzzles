@@ -67,9 +67,9 @@ public class Crossword implements Puzzle {
     g.setColor (Color.BLACK);
     for (int r = 0; r < height; r++) {
       for (int c = 0; c < width; c++) {
-        if (matrix[r][c].numWords > 0) {
+        if (matrix[c][r].numWords > 0) {
           g.drawRect (30 + 24 * r, 30 + 24 * c, 24, 24);
-          g.drawString (matrix[r][c].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
+          g.drawString (matrix[c][r].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
         }
       }
     }
@@ -108,15 +108,16 @@ public class Crossword implements Puzzle {
             ++count;
           }
           
-          if (count == 100)
-            break;
+          if (count % 100 == 0)
+            System.out.println ("********** BAD **********");
         }
       }
       
+      /*
       int minWidth = -1, maxWidth = -1, minHeight = -1 , maxHeight = -1;
       for (int c = 0; c < matrix.length; ++c) {
         for (int r = 0; r < matrix[0].length; ++r) {
-          if (matrix[r][c].getCharacter () != '\0') {
+          if (matrix[c][r].getCharacter () != '\0') {
             if (minWidth == -1 || minWidth > c)
               minWidth = c;
             if (maxWidth == -1 || maxWidth < c)
@@ -129,16 +130,18 @@ public class Crossword implements Puzzle {
         }
       }
       
-      width = maxWidth - minWidth;
-      height = maxHeight - minHeight;
+      width = maxWidth - minWidth + 1;
+      height = maxHeight - minHeight + 1;
+      System.out.println ("Height "  + height);
+      System.out.println ("Width " + width);
       
       PuzzleCell[][] newMatrix = new PuzzleCell[width][height];
-      for (int c = minWidth; c < maxWidth; ++c) {
-        for (int r = minHeight; r < maxHeight; ++r) {
+      for (int c = minWidth; c <= maxWidth; ++c) {
+        for (int r = minHeight; r <= maxHeight; ++r) {
           newMatrix[c - minWidth][r - minHeight] = matrix[c][r];
         }
       }
-      matrix = newMatrix;
+      matrix = newMatrix;*/
       
       //assigns values to this puzzle object
       this.numWords = puzzleWords.size ();
@@ -224,7 +227,7 @@ public class Crossword implements Puzzle {
     for (String s : list) {
       max = Math.max (s.length (), max);
     }
-    return (4 * max);
+    return (2 * max);
   }
   
   /**
@@ -324,14 +327,14 @@ public class Crossword implements Puzzle {
           try { //PREV letter is not blank
             if (matrix [col - dR][row - dC].hasCharacter ()){
               System.out.println ("PREV is not blank: " + matrix [col - dR][row - dC].getCharacter ());
-              valid = false;
+              return false;
             }
           } catch (ArrayIndexOutOfBoundsException e) {}
           
           try { //NEXT letter is not blank
             if (matrix [col + dR][row + dC].hasCharacter ()){
               System.out.println ("NEXT is not blank: " + matrix [col + dR][row + dC].getCharacter ());
-              valid = false;
+              return false;
             }
           } catch (ArrayIndexOutOfBoundsException e) {}
           
@@ -339,9 +342,9 @@ public class Crossword implements Puzzle {
         } else {
           
           //If characters do not match
-          if (matrix[col][row].hasCharacter (character)) {
+          if (!matrix[col][row].hasCharacter (character)) {
             System.out.println ("Characters do not match: old - " + matrix[col][row].getCharacter () + " new - " + character);
-            valid = false;
+            return false;
           
           //If characters do match
           } else {
@@ -349,10 +352,12 @@ public class Crossword implements Puzzle {
             //If cell has matching direction
             if (matrix[col][row].hasDirection (dir)) {
               System.out.println ("Cell has same direction");
-              valid = false;
+              return false;
             }
+            
+            System.out.println ("* * * * * T E S T * * * * *");
             //If cell has a direction
-            else  if (!matrix[col][row].hasNoDirection ()) {
+            if (!matrix[col][row].hasNoDirection ()) {
               System.out.println ("Cell has different direction - crosses");
               isCrossed = true;
             }
@@ -362,16 +367,15 @@ public class Crossword implements Puzzle {
     }
     row = oldRow;
     col = oldCol;
-    if (isCrossed) {
-      System.out.println ("Crosses");
+    if (!isCrossed) {
+      System.out.println ("Does not cross");
     }
-    if (valid && isCrossed) {
-      System.out.println ("Adding word");
-      for (int i = 0; i < length; ++i, col += dC, row += dR) {
-        matrix[col][row].add (w.charAt (i));
-      }
+    
+    System.out.println ("Adding word");
+    for (int i = 0; i < length; ++i, col += dC, row += dR) {
+      matrix[col][row].add (w.charAt (i));
     }
-    return (isCrossed);
+    return true;
   }
   
   public PuzzleCell [][] getMatrix () {
