@@ -76,13 +76,13 @@ public class Crossword implements Puzzle {
   }
   
   public void generate () {
-    int crazy = 0;
     if (words.size () > 0 && toUpdate) {
       int length = generateDimension (words);
       height = width = length;
       Collections.sort (words, new shared.Algorithms.SortByLineLength ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
+      firstWord = true;
       matrix = new PuzzleCell [height] [width];
       
       //Fills the PuzzleCell matrix with default PuzzleCells
@@ -91,6 +91,8 @@ public class Crossword implements Puzzle {
       //Adds words to the puzzle
       for (String word : words) {
         isValid = false;
+        int count = 0;
+        System.out.println (word + " " + word.length () + " " + height + " x " + width);
         while (!isValid) {
           Direction dir = generateDirection ();
           int [] point = generatePosition (word.length (), height, width, dir);
@@ -102,12 +104,41 @@ public class Crossword implements Puzzle {
           isValid = addAndValidate (pWord);
           if (isValid) {
             puzzleWords.add (pWord);
+          } else {
+            ++count;
           }
-          crazy++;
-          //if (crazy > 100)
-          //break;
+          
+          if (count == 100)
+            break;
         }
       }
+      
+      int minWidth = -1, maxWidth = -1, minHeight = -1 , maxHeight = -1;
+      for (int c = 0; c < matrix.length; ++c) {
+        for (int r = 0; r < matrix[0].length; ++r) {
+          if (matrix[r][c].getCharacter () != '\0') {
+            if (minWidth == -1 || minWidth > c)
+              minWidth = c;
+            if (maxWidth == -1 || maxWidth < c)
+              maxWidth = c;
+            if (minHeight == -1 || maxHeight > r)
+              minHeight = r;
+            if (maxHeight == -1 || maxHeight < r)
+              maxHeight = r;
+          }
+        }
+      }
+      
+      width = maxWidth - minWidth;
+      height = maxHeight - minHeight;
+      
+      PuzzleCell[][] newMatrix = new PuzzleCell[width][height];
+      for (int c = minWidth; c < maxWidth; ++c) {
+        for (int r = minHeight; r < maxHeight; ++r) {
+          newMatrix[c - minWidth][r - minHeight] = matrix[c][r];
+        }
+      }
+      matrix = newMatrix;
       
       //assigns values to this puzzle object
       this.numWords = puzzleWords.size ();
@@ -193,7 +224,7 @@ public class Crossword implements Puzzle {
     for (String s : list) {
       max = Math.max (s.length (), max);
     }
-    return (2 * max);
+    return (4 * max);
   }
   
   /**
@@ -253,102 +284,94 @@ public class Crossword implements Puzzle {
    * @return boolean Whether the add was a success or not.
    */
   public boolean addAndValidate (PuzzleWord word) {
-    int dC = 0;
-    int dR = 0;
-    switch (word.getDirection ()) {
-      case EAST:
-        dC = 1;
-        break;
-      case SOUTH:
-        dR = 1;
-        break;
-    }
-    
-    int row = word.getRow ();
-    int col = word.getColumn ();
     Direction dir = word.getDirection ();
     String w = word.getWord ();
+    int dC = (dir == Direction.EAST) ? 1 : 0;
+    int dR = (dir == Direction.SOUTH) ? 1 : 0;
+    int row = word.getRow ();
+    int col = word.getColumn ();
+    int length = w.length ();
+    int oldRow = row;
+    int oldCol = col;
+    boolean isCrossed = false, valid = true;
     char character;
-    
-    if (dir == Direction.EAST) {
-      if (checkParallel (row - 1, col, dir, false) || checkParallel (row - 1, col, Direction.SOUTH, false)) {
-        return false;
-      }
-    }
-    if (dir == Direction.SOUTH) {
-      if (checkParallel (row, col - 1, dir, false) || checkParallel (row, col - 1, Direction.EAST, false)) {
-        return false;
-      }
-    }
-    for (int i = 0; i < w.length (); i++) {
-      character = w.charAt (i);
-      if (!matrix[col][row].add (character, dir)) {
-        row -= dR;
-        col -= dC;
-        while (i > 0) {
-          matrix[col][row].remove (dir);
-          row -= dR;
-          col -= dC;
-          -- i;
-        }
-        return false;
-      }
+    if (firstWord) {
+      isCrossed = true;
+      firstWord = false;
+    } else {
       
-      if (!firstWord && checkParallel (row, col, dir, (i > 0 && i < w.length () - 1))) {
-        while (i >= 0) {
-          matrix[col][row].remove (dir);
-          row -= dR;
-          col -= dC;
-          -- i;
+      try { //PRE letter is not blank
+        if (matrix [col - dC][row - dR].hasCharacter ()){
+          System.out.println ("PRE is not blank: " + matrix [col - dC][row - dR]);
+          return false;
         }
-        return false;
-      }
+      } catch (ArrayIndexOutOfBoundsException e) {}
+      try { //POST letter is not blank
+        if (matrix [col + dC * length ][row + dR * length].hasCharacter ()) {
+          System.out.println ("POST is not blank: " + matrix [col + dC * length ][row + dR * length].getCharacter ());
+          return false;
+        }
+      } catch (ArrayIndexOutOfBoundsException e) {}
       
-      row += dR;
-      col += dC;
-    }
-    if (dir == Direction.EAST) {
-      if (checkParallel (row + 1, col, dir, false) || checkParallel (row + 1, col, Direction.SOUTH, false)) {
-        return false;
+      
+      for (int i = 0; valid && i < w.length (); i++, col += dC, row += dR) {
+        
+        character = w.charAt (i);
+        
+        //If character cell is empty
+        if (matrix [col][row].isEmpty ()) {
+          
+          try { //PREV letter is not blank
+            if (matrix [col - dR][row - dC].hasCharacter ()){
+              System.out.println ("PREV is not blank: " + matrix [col - dR][row - dC].getCharacter ());
+              valid = false;
+            }
+          } catch (ArrayIndexOutOfBoundsException e) {}
+          
+          try { //NEXT letter is not blank
+            if (matrix [col + dR][row + dC].hasCharacter ()){
+              System.out.println ("NEXT is not blank: " + matrix [col + dR][row + dC].getCharacter ());
+              valid = false;
+            }
+          } catch (ArrayIndexOutOfBoundsException e) {}
+          
+          //If character cell is not empty
+        } else {
+          
+          //If characters do not match
+          if (matrix[col][row].hasCharacter (character)) {
+            System.out.println ("Characters do not match: old - " + matrix[col][row].getCharacter () + " new - " + character);
+            valid = false;
+          
+          //If characters do match
+          } else {
+            
+            //If cell has matching direction
+            if (matrix[col][row].hasDirection (dir)) {
+              System.out.println ("Cell has same direction");
+              valid = false;
+            }
+            //If cell has a direction
+            else  if (!matrix[col][row].hasNoDirection ()) {
+              System.out.println ("Cell has different direction - crosses");
+              isCrossed = true;
+            }
+          }
+        }
       }
     }
-    if (dir == Direction.SOUTH) {
-      if (checkParallel (row, col + 1, dir, false) || checkParallel (row, col + 1, Direction.EAST, false)) {
-        return false;
+    row = oldRow;
+    col = oldCol;
+    if (isCrossed) {
+      System.out.println ("Crosses");
+    }
+    if (valid && isCrossed) {
+      System.out.println ("Adding word");
+      for (int i = 0; i < length; ++i, col += dC, row += dR) {
+        matrix[col][row].add (w.charAt (i));
       }
     }
-    
-    System.out.println (w + " added to puzzle\n");
-    firstWord = false;
-    return true;
-  }
-  
-  private boolean checkParallel (int row, int col, Direction dir, boolean middle) {
-    boolean parallel = false;
-    try {
-      matrix[row][col].hasDirection (dir);
-    } catch (ArrayIndexOutOfBoundsException e) { return false; }
-    if (middle && !parallel) {
-      switch (dir) {
-        case EAST:
-            try {
-              parallel = parallel || matrix[col][row + 1].hasDirection (Direction.EAST);
-            } catch (ArrayIndexOutOfBoundsException e) {}
-            try {
-              parallel = parallel || matrix[col][row - 1].hasDirection (Direction.EAST);
-            } catch (ArrayIndexOutOfBoundsException e) {}
-          break;
-        case SOUTH:
-            try {
-              parallel = parallel || matrix[col + 1][row].hasDirection (Direction.SOUTH);
-            } catch (ArrayIndexOutOfBoundsException e) {}
-            try {
-              parallel = parallel || matrix[col + 1][row].hasDirection (Direction.SOUTH);
-            } catch (ArrayIndexOutOfBoundsException e) {}
-          break;
-      }
-    }
-    return parallel;
+    return (isCrossed);
   }
   
   public PuzzleCell [][] getMatrix () {

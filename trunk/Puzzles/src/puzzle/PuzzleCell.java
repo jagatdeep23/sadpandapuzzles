@@ -125,4 +125,20 @@ public class PuzzleCell {
   public boolean hasNoDirection () {
     return (dirs.isEmpty ());
   }
+  
+  public boolean hasDirection () {
+    return (!hasNoDirection());
+  }
+  
+  public boolean hasCharacter () {
+    return (character != '\0');
+  }
+  
+  public boolean hasCharacter (char c) {
+    return (character == c);
+  }
+  
+  public boolean isEmpty () {
+    return (character == '\0');
+  }
 }

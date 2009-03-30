@@ -286,7 +286,7 @@ public class WordSearch implements Puzzle {
     if (sum < list.get(0).length ()) {
       sum = list.get(0).length () + 2;
     } else {
-      sum ++;
+      ++ sum;
     }
     return (sum);
   }
