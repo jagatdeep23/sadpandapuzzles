@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * Algorithms used in various places throughout the program
  * @author Sad Panda Software
- * @version 1.0
+ * @version 2.0
  */
 public class Algorithms {
 	
@@ -47,7 +47,7 @@ public class Algorithms {
 	/**
 	 * This is the Comparator class used to sort words by length
 	 * @author Sad Panda Software
-	 * @version 1.0
+	 * @version 2.0
 	 */
 	public static class SortByLineLength implements java.util.Comparator<String> {
 

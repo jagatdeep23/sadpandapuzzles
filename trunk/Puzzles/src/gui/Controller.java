@@ -15,7 +15,7 @@ import puzzle.Puzzle;
 
 /** The controller class controls the model of this project as well as the GUI setup.
  * @author Sad Panda Software
- * @version 1.0 */
+ * @version 2.0 */
 public class Controller {
   
 	/** the model */

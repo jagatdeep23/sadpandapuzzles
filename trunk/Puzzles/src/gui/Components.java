@@ -16,38 +16,98 @@ import javax.swing.SwingConstants;
 
 import shared.ProgramConstants;
 
+/**
+ * The components of the GUI
+ * @author Sad Panda Software
+ * @version 2.0
+ *
+ */
 public class Components {
-	private static JToolBar toolBar, leftBar, rightBar;
-	private static JPanel dropDownPanel, buttonPanel, sidebarPanel;
-	private static JComboBox dropDown;
-	private static JLabel wordListLabel;
-	private static OutputPanel outputPanel;
 	
-	private static final JLabel EMPTY_LABEL = new JLabel(" ");
-	private static final String NEW = "New", OPEN = "Open", SAVE = "Save",
+  /**
+   * Toolbars in the interface
+   */
+  private static JToolBar toolBar, leftBar, rightBar;
+	
+  /**
+   * Various panels used in the interface
+   */
+  private static JPanel dropDownPanel, buttonPanel, sidebarPanel;
+	
+  /**
+   * The actual drop down menu in the dropDownPanel
+   */
+  private static JComboBox dropDown;
+	
+  /**
+   * Label for the Word List
+   */
+  private static JLabel wordListLabel;
+	
+  /**
+   * The output panel
+   */
+  private static OutputPanel outputPanel;
+	
+	/**
+   * An empty JLabel 
+	 */
+  private static final JLabel EMPTY_LABEL = new JLabel(" ");
+	
+  /**
+   * Strings used for labelling various buttons and controls
+   */
+  private static final String NEW = "New", OPEN = "Open", SAVE = "Save",
 			EXPORT = "Export", QUIT = "Quit", HELP = "Help",
 			GENERATE = "Generate";
 	
+  /**
+   * Area for storing the word list
+   */
 	public static MutableList wordList;
-	 public static JTextField wordField;
 	
-	public static String getSelectedPuzzleOption () {
+  /**
+   * Text area for inputting words
+   */
+  public static JTextField wordField;
+	
+	/**
+   * Returns the name of the currently selected drop down item 
+   * @return String
+	 */
+  public static String getSelectedPuzzleOption () {
 		return ((String)(dropDown.getSelectedItem()));
 	}
 	
-	public static String getWordFieldText() {
+	/**
+   * Returns the currently inputted word in uppercase 
+   * @return String
+	 */
+  public static String getWordFieldText() {
 		return (wordField.getText().toUpperCase());
 	}
 	
-	public static void setOutputPanel (OutputPanel p) {
+	/**
+   * Sets the output panel 
+   * @param p - OutputPanel
+	 */
+  public static void setOutputPanel (OutputPanel p) {
 	  outputPanel = p;
 	}
 	
-	public static OutputPanel getOutputPanel () {
+	/**
+   * Returns the output panel 
+   * @return OutputPanel
+	 */
+  public static OutputPanel getOutputPanel () {
 	  return outputPanel;
 	}
 	
-	public static JPanel buildSidebar() {
+	/**
+   * Builds the side panel 
+   * @return JPanel
+	 */
+  public static JPanel buildSidebar() {
 		wordField = new JTextField();
 		Buttons.addWordToList = new JButton ("Add New Word");
 		Buttons.removeWordFromList = new JButton("Remove Selected Word");
@@ -72,7 +132,11 @@ public class Components {
 		return sidebarPanel;
 	}
 	
-	public static JToolBar buildToolbar() {
+	/**
+   * Builds the toolbar 
+   * @return JToolBar
+	 */
+  public static JToolBar buildToolbar() {
 		toolBar = new JToolBar();
 		leftBar = new JToolBar();
 		rightBar = new JToolBar();
@@ -113,7 +177,12 @@ public class Components {
 		return toolBar;
 	}
 	
-	private static JButton generateButton(String name) {
+	/**
+   * Generates a button given its name 
+   * @param name - String
+   * @return JButton
+	 */
+  private static JButton generateButton(String name) {
 	  
 		JButton button;
 		button = new JButton(name, new ImageIcon(name.toLowerCase() + ".png"));
@@ -141,11 +210,24 @@ public class Components {
 		return (button);
 	}
 
-	public static class Buttons {
-		public static JButton newButton, openButton, saveButton, exportButton,
+	/**
+   * Buttons used in the interface 
+   * @author Sad Panda Software
+   * @version 2.0
+	 */
+  public static class Buttons {
+		
+    /**
+     * The buttons
+     */
+    public static JButton newButton, openButton, saveButton, exportButton,
 				quitButton, helpButton, generateButton, addWordToList, removeWordFromList, clearList;
 		
-		public static void addActionListener (ActionListener listener) {
+		/**
+     * Adds action listeners to the buttons
+     * @param listener - ActionListener
+		 */
+    public static void addActionListener (ActionListener listener) {
 			newButton.addActionListener(listener);
 			openButton.addActionListener(listener);
 			saveButton.addActionListener(listener);
