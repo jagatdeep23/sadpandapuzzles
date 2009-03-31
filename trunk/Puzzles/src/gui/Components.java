@@ -120,8 +120,8 @@ public class Components {
   public static JTextField wordField;
 	
 	/**
-   * Returns the name of the currently selected drop down item 
-   * @return String
+   * gets the name of the currently drop-down item
+   * @return selected drop-down item name
 	 */
   public static String getSelectedPuzzleOption () {
 		return ((String)(dropDown.getSelectedItem()));
@@ -129,7 +129,7 @@ public class Components {
 	
 	/**
    * Returns the currently inputted word in uppercase 
-   * @return String
+   * @return text of the word field
 	 */
   public static String getWordFieldText() {
 		return (wordField.getText().toUpperCase());
@@ -227,8 +227,8 @@ public class Components {
 	
 	/**
    * Generates a button given its name 
-   * @param name - String
-   * @return JButton
+   * @param name the name of the Button
+   * @return a created JButton
 	 */
   private static JButton generateButton(String name) {
 	  
@@ -265,11 +265,47 @@ public class Components {
 	 */
   public static class Buttons {
 		
+    public static JButton
     /**
-     * The buttons
+     * the new button
      */
-    public static JButton newButton, openButton, saveButton, exportButton,
-				quitButton, helpButton, generateButton, addWordToList, removeWordFromList, clearList;
+    newButton,
+    /**
+     * the open button
+     */
+    openButton,
+    /**
+     * the save button
+     */
+    saveButton,
+    /**
+     * the export button
+     */
+    exportButton,
+		/**
+     * the quit button
+		 */
+    quitButton,
+    /**
+     * the help button
+     */
+    helpButton,
+    /**
+     * the generate button
+     */
+    generateButton,
+    /**
+     * the add to list button
+     */
+    addWordToList,
+    /**
+     * the remove from list button
+     */
+    removeWordFromList,
+    /**
+     * the clear list button
+     */
+    clearList;
 		
 		/**
      * Adds action listeners to the buttons
