@@ -12,10 +12,13 @@ import javax.swing.JList;
 public class MutableList extends JList {
   private static final long serialVersionUID = 1L;
   
+  /** default constructor */
   MutableList () {
     super (new DefaultListModel ());
   }
   
+  /** gets the contents of the list
+   * @return contents of the list */
   DefaultListModel getContents () {
     return (DefaultListModel) getModel ();
   }

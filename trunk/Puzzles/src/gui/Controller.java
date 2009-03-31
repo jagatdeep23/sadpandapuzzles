@@ -96,15 +96,15 @@ public class Controller {
   
   /**
    * Initiates the puzzle creation depending on the name of the type that is passed in
-   * @param type - "Word Search" or "Crossword"
+   * @param type a string that refers to the type
    */
   public void buildPuzzle (String type) {
     model.buildPuzzle (type);
   }
   
   /** 
-   * Returns the current puzzle
-   * @return Puzzle
+   * gets the current puzzle
+   * @return current puzzle
    */
   public Puzzle getPuzzle() {
     return model.getPuzzle ();
