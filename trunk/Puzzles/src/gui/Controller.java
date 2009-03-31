@@ -28,14 +28,26 @@ public class Controller {
 		buildWindow();
 	}
 	
+  /**
+   * Returns the Instance Model used by the program
+   * @return InstanceModel
+   */
 	public InstanceModel getModel () {
 	  return model;
 	}
 	
+  /**
+   * Initiates the save puzzle functionality when the save button is pushed
+   *
+   */
 	public void savePuzzle () {
 	  FileIO.savePuzzle(model.getPuzzle ());
 	}
 	
+  /**
+   * Adds a word to the wordlist which will be added to the puzzle next time generate is pushed
+   * @param word
+   */
   public void addWord (String word) {
     if (word.length() > 1) {
       word = word.toUpperCase ();
@@ -58,12 +70,20 @@ public class Controller {
     }
   }
   
+  /**
+   * Clears the current wordlist
+   *
+   */
   public void clearWordList () {
     model.clearWordList();
     Components.wordList.getContents().removeAllElements();
     Components.getOutputPanel ().removeAll ();
   }
 
+  /**
+   * Removes the selected word from the word list
+   *
+   */
   public void removeWord () {
     int index = Components.wordList.getSelectedIndex ();
     if (index >= 0) {
@@ -74,18 +94,34 @@ public class Controller {
     }
   }
   
+  /**
+   * Initiates the puzzle creation depending on the name of the type that is passed in
+   * @param type - "Word Search" or "Crossword"
+   */
   public void buildPuzzle (String type) {
     model.buildPuzzle (type);
   }
   
+  /** 
+   * Returns the current puzzle
+   * @return Puzzle
+   */
   public Puzzle getPuzzle() {
     return model.getPuzzle ();
   }
   
+  /**
+   * Sets the current puzzle
+   * @param p - Puzzle object which will bet set
+   */
   public void setPuzzle(Puzzle p) {
     model.setPuzzle (p);
   }
   
+  /**
+   * Returns the list of words in the Wordlist
+   * @return ArrayList<String> - List of words in the puzzle
+   */
   public ArrayList<String> getWordList () {
     return model.getWordList ();
   }

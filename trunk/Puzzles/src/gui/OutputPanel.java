@@ -7,14 +7,27 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+/**
+ * Panel to which buttons and contols will be added
+ * @author Sad Panda Software
+ * @version 1.0
+ */
 @SuppressWarnings("serial")
 public class OutputPanel extends JPanel {
   protected Controller controller;
   
+  /**
+   * Sets the controller for the output panel
+   * @param controller
+   */
   public OutputPanel (Controller controller) {
     this.controller = controller;
   }
   
+  /**
+   * Draws everything on the output panel
+   * @param g - Graphics
+   */
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     

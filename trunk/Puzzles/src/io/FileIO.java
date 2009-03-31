@@ -120,7 +120,10 @@ public class FileIO {
     }
     buffer.close ();
   }
-  
+  /** Creates a new JFileChooser
+   * 
+   * @return JFileChooser
+   */
   private static JFileChooser getFileChooser() {
     if (chooser == null) {
       chooser = new JFileChooser();
@@ -128,6 +131,10 @@ public class FileIO {
     return (chooser);
   }
   
+  /** Initiates the save functions to save the state of the current puzzle
+   * 
+   * @param puzzle
+   */
   public static void savePuzzle (Puzzle puzzle) {
     int status;
     File newFile = new File ("empty");
@@ -160,6 +167,12 @@ public class FileIO {
     }
   }
   
+  /**
+   * Saves the state of the current Word Search puzzle to a file
+   * @param puzzle
+   * @param location
+   * @throws IOException
+   */
   private static void saveWordSearch (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getWordList ();
@@ -182,6 +195,12 @@ public class FileIO {
     buffer.close ();
   }
   
+  /**
+   * Saves the state of the current Crossword Puzzle to a file
+   * @param puzzle
+   * @param location
+   * @throws IOException
+   */
   private static void saveCrossword (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getWordList ();
@@ -195,6 +214,10 @@ public class FileIO {
     buffer.close ();
   }
 
+  /**
+   * Initiates the load puzzle functions to load a puzzle and its state from a file
+   * @return puzzle - The puzzle that is loaded
+   */
   public static Puzzle loadPuzzle () {
     int status;
     status = getFileChooser().showOpenDialog (null);
@@ -234,6 +257,11 @@ public class FileIO {
     }
   }
   
+  /**
+   * Loads a Word Search puzzle and its state from a file
+   * @param scan
+   * @return Puzzle - a Word Search puzzle
+   */
   private static Puzzle loadWordSearch(Scanner scan)
   {
     Puzzle puzzle = new WordSearch();
@@ -270,6 +298,11 @@ public class FileIO {
     return puzzle;
   }
   
+  /**
+   * Loads a Crossword puzzle and its state
+   * @param scan
+   * @return Puzzle - a Crossword puzzle
+   */
   private static Puzzle loadCrossword(Scanner scan)
   {
     Puzzle puzzle = new Crossword();
@@ -305,6 +338,10 @@ public class FileIO {
     return puzzle;
   }
   
+  /**
+   * Initiates the export to HTML process to export a puzzle and its state to an HTML file
+   * @param puzzle
+   */
   public static void exportPuzzle (Puzzle puzzle) {
     int status;
     File newFile = new File ("empty");
@@ -338,6 +375,12 @@ public class FileIO {
     }   
   }
   
+  /**
+   * Exports the current Crossword puzzle and its state to an HTML file
+   * @param puzzle
+   * @param location
+   * @throws IOException
+   */
   private static void saveCrossHTML(Puzzle puzzle, File location)throws IOException {
 	    BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
 	    ArrayList <PuzzleWord> list = puzzle.getWordList ();
@@ -367,6 +410,12 @@ public class FileIO {
 
   }
   
+  /**
+   * Exports the current Word Search puzzle and its state to an HTML file
+   * @param puzzle
+   * @param location
+   * @throws IOException
+   */
   private static void saveSearchHTML(Puzzle puzzle, File location)throws IOException {
 	    BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
 	    ArrayList <PuzzleWord> list = puzzle.getWordList ();
