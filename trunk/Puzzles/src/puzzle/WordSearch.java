@@ -6,28 +6,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * 
+ * 
+ * @author Sad Panda Software
+ * @version 2.0
+ */
 public class WordSearch implements Puzzle {
   
   /** A random number generator */
   private static Random gen;
   
   /** the two-dimensional array used to store arranged letters from PuzzleWords */
-  PuzzleCell [][] matrix;
+  private PuzzleCell [][] matrix;
   
   /** the word list of PuzzleWords that are in the Puzzle */
-  ArrayList <PuzzleWord> wordList;
+  private ArrayList <PuzzleWord> wordList;
   
   /** the list of words to be added to the puzzle */
-  ArrayList <String> words;
+  private ArrayList <String> words;
   
   /** the number of words in the puzzle */
-  int numWords;
+  private int numWords;
   
   /** the height and width of the puzzle */
-  int arraySize;
+  private int arraySize;
   
-  boolean toUpdate = true;
+  /** a flag used to see if the WordSearch needs redrawn */
+  private boolean toUpdate = true;
   
+  /** default constructor */
   public WordSearch () {
     matrix = null;
     wordList = null;
@@ -36,21 +44,36 @@ public class WordSearch implements Puzzle {
     toUpdate = true;
   }
   
+  /**
+   * adds a word to the list associated
+   * @param word a word
+   */
   public void addWordToList (String word) {
     toUpdate = true;
     words.add (word);
   }
 
+  /**
+   * removes a word from the list associated
+   * @param word a word
+   */
   public void removeWordFromList (String word) {
     toUpdate = true;
     words.remove (word);
   }
 
+  /**
+   * clears the words from the list associated
+   */
   public void clearWordList () {
     toUpdate = true;
     words.clear ();
   }
 
+  /**
+   * draws the WordSearch puzzle
+   * @param g the graphics to draw to
+   */
   public void draw (Graphics g) {
     if (!toUpdate)
       generate();
@@ -68,6 +91,9 @@ public class WordSearch implements Puzzle {
     }
   }
 
+  /**
+   * generates a Word Search puzzle
+   */
   public void generate () {
     if (words.size () > 0 && toUpdate) {
       int length = generateDimension (words);
@@ -147,6 +173,10 @@ public class WordSearch implements Puzzle {
     return s;
   }
   
+  /**
+   * sets the list of words associated
+   * @param list the list to set
+   */
   public void setList (ArrayList <String> list) {
     words = list;
   }
@@ -210,7 +240,11 @@ public class WordSearch implements Puzzle {
     
   }
   
-  
+  /**
+   * fills the matrix with random characters or spaces
+   * @param length
+   * @param fillBlank flag; true if blanks are desired, false if random chars are desired
+   */
   private void fillMatrix (int length, boolean fillBlank) {
     for (int r = 0; r < length; r++) {
       for (int c = 0; c < length; c++) {
@@ -300,22 +334,42 @@ public class WordSearch implements Puzzle {
     return gen;
   }
   
+  /**
+   * gets the matrix
+   * @return matrix the matrix of PuzzleCells
+   */
   public PuzzleCell[][] getMatrix() {
     return matrix;
   }
   
+  /**
+   * sets the number of words
+   * @param words the number of words
+   */
   public void setNumWords (int words) {
     numWords = words;
   }
   
+  /**
+   * sets the matrix width of the puzzle
+   * @param i the hwidth to set
+   */
   public void setMatrixWidth(int i) {
     arraySize = i;
   }
   
+  /**
+   * sets the matrix height of the puzzle
+   * @param i the height to set
+   */
   public void setMatrixHeight(int i) {
     arraySize = i;
   }
 
+  /**
+   * sets the PuzzleCell matrix
+   * @param cells the matrix to set
+   */
   public void setMatrix(PuzzleCell[][] cells) {
     int i = cells.length, j = cells[0].length;
     matrix = new PuzzleCell[i][j];
@@ -326,6 +380,10 @@ public class WordSearch implements Puzzle {
     }
   }
   
+  /**
+   * sets the word list
+   * @param words the list of words to set
+   */
   public void setWordList(ArrayList<PuzzleWord> words) {
     wordList = words;
   }
