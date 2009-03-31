@@ -25,14 +25,34 @@ import shared.ProgramConstants;
 public class Components {
 	
   /**
-   * Toolbars in the interface
+   * Top toolbar in the interface
    */
-  private static JToolBar toolBar, leftBar, rightBar;
+  private static JToolBar toolBar, 
+  
+  /**
+   * Left toolbar
+   */
+  leftBar, 
+  
+  /**
+   * right toolbar
+   */
+  rightBar;
 	
   /**
-   * Various panels used in the interface
+   * Panel used in the interface for dropdown models
    */
-  private static JPanel dropDownPanel, buttonPanel, sidebarPanel;
+  private static JPanel dropDownPanel, 
+  
+  /**
+   * Panel for buttons
+   */
+  buttonPanel, 
+  
+  /**
+   * The side Panel
+   */
+  sidebarPanel;
 	
   /**
    * The actual drop down menu in the dropDownPanel
@@ -55,11 +75,39 @@ public class Components {
   private static final JLabel EMPTY_LABEL = new JLabel(" ");
 	
   /**
-   * Strings used for labelling various buttons and controls
+   * String - New
    */
-  private static final String NEW = "New", OPEN = "Open", SAVE = "Save",
-			EXPORT = "Export", QUIT = "Quit", HELP = "Help",
-			GENERATE = "Generate";
+  private static final String NEW = "New", 
+  
+  /**
+   * String - Open
+   */
+  OPEN = "Open", 
+  
+  /**
+   * String - Save
+   */
+  SAVE = "Save",
+			
+  /**
+   * String - Export
+   */
+  EXPORT = "Export", 
+      
+  /**
+   * String - Quit
+   */
+  QUIT = "Quit", 
+  
+  /**
+   * String - Help
+   */
+  HELP = "Help",
+			
+  /**
+   * String - Generate
+   */
+  GENERATE = "Generate";
 	
   /**
    * Area for storing the word list
