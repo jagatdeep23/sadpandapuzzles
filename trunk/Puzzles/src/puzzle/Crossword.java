@@ -149,9 +149,18 @@ public class Crossword implements Puzzle {
           newMatrix[c][r] = matrix[c + minWidth][r + minHeight];
         }
       }
+      ArrayList<PuzzleWord> temp = new ArrayList<PuzzleWord>();
+      for (PuzzleWord w : puzzleWords) {
+        PuzzleWord p = new PuzzleWord();
+        p.setColumn (w.getColumn () - minWidth);
+        p.setRow (w.getRow () - minHeight);
+        p.setDirection (w.getDirection ());
+        p.setWord (w.getWord ());
+        temp.add (p);
+      }
       matrix = newMatrix;
-      this.numWords = puzzleWords.size ();
-      this.wordList = puzzleWords;
+      this.numWords = temp.size ();
+      this.wordList = temp;
     }
     firstWord = true;
   }

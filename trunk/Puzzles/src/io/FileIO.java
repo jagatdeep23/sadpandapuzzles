@@ -387,9 +387,9 @@ public class FileIO {
 	    PuzzleCell[][] matrix = puzzle.getMatrix ();
       
 	    String s = "";
-	    s += "<html><body><table border=\"0\" bordercolor=\"ffffff\" cellpadding=\"0\" cellspacing=\"0\">";
-	    for (int r = 0; r < matrix.length; r++) {
-	      for (int c = 0; c < matrix[0].length; c++) {
+	    s += "<html><body><h1>Sad Panda Software Crossword</h1><table border=\"0\" bordercolor=\"ffffff\" cellpadding=\"0\" cellspacing=\"0\">";
+	    for (int r = 0; r < matrix[0].length; r++) {
+        for (int c = 0; c < matrix.length; c++) {
 	        if('\0' == matrix[c][r].getCharacter ()){
 	        	s += "<td> <center><tt> </tt></center>";  
 	        }else {
@@ -402,10 +402,22 @@ public class FileIO {
 	    s += "</table><br><br>";
 	    buffer.write (s);
 	    
+      buffer.write ("<b>East</b><br>");
 	    for (PuzzleWord word : list) {
-		      buffer.write (word.getWord().toLowerCase () + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().name ().toLowerCase () + "<br>");
-		    }
-	    
+		    if (word.getDirection ().name ().toLowerCase ().equals ("east")) {
+		      buffer.write (word.getWord () + "<br>");
+        }
+      }
+      buffer.write ("<br>");
+      
+      buffer.write ("<b>South</b><br>");
+      for (PuzzleWord word : list) {
+        if (word.getDirection ().name ().toLowerCase ().equals ("south")) {
+          buffer.write (word.getWord () + "<br>");
+        }
+      }
+      buffer.write ("<br>");
+      
 	    buffer.close ();
 
   }

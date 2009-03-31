@@ -81,32 +81,32 @@ public interface Puzzle {
   public PuzzleCell[][] getMatrix();
   
   /**
-   * 
-   * @param i
+   * sets the number of words
+   * @param i new number of words
    */
   public void setNumWords (int i);
   
   /**
-   * 
-   * @param i
+   * sets the matrix height
+   * @param i new height
    */
   public void setMatrixHeight(int i);
   
   /**
-   * 
-   * @param i
+   * set the matrix width
+   * @param i new width
    */
   public void setMatrixWidth(int i);
   
   /**
-   * 
-   * @param matrix
+   * set the matrix of PuzzleCells
+   * @param matrix the new matrix
    */
   public void setMatrix(PuzzleCell[][] matrix);
   
   /**
-   * 
-   * @param words
+   * sets the word list
+   * @param words list of words
    */
   public void setWordList(ArrayList<PuzzleWord> words);
    
