@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-//Edited some typo's in the comments -Kyle
 /**
  * Algorithms used in various places throughout the program
  * @author Sad Panda Software
@@ -51,6 +50,12 @@ public class Algorithms {
 	 */
 	public static class SortByLineLength implements java.util.Comparator<String> {
 
+    /**
+     * compares two strings
+     * @param one the first string
+     * @param two the second string
+     * @return true if two's length is greater than one's length; false otherwise
+     */
 		public int compare(String one, String two) {
 			return (two.length() - one.length());
 		}
