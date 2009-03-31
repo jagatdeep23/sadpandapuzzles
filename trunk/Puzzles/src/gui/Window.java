@@ -11,12 +11,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-/** @author Sad Panda Software */
+/** 
+ * The "View" component of the MVC design pattern.  What the User sees on the screen
+ * @author Sad Panda Software
+ * @version 2.0
+ */
 
 @SuppressWarnings("serial")
 public class Window extends JPanel {
   protected Controller controller;
   
+  /**
+   * Window Contructor
+   * @param controller the controller that will mediate between the model and view
+   */
   public Window (Controller controller) {
     this.controller = controller;
     EventListener listener = new EventListener ();
@@ -33,8 +41,17 @@ public class Window extends JPanel {
     Components.Buttons.addActionListener (listener);
   }
   
+  /**
+   * The Listener for all of the GUI components
+   * @author Sad Panda Software
+   * @version 2.0
+   */
   public class EventListener implements ActionListener {
     
+    /**
+     * the action that is performed based on the event passed
+     * @param event the event that triggers actions
+     */
     public void actionPerformed (ActionEvent event) {
       
       Object obj = event.getSource ();
@@ -106,6 +123,11 @@ public class Window extends JPanel {
       }
     }
     
+    /**
+     * Prompts to save the current puzzle
+     * @param title the text to display as the title
+     * @return true if save was yes or no; false if save was cancelled
+     */
     private boolean save (String title) {
       if (title == "Save") {
         controller.savePuzzle ();

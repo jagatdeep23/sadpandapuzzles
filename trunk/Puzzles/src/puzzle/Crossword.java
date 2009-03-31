@@ -1,15 +1,19 @@
 package puzzle;
 
-// Will is working on this.... please do not edit
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-
 import javax.swing.JOptionPane;
 
+/**
+ * A Crossword puzzle is a specialized Puzzle.  It is a retangular shape
+ * that consists of words that must intersect at least one time. Words may never be
+ * directly parallel. It is also known as a free-form crossword puzzle.
+ * @author Sad Panda Software
+ * @version 2.0
+ */
 public class Crossword implements Puzzle {
   /** A random number generator */
   private static Random  gen;

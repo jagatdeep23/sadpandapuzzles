@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- * 
+ * A WordSearch puzzle is a specialized Puzzle.  It is a square that consists
+ * of randomly placed words that can intersect.
  * 
  * @author Sad Panda Software
  * @version 2.0
