@@ -17,8 +17,11 @@ public class MutableList extends JList {
     super (new DefaultListModel ());
   }
   
-  /** gets the contents of the list
-   * @return contents of the list */
+  /**
+   * gets the contents of the list
+   * 
+   * @return contents of the list
+   */
   public DefaultListModel getContents () {
     return (DefaultListModel) getModel ();
   }

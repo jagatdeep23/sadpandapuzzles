@@ -10,9 +10,9 @@ public final class ProgramConstants {
   /**
    * the Word Seach string
    */
-	public static final String WORD_SEARCH = "Word Search";
+  public static final String WORD_SEARCH = "Word Search";
   /**
    * the Crossword string
    */
-	public static final String CROSSWORD = "Crossword";
+  public static final String CROSSWORD   = "Crossword";
 }

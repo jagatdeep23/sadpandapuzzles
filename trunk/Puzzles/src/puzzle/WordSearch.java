@@ -4,84 +4,37 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
- * A WordSearch puzzle is a specialized Puzzle.  It is a square that consists
- * of randomly placed words that can intersect.
+ * A WordSearch puzzle is a specialized Puzzle. It is a square that consists of
+ * randomly placed words that can intersect.
  * 
  * @author Sad Panda Software
  * @version 2.0
  */
-public class WordSearch implements Puzzle {
-  /** A random number generator */
-  private static Random gen;
-  
-  /** the two-dimensional array used to store arranged letters from PuzzleWords */
-  private PuzzleCell [][] matrix;
-  
-  /** the word list of PuzzleWords that are in the Puzzle */
-  private ArrayList <PuzzleWord> wordList;
-  
-  /** the list of words to be added to the puzzle */
-  private ArrayList <String> words;
-  
-  /** the number of words in the puzzle */
-  private int numWords;
-  
-  /** the height and width of the puzzle */
-  private int arraySize;
-  
-  /** a flag used to see if the WordSearch needs redrawn */
-  private boolean toUpdate = true;
+public class WordSearch extends PuzzleTemplate implements Puzzle {
   
   /** default constructor */
   public WordSearch () {
     matrix = null;
     wordList = null;
     numWords = 0;
-    arraySize = 0;
-    toUpdate = true;
+    height = 0;
+    width = 0;
   }
   
   /**
-   * adds a word to the list associated
-   * @param word a word
-   */
-  public void addWordToList (String word) {
-    toUpdate = true;
-    words.add (word);
-  }
-
-  /**
-   * removes a word from the list associated
-   * @param word a word
-   */
-  public void removeWordFromList (String word) {
-    toUpdate = true;
-    words.remove (word);
-  }
-
-  /**
-   * clears the words from the list associated
-   */
-  public void clearWordList () {
-    toUpdate = true;
-    words.clear ();
-  }
-
-  /**
    * draws the WordSearch puzzle
-   * @param g the graphics to draw to
+   * 
+   * @param g
+   *          the graphics to draw to
    */
   public void draw (Graphics g) {
-    if (!toUpdate)
-      generate();
     g.setColor (Color.WHITE);
     g.drawRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
-    for (int r = 0; r < arraySize; r ++) {
-      for (int c = 0; c < arraySize; c ++) {
+    for (int r = 0; r < height; r++) {
+      for (int c = 0; c < width; c++) {
         if (matrix[r][c].getNumWords () > 0)
           g.setColor (Color.RED);
         else
@@ -90,105 +43,18 @@ public class WordSearch implements Puzzle {
       }
     }
   }
-
-  /**
-   * generates a Word Search puzzle
-   */
-  public void generate () {
-    if (words.size () > 0 && toUpdate) {
-      int length = generateDimension (words);
-      Collections.sort (words, new shared.Algorithms.SortByLineLength());
-      ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
-      boolean isValid;
-      matrix = new PuzzleCell [length] [length];
-      
-      //Fills the PuzzleCell matrix with default PuzzleCells
-      fillMatrix (length, true);
-      
-      //Adds words to the puzzle
-      for (String word : words) {
-        isValid = false;
-        while (!isValid) {
-          Direction dir = generateDirection ();
-          int [] point = generatePosition (word.length (), length, length, dir);
-          PuzzleWord pWord = new PuzzleWord ();
-          pWord.setColumn (point[0]);
-          pWord.setRow (point[1]);
-          pWord.setDirection (dir);
-          pWord.setWord (word);
-          //isValid = addAndValidate (pWord, matrix);
-          isValid = addAndValidate (pWord);
-          if (isValid) {
-            puzzleWords.add (pWord);
-          }
-        }
-      }
-      
-      //Fills in the remaining cells with random characters
-      fillMatrix (length, false);
-      
-      //assigns values to this puzzle object
-      this.arraySize = length;
-      this.numWords = puzzleWords.size ();
-      this.wordList = puzzleWords;
-    }
-  }
-
-  /** Returns the size of the matrix.
-   * @return arraySize the dimension of the matrix */
-  public int getArraySize () {
-    return arraySize;
-  }
-  
-  public int getMatrixHeight () {
-    return arraySize;
-  }
-
-  public int getMatrixWidth () {
-    return arraySize;
-  }
-
-  /** Returns the number of words in the puzzle.
-   * @return numWords - number of words in the puzzle */
-  public int getNumWords () {
-    return numWords;
-  }
-
-  /** Returns an array of puzzle words.
-   * @return wordList - a list of PuzzleWords */
-  public ArrayList <PuzzleWord> getWordList () {
-    return wordList;
-  }
-  
-  /** Gets the puzzle as a string
-   * @return s - Returns the puzzle as a string */
-  public String toString () {
-    String s = "";
-    for (int r = 0; r < matrix.length; r++) {
-      for (int c = 0; c < matrix[0].length; c++) {
-        s += matrix[r][c] + " ";
-      }
-      s += "\n";
-    }
-    return s;
-  }
   
   /**
-   * sets the list of words associated
-   * @param list the list to set
+   * Adds and word and validates to ensure that it will fit into the grid
+   * 
+   * @param word
+   *          puzzleword to be added.
+   * @param matrix
+   *          our current puzzle grid.
+   * @return boolean Whether the add was a success or not.
    */
-  public void setList (ArrayList <String> list) {
-    words = list;
-  }
-
-  /** Adds and word and validates to ensure that it will fit into the grid
-   * @param word puzzleword to be added.
-   * @param matrix our current puzzle grid.
-   * @return boolean Whether the add was a success or not. */
-//  private boolean addAndValidate (PuzzleWord word, PuzzleCell [][] matrix)
-  public boolean addAndValidate (PuzzleWord word){
-    int dC = 0;
-    int dR = 0;
+  public boolean addAndValidate (PuzzleWord word) {
+    int dC = 0, dR = 0;
     switch (word.getDirection ()) {
       case NORTH:
         dR = -1;
@@ -237,38 +103,91 @@ public class WordSearch implements Puzzle {
       col += dC;
     }
     return (true);
-    
   }
   
   /**
-   * fills the matrix with random characters or spaces
-   * @param length
-   * @param fillBlank flag; true if blanks are desired, false if random chars are desired
+   * generates a Word Search puzzle
    */
-  private void fillMatrix (int length, boolean fillBlank) {
-    for (int r = 0; r < length; r++) {
-      for (int c = 0; c < length; c++) {
-        if (fillBlank) {
-          matrix[r][c] = new PuzzleCell();
-        } else if (matrix[r][c].getCharacter () == '\0') {
-            matrix[r][c].addRandomChar ();
+  public void generate () {
+    if (words.size () > 0) {
+      int length = generateDimension (words);
+      Collections.sort (words, new shared.Algorithms.SortByLineLength ());
+      ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
+      boolean isValid;
+      matrix = new PuzzleCell [length] [length];
+      fillMatrix (length, true);
+      for (String word : words) {
+        isValid = false;
+        while (!isValid) {
+          Direction dir = generateDirection (8);
+          int [] point = generatePosition (word.length (), length, length, dir);
+          PuzzleWord pWord = new PuzzleWord ();
+          pWord.setColumn (point[0]);
+          pWord.setRow (point[1]);
+          pWord.setDirection (dir);
+          pWord.setWord (word);
+          isValid = addAndValidate (pWord);
+          if (isValid) {
+            puzzleWords.add (pWord);
+          }
         }
       }
+      fillMatrix (length, false);
+      width = length;
+      height = length;
+      numWords = puzzleWords.size ();
+      wordList = puzzleWords;
     }
   }
-
-  /** Generates a random direction.
-   * @return Direction - any of the 7 directions a word can be oriented. */
-  private Direction generateDirection () {
-    int num = (int) (8 * Math.random ());
-    return (Direction.values ()[num]);
+  
+  /**
+   * Gets the puzzle as a string
+   * 
+   * @return s - Returns the puzzle as a string
+   */
+  public String toString () {
+    String s = "";
+    for (int r = 0; r < matrix.length; r++) {
+      for (int c = 0; c < matrix[0].length; c++) {
+        s += matrix[r][c] + " ";
+      }
+      s += "\n";
+    }
+    return s;
   }
   
-  /** returns a valid start point for a word by length. Does not check intersections.
-   * @param length length of the word.
-   * @param colSize number of columns.
-   * @param rowSize number of rows.
-   * @return int[] - [0] is the x value, and [1] is the y value. */
+  /**
+   * Generates the dimension to be used in the word search matrix
+   * 
+   * @param list
+   * @return an integer specifying the dimension to be used by the Puzzle
+   */
+  private int generateDimension (ArrayList <String> list) {
+    int sum = 0;
+    for (String s : list) {
+      sum += s.length ();
+    }
+    sum = (int) (Math.ceil (Math.sqrt (sum * 3 / 2)));
+    if (sum < list.get (0).length ()) {
+      sum = list.get (0).length () + 2;
+    } else {
+      ++sum;
+    }
+    return (sum);
+  }
+  
+  /**
+   * returns a valid start point for a word by length. Does not check
+   * intersections.
+   * 
+   * @param length
+   *          length of the word.
+   * @param colSize
+   *          number of columns.
+   * @param rowSize
+   *          number of rows.
+   * @return int[] - [0] is the x value, and [1] is the y value.
+   */
   private int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
     int [] point = new int [2];
     switch (dir) {
@@ -306,85 +225,5 @@ public class WordSearch implements Puzzle {
         break;
     }
     return (point);
-  }
-  
-  /** Generates the dimension to be used in the word search matrix
-   * @param list
-   * @return an integer specifying the dimension to be used by the Puzzle */
-  private int generateDimension (ArrayList <String> list) {
-    int sum = 0;
-    for (String s : list) {
-      sum += s.length ();
-    }
-    sum = (int) (Math.ceil (Math.sqrt (sum * 3 / 2)));
-    if (sum < list.get(0).length ()) {
-      sum = list.get(0).length () + 2;
-    } else {
-      ++ sum;
-    }
-    return (sum);
-  }
-
-  /** A Singleton object used by any instance of puzzle as a number generator
-   * @return a random number generator */
-  private Random getNumberGenerator () {
-    if (gen == null) {
-      gen = new Random ();
-    }
-    return gen;
-  }
-  
-  /**
-   * gets the matrix
-   * @return matrix the matrix of PuzzleCells
-   */
-  public PuzzleCell[][] getMatrix() {
-    return matrix;
-  }
-  
-  /**
-   * sets the number of words
-   * @param words the number of words
-   */
-  public void setNumWords (int words) {
-    numWords = words;
-  }
-  
-  /**
-   * sets the matrix width of the puzzle
-   * @param i the hwidth to set
-   */
-  public void setMatrixWidth(int i) {
-    arraySize = i;
-  }
-  
-  /**
-   * sets the matrix height of the puzzle
-   * @param i the height to set
-   */
-  public void setMatrixHeight(int i) {
-    arraySize = i;
-  }
-
-  /**
-   * sets the PuzzleCell matrix
-   * @param cells the matrix to set
-   */
-  public void setMatrix(PuzzleCell[][] cells) {
-    int i = cells.length, j = cells[0].length;
-    matrix = new PuzzleCell[i][j];
-    for (int r = 0; r < i; r++) {
-      for (int c = 0; c < j; c++) {
-        matrix[r][c] = cells[r][c];
-      }
-    }
-  }
-  
-  /**
-   * sets the word list
-   * @param words the list of words to set
-   */
-  public void setWordList(ArrayList<PuzzleWord> words) {
-    wordList = words;
   }
 }
