@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import puzzle.Crossword;
 import puzzle.Puzzle;
@@ -104,6 +105,7 @@ public class FileIO {
       try {
         save (list, newFile);
       } catch (IOException e) {
+        JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
         System.out.println ("Error: IO Exception was thrown:" + e);
       }
     }
@@ -150,6 +152,7 @@ public class FileIO {
           saveWordSearch (puzzle, newFile);
         } catch (IOException e) {
           System.out.println ("Error: IO Exception was thrown:" + e);
+          JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
         }
       }
       else if(puzzle instanceof Crossword)
@@ -253,6 +256,7 @@ public class FileIO {
       type = scan.nextLine();
     }
     catch (FileNotFoundException e){
+      JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
       System.out.println ("Error: File Not Found Exception was thrown:" + e);
     }
     
@@ -275,8 +279,8 @@ public class FileIO {
   
   /**
    * Loads a Word Search puzzle and its state from a file
-   * @param scan
-   * @return Puzzle - a Word Search puzzle
+   * @param scan a scanner
+   * @return Puzzle a Word Search puzzle
    */
   private static Puzzle loadWordSearch(Scanner scan)
   {
@@ -316,13 +320,12 @@ public class FileIO {
   
   /**
    * Loads a Crossword puzzle and its state
-   * @param scan
-   * @return Puzzle - a Crossword puzzle
+   * @param scan a scanner
+   * @return Puzzle a Crossword puzzle
    */
   private static Puzzle loadCrossword(Scanner scan)
   {
     Puzzle puzzle = new Crossword();
-    
     int height, width;
     Scanner scan2 = new Scanner(scan.nextLine());
     puzzle.setNumWords (scan2.nextInt ());
@@ -367,7 +370,7 @@ public class FileIO {
   
   /**
    * Initiates the export to HTML process to export a puzzle and its state to an HTML file
-   * @param puzzle
+   * @param puzzle a puzzle
    */
   public static void exportPuzzle (Puzzle puzzle) {
     int status;
@@ -385,6 +388,7 @@ public class FileIO {
           saveSearchHTML(puzzle, actualFile);
         } catch (IOException e) {
           System.out.println ("Error: IO Exception was thrown:" + e);
+          JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
         }
       }
       else if(puzzle instanceof Crossword)
@@ -393,6 +397,7 @@ public class FileIO {
           saveCrossHTML(puzzle, actualFile);
         } catch (IOException e) {
           System.out.println ("Error: IO Exception was thrown:" + e);
+          JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
         }
       }
       else
@@ -404,8 +409,8 @@ public class FileIO {
   
   /**
    * Exports the current Crossword puzzle and its state to an HTML file
-   * @param puzzle
-   * @param location
+   * @param puzzle a puzzle
+   * @param location a file
    * @throws IOException
    */
   private static void saveCrossHTML(Puzzle puzzle, File location)throws IOException {
@@ -451,8 +456,8 @@ public class FileIO {
   
   /**
    * Exports the current Word Search puzzle and its state to an HTML file
-   * @param puzzle
-   * @param location
+   * @param puzzle a puzzle
+   * @param location a file
    * @throws IOException
    */
   private static void saveSearchHTML(Puzzle puzzle, File location)throws IOException {
