@@ -186,4 +186,14 @@ public class PuzzleCell {
   public boolean isEmpty () {
     return (character == '\0');
   }
+  
+  public ArrayList<Direction> getDirList()
+  {
+    return dirs;
+  }
+  
+  public void setDirs(ArrayList<Direction> dirs)
+  {
+    this.dirs = dirs;
+  }
 }

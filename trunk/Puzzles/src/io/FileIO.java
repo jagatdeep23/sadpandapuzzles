@@ -204,6 +204,8 @@ public class FileIO {
   private static void saveCrossword (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getWordList ();
+    PuzzleCell[][] matrix = puzzle.getMatrix ();
+    ArrayList<Direction> dirs = new ArrayList<Direction>();
     buffer.write ("crossword\n");
     buffer.write (puzzle.getNumWords () + "\n");
     buffer.write (puzzle.getMatrixHeight () + "\n");
@@ -211,6 +213,20 @@ public class FileIO {
     for (PuzzleWord word : list) {
       buffer.write (word.getWord() + " " + word.getRow () + " " + word.getColumn() + " " + word.getDirection ().ordinal () + "\n");
     }
+    String s = "";
+    for (int r = 0; r < matrix.length; r++) {
+      for (int c = 0; c < matrix[0].length; c++) {
+        s += matrix[r][c] + " " + matrix[r][c].getNumWords() + " ";
+        dirs = matrix[r][c].getDirList ();
+        s += dirs.size () + " ";
+        for(int i = 0; i < dirs.size (); i++)
+        {
+          s += dirs.get (i).ordinal () + " ";
+        }
+      }
+      s += "\n";
+    }
+    buffer.write (s);
     buffer.close ();
   }
 
@@ -316,12 +332,7 @@ public class FileIO {
     scan2 = new Scanner(scan.nextLine());
     width = scan2.nextInt ();
     puzzle.setMatrixWidth (width);
-    PuzzleCell[][] matrix = new PuzzleCell[height][width];
-    for (int r = 0; r < height; r++) {
-      for (int c = 0; c < width; c++) {
-        matrix[r][c] = new PuzzleCell();
-      }
-    }
+    PuzzleCell[][] matrix = new PuzzleCell[width][height];
     puzzle.setMatrix(matrix);
     ArrayList<PuzzleWord> words = new ArrayList<PuzzleWord>();
     for(int i = 0; i < puzzle.getNumWords(); i++) {
@@ -332,9 +343,25 @@ public class FileIO {
       word.setColumn (scan2.nextInt ());
       word.setDirection (Direction.values()[scan2.nextInt()]);
       words.add (word);
-      puzzle.addAndValidate(word);
     }
     puzzle.setWordList(words);
+    ArrayList<Direction> dirs;
+    int size;
+    for (int r = 0; r < matrix.length; r++) {
+      scan2 = new Scanner(scan.nextLine());
+      for (int c = 0; c < matrix[0].length; c++) {
+        matrix[r][c] = new PuzzleCell();
+        matrix[r][c].setCharacter (scan2.next ().charAt (0));
+        matrix[r][c].setNumWords(scan2.nextInt ());
+        dirs = new ArrayList<Direction>();
+        size = scan2.nextInt ();
+        for(int i = 0; i < size; i++)
+        {
+          dirs.add (Direction.values ()[scan2.nextInt ()]);
+        }
+      }
+    }
+    puzzle.setMatrix (matrix);
     return puzzle;
   }
   

@@ -67,6 +67,7 @@ public class Window extends JPanel {
         
         System.out.println ("open");
         if (save ("Open")) {
+          controller.clearWordList();
           controller.setPuzzle (FileIO.loadPuzzle());
           Components.getOutputPanel ().repaint ();
           Components.wordList.removeAll ();
