@@ -14,7 +14,6 @@ import java.util.Random;
  * @version 2.0
  */
 public class WordSearch implements Puzzle {
-  
   /** A random number generator */
   private static Random gen;
   
@@ -83,7 +82,7 @@ public class WordSearch implements Puzzle {
     g.setColor (Color.BLACK);
     for (int r = 0; r < arraySize; r ++) {
       for (int c = 0; c < arraySize; c ++) {
-        if (matrix[r][c].numWords > 0)
+        if (matrix[r][c].getNumWords () > 0)
           g.setColor (Color.RED);
         else
           g.setColor (Color.BLACK);

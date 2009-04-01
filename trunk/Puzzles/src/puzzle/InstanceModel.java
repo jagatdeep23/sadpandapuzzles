@@ -71,9 +71,11 @@ public class InstanceModel {
   public void setPuzzle (Puzzle p) {
     puzzle = p;
     wordList.clear ();
-    for (PuzzleWord w : puzzle.getWordList ()) {
-      wordList.add (w.getWord ());
-    }
+    try {
+      for (PuzzleWord w : puzzle.getWordList ()) {
+        wordList.add (w.getWord ());
+      }
+    } catch (NullPointerException e) {}
   }
   
   /** Gets the word list

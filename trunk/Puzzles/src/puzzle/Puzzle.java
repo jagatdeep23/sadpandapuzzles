@@ -14,21 +14,21 @@ public interface Puzzle {
    * @author Sad Panda Software
    * @version 2.0 */
   public static enum Direction {
-    /**  */
+    /** East */
     EAST,
-    /**  */
+    /** South */
     SOUTH,
-    /**  */
+    /** West */
     WEST,
-    /**  */
+    /** North */
     NORTH,
-    /**  */
+    /** Northeast */
     NORTHEAST,
-    /**  */
+    /** Southeast */
     SOUTHEAST,
-    /**  */
+    /** Southwest */
     SOUTHWEST,
-    /**  */
+    /** Northwest */
     NORTHWEST};
   
   /** generates a puzzle*/
@@ -76,6 +76,7 @@ public interface Puzzle {
   public int getMatrixWidth();
   
   /** 
+   * gets the matrix of the puzzle
    * @return the matrix of PuzzleCells
    */
   public PuzzleCell[][] getMatrix();

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class OutputPanel extends JPanel {
-  protected Controller controller;
+  private Controller controller;
   
   /**
    * Sets the controller for the output panel

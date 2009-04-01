@@ -19,7 +19,7 @@ import javax.swing.JSplitPane;
 
 @SuppressWarnings("serial")
 public class Window extends JPanel {
-  protected Controller controller;
+  private Controller controller;
   
   /**
    * Window Contructor
@@ -60,7 +60,10 @@ public class Window extends JPanel {
         
         System.out.println ("new");
         if (save ("New")) {
-          
+          controller.clearWordList();
+          controller.setPuzzle (null);
+          Components.getOutputPanel ().repaint ();
+          Components.wordList.removeAll ();
         }
         
       } else if (obj.equals (Components.Buttons.openButton)) {

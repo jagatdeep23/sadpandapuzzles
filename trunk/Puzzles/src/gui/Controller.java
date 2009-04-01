@@ -19,7 +19,7 @@ import puzzle.Puzzle;
 public class Controller {
   
 	/** the model */
-  InstanceModel model;
+  private InstanceModel model;
   
 	/** Default Constructor for the Controller */
 	public Controller() {

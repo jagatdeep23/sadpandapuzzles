@@ -165,7 +165,7 @@ public class FileIO {
       }
       else
       {
-        System.out.println("No Puzzle to save.");
+        JOptionPane.showMessageDialog (null, "Please generate a puzzle before saving, then try again", "Oh Noes!", JOptionPane.ERROR_MESSAGE);
       }
     }
   }
@@ -272,6 +272,7 @@ public class FileIO {
     }
     else
     {
+      JOptionPane.showMessageDialog (null, "The file you have loaded cannot be recognized", "Oh Noes!", JOptionPane.ERROR_MESSAGE);
       System.out.println("Invalid File");
       return puzzle;
     }

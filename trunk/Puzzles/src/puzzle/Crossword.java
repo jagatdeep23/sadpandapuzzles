@@ -16,30 +16,31 @@ import javax.swing.JOptionPane;
  */
 public class Crossword implements Puzzle {
   /** A random number generator */
-  private static Random  gen;
+  private static Random gen;
   
   /** the two-dimensional array used to store arranged letters from PuzzleWords */
-  PuzzleCell [][]        matrix;
+  private PuzzleCell [][] matrix;
   
   /** the word list of PuzzleWords that are in the Puzzle */
-  ArrayList <PuzzleWord> wordList;
+  private ArrayList <PuzzleWord> wordList;
   
   /** the list of words to be added to the puzzle */
-  ArrayList <String>     words;
+  private ArrayList <String> words;
   
   /** the number of words in the puzzle */
-  int                    numWords;
+  private int numWords;
   
   /** the height of the puzzle */
-  int                    height;
+  private int height;
   
   /** the width of the puzzle */
-  int                    width;
+  private int width;
   
-  boolean                toUpdate  = true;
+  /** flag to check if Crossword needs redrawn **/
+  private boolean toUpdate  = true;
   
   /** If first word in crossword */
-  boolean                firstWord = true;
+  private boolean firstWord = true;
   
   /** default constructor */
   public Crossword () {
@@ -114,7 +115,7 @@ public class Crossword implements Puzzle {
           if (isValid) {
             puzzleWords.add (pWord);
           }
-          if (++crazy == 100000) {
+          if (++crazy == 200000) {
             JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!", JOptionPane.ERROR_MESSAGE);
             matrix = null;
             wordList = null;

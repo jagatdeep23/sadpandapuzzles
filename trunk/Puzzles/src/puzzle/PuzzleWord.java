@@ -9,16 +9,16 @@ import puzzle.Puzzle.Direction;
  */
 public class PuzzleWord {
 	/** the word string */
-	String word;
+	private String word;
 	
 	/** the row of the location of the word */
-	int row;
+  private int row;
 	
 	/** the column of the location of the word */
-	int	col;
+  private int	col;
 	
 	/** the direction associated with the word */
-	Direction dir;
+  private Direction dir;
 	
 	/** Default constructor */
 	public PuzzleWord() {

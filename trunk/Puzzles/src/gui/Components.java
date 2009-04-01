@@ -77,37 +77,37 @@ public class Components {
   /**
    * String - New
    */
-  private static final String NEW = "New", 
+  private static final String NEW = "New";
   
   /**
    * String - Open
    */
-  OPEN = "Open", 
+  private static final String OPEN = "Open";
   
   /**
    * String - Save
    */
-  SAVE = "Save",
+  private static final String SAVE = "Save";
 			
   /**
    * String - Export
    */
-  EXPORT = "Export", 
+  private static final String EXPORT = "Export";
       
   /**
    * String - Quit
    */
-  QUIT = "Quit", 
+  private static final String QUIT = "Quit";
   
   /**
    * String - Help
    */
-  HELP = "Help",
+  private static final String HELP = "Help";
 			
   /**
    * String - Generate
    */
-  GENERATE = "Generate";
+  private static final String GENERATE = "Generate";
 	
   /**
    * Area for storing the word list
@@ -265,47 +265,47 @@ public class Components {
 	 */
   public static class Buttons {
 		
-    public static JButton
+    
     /**
      * the new button
      */
-    newButton,
+    public static JButton newButton;
     /**
      * the open button
      */
-    openButton,
+    public static JButton openButton;
     /**
      * the save button
      */
-    saveButton,
+    public static JButton saveButton;
     /**
      * the export button
      */
-    exportButton,
+    public static JButton exportButton;
 		/**
      * the quit button
 		 */
-    quitButton,
+    public static JButton quitButton;
     /**
      * the help button
      */
-    helpButton,
+    public static JButton helpButton;
     /**
      * the generate button
      */
-    generateButton,
+    public static JButton generateButton;
     /**
      * the add to list button
      */
-    addWordToList,
+    public static JButton addWordToList;
     /**
      * the remove from list button
      */
-    removeWordFromList,
+    public static JButton removeWordFromList;
     /**
      * the clear list button
      */
-    clearList;
+    public static JButton clearList;
 		
 		/**
      * Adds action listeners to the buttons

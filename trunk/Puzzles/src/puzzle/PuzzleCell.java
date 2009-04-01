@@ -14,7 +14,7 @@ public class PuzzleCell {
   /**
    * number of words associated with this PuzzleCell
    */
-  int numWords;
+  private int numWords;
   /**
    * the character associated with this PuzzleCell
    */
