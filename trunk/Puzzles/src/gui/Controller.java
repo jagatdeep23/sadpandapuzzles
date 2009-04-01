@@ -63,6 +63,9 @@ public class Controller {
         JOptionPane.showMessageDialog (null, "The word you have entered contained invalid characters\nInvalid characters are: " + s, "Error", JOptionPane.ERROR_MESSAGE);
         return;
       }
+      if (word.startsWith ("IMAC") || word.equals ("APPLE") || word.equals ("KATZ") || word.startsWith ("IPOD") || word.startsWith ("IPHONE") || word.startsWith ("MAC") && !word.startsWith ("MACR") && !word.startsWith ("MACE")) {
+        JOptionPane.showMessageDialog (null, "The word you have entered cannot be recognized\nSince we are nice, we will add it for you anyways.", "Woah There!", JOptionPane.INFORMATION_MESSAGE);
+      }
       model.addWord (word);
       Components.wordList.getContents().addElement (word);
     } else {
