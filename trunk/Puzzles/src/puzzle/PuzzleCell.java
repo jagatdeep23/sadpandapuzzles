@@ -207,7 +207,7 @@ public class PuzzleCell {
    */
   public String toString () {
     if (isEmpty ())
-      return " ";
+      return "?";
     return (character + "").toUpperCase ();
   }
 }

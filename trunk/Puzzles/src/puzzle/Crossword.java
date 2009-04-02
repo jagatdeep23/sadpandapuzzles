@@ -47,40 +47,40 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
       firstWord = false;
     } else {
       try {
-        if (matrix[col - dC][row - dR].hasCharacter ()) {
+        if (matrix[row - dR][col - dC].hasCharacter ()) {
           return false;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
       }
       try {
-        if (matrix[col + dC * length][row + dR * length].hasCharacter ()) {
+        if (matrix[row + dR * length][col + dC * length].hasCharacter ()) {
           return false;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
       }
       for (int i = 0; valid && i < w.length (); i++, col += dC, row += dR) {
         character = w.charAt (i);
-        if (matrix[col][row].isEmpty ()) {
+        if (matrix[row][col].isEmpty ()) {
           try {
-            if (matrix[col - dR][row - dC].hasCharacter ()) {
+            if (matrix[row - dC][col - dR].hasCharacter ()) {
               return false;
             }
           } catch (ArrayIndexOutOfBoundsException e) {
           }
           try {
-            if (matrix[col + dR][row + dC].hasCharacter ()) {
+            if (matrix[row + dC][col + dR].hasCharacter ()) {
               return false;
             }
           } catch (ArrayIndexOutOfBoundsException e) {
           }
         } else {
-          if (!matrix[col][row].hasCharacter (character)) {
+          if (!matrix[row][col].hasCharacter (character)) {
             return false;
           } else {
-            if (matrix[col][row].hasDirection (dir)) {
+            if (matrix[row][col].hasDirection (dir)) {
               return false;
             }
-            if (!isCrossed && matrix[col][row].getNumWords () > 0) {
+            if (!isCrossed && matrix[row][col].getNumWords () > 0) {
               isCrossed = true;
             }
           }
@@ -91,7 +91,7 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
     col = oldCol;
     if (isCrossed) {
       for (int i = 0; i < length; ++i, col += dC, row += dR) {
-        matrix[col][row].add (w.charAt (i));
+        matrix[row][col].add (w.charAt (i));
       }
     }
     return isCrossed;
@@ -102,11 +102,11 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
     g.setColor (Color.WHITE);
     g.drawRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
-    for (int c = 0; c < width; c++) {
-      for (int r = 0; r < height; r++) {
-        if (matrix[c][r].hasCharacter ()) {
+    for (int r = 0; r < height; r++) {
+      for (int c = 0; c < width; c++) {
+        if (matrix[r][c].hasCharacter ()) {
           g.drawRect (30 + 24 * r, 30 + 24 * c, 24, 24);
-          g.drawString (matrix[c][r].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
+          g.drawString (matrix[r][c].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
         }
       }
     }
@@ -152,9 +152,9 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
         }
       }
       int minWidth = -1, maxWidth = -1, minHeight = -1, maxHeight = -1;
-      for (int c = 0; c < matrix.length; ++c) {
-        for (int r = 0; r < matrix[0].length; ++r) {
-          if (matrix[c][r].hasCharacter ()) {
+      for (int r = 0; r < matrix.length; ++r) {
+        for (int c = 0; c < matrix[0].length; ++c) {
+          if (matrix[r][c].hasCharacter ()) {
             if (minWidth == -1 || minWidth > c)
               minWidth = c;
             if (maxWidth == -1 || maxWidth < c)
@@ -168,10 +168,10 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
       }
       width = maxWidth - minWidth + 1;
       height = maxHeight - minHeight + 1;
-      PuzzleCell [][] newMatrix = new PuzzleCell [width] [height];
-      for (int c = 0; c < width; ++c) {
-        for (int r = 0; r < height; ++r) {
-          newMatrix[c][r] = matrix[c + minWidth][r + minHeight];
+      PuzzleCell [][] newMatrix = new PuzzleCell [height][width];
+      for (int r = 0; r < height; ++r) {
+        for (int c = 0; c < width; ++c) {
+          newMatrix[r][c] = matrix[r + minHeight][c + minWidth];
         }
       }
       ArrayList <PuzzleWord> temp = new ArrayList <PuzzleWord> ();

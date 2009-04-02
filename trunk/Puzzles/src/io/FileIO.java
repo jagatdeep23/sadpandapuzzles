@@ -355,7 +355,7 @@ public class FileIO {
     scan2 = new Scanner (scan.nextLine ());
     width = scan2.nextInt ();
     puzzle.setMatrixWidth (width);
-    PuzzleCell [][] matrix = new PuzzleCell [width] [height];
+    PuzzleCell [][] matrix = new PuzzleCell [height] [width];
     puzzle.setMatrix (matrix);
     ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
     for (int i = 0; i < puzzle.getNumWords (); i++) {
@@ -374,7 +374,10 @@ public class FileIO {
       scan2 = new Scanner (scan.nextLine ());
       for (int c = 0; c < matrix[0].length; c++) {
         matrix[r][c] = new PuzzleCell ();
-        matrix[r][c].setCharacter (scan2.next ().charAt (0));
+        char t = scan2.next ().charAt (0);
+        if (t != '?') {
+          matrix[r][c].setCharacter (t);
+        }
         matrix[r][c].setNumWords (scan2.nextInt ());
         dirs = new ArrayList <Direction> ();
         size = scan2.nextInt ();
@@ -453,7 +456,7 @@ public class FileIO {
     s += "</table><br><br>";
     buffer.write (s);
     
-    buffer.write ("<b>East</b><br>");
+    buffer.write ("<b>South</b><br>");
     for (PuzzleWord word : list) {
       if (word.getDirection ().name ().toLowerCase ().equals ("east")) {
         buffer.write (word.getWord () + "<br>");
@@ -461,7 +464,7 @@ public class FileIO {
     }
     buffer.write ("<br>");
     
-    buffer.write ("<b>South</b><br>");
+    buffer.write ("<b>East</b><br>");
     for (PuzzleWord word : list) {
       if (word.getDirection ().name ().toLowerCase ().equals ("south")) {
         buffer.write (word.getWord () + "<br>");

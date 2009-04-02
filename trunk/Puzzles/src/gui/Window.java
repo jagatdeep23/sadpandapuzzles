@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 /**
@@ -34,7 +35,7 @@ public class Window extends JPanel {
     EventListener listener = new EventListener ();
     setLayout (new BorderLayout ());
     add (Components.buildToolbar (), BorderLayout.NORTH);
-    JSplitPane windowPane = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, Components.buildSidebar (), Components.getOutputPanel ());
+    JSplitPane windowPane = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, Components.buildSidebar (), new JScrollPane (Components.getOutputPanel (), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
     windowPane.getLeftComponent ().setPreferredSize (new Dimension (150, 50));
     add (windowPane, BorderLayout.CENTER);
     Components.Buttons.addActionListener (listener);
