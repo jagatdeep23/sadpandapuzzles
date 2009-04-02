@@ -195,7 +195,7 @@ public class PuzzleTemplate {
   /**
    * Generates a random direction.
    * 
-   * @return Direction - any of the 7 directions a word can be oriented.
+   * @return Direction - any of the 8 directions a word can be oriented.
    */
   protected Direction generateDirection (int max) {
     int num = (int) (max * Math.random ());
