@@ -25,7 +25,7 @@ import puzzle.Puzzle.Direction;
  * This class contains all of the File Input and Output methods.
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public class FileIO {
   

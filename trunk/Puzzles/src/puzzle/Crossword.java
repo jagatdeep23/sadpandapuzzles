@@ -7,11 +7,12 @@ import java.util.Collections;
 import javax.swing.JOptionPane;
 
 /**
- * A Crossword puzzle is a specialized Puzzle.  It is a retangular shape
- * that consists of words that must intersect at least one time. Words may never be
+ * A Crossword puzzle is a specialized Puzzle. It is a retangular shape that
+ * consists of words that must intersect at least one time. Words may never be
  * directly parallel. It is also known as a free-form crossword puzzle.
+ * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public class Crossword extends PuzzleTemplate implements Puzzle {
   
@@ -26,11 +27,14 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
     height = 0;
     width = 0;
   }
-
-  /** Adds and word and validates to ensure that it will fit into the grid
-   * @param word puzzleword to be added.
-   * @param matrix our current puzzle grid.
-   * @return boolean Whether the add was a success or not. */
+  
+  /**
+   * Adds and word and validates to ensure that it will fit into the grid
+   * 
+   * @param word
+   *          puzzleword to be added.
+   * @return boolean Whether the add was a success or not.
+   */
   public boolean addAndValidate (PuzzleWord word) {
     Direction dir = word.getDirection ();
     String w = word.getWord ();
@@ -43,28 +47,32 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
       firstWord = false;
     } else {
       try {
-        if (matrix [col - dC][row - dR].hasCharacter ()){
+        if (matrix[col - dC][row - dR].hasCharacter ()) {
           return false;
         }
-      } catch (ArrayIndexOutOfBoundsException e) {}
+      } catch (ArrayIndexOutOfBoundsException e) {
+      }
       try {
-        if (matrix [col + dC * length ][row + dR * length].hasCharacter ()) {
+        if (matrix[col + dC * length][row + dR * length].hasCharacter ()) {
           return false;
         }
-      } catch (ArrayIndexOutOfBoundsException e) {}
+      } catch (ArrayIndexOutOfBoundsException e) {
+      }
       for (int i = 0; valid && i < w.length (); i++, col += dC, row += dR) {
         character = w.charAt (i);
-        if (matrix [col][row].isEmpty ()) {
+        if (matrix[col][row].isEmpty ()) {
           try {
-            if (matrix [col - dR][row - dC].hasCharacter ()){
+            if (matrix[col - dR][row - dC].hasCharacter ()) {
               return false;
             }
-          } catch (ArrayIndexOutOfBoundsException e) {}
+          } catch (ArrayIndexOutOfBoundsException e) {
+          }
           try {
-            if (matrix [col + dR][row + dC].hasCharacter ()){
+            if (matrix[col + dR][row + dC].hasCharacter ()) {
               return false;
             }
-          } catch (ArrayIndexOutOfBoundsException e) {}
+          } catch (ArrayIndexOutOfBoundsException e) {
+          }
         } else {
           if (!matrix[col][row].hasCharacter (character)) {
             return false;
@@ -88,7 +96,7 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
     }
     return isCrossed;
   }
-
+  
   /** draws the crossword puzzle */
   public void draw (Graphics g) {
     g.setColor (Color.WHITE);
@@ -132,7 +140,8 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
             puzzleWords.add (pWord);
           }
           if (++crazy == 200000) {
-            JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
+                JOptionPane.ERROR_MESSAGE);
             matrix = null;
             wordList = null;
             numWords = 0;
@@ -142,7 +151,7 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
           }
         }
       }
-      int minWidth = -1, maxWidth = -1, minHeight = -1 , maxHeight = -1;
+      int minWidth = -1, maxWidth = -1, minHeight = -1, maxHeight = -1;
       for (int c = 0; c < matrix.length; ++c) {
         for (int r = 0; r < matrix[0].length; ++r) {
           if (matrix[c][r].hasCharacter ()) {
@@ -159,15 +168,15 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
       }
       width = maxWidth - minWidth + 1;
       height = maxHeight - minHeight + 1;
-      PuzzleCell[][] newMatrix = new PuzzleCell[width][height];
+      PuzzleCell [][] newMatrix = new PuzzleCell [width] [height];
       for (int c = 0; c < width; ++c) {
         for (int r = 0; r < height; ++r) {
           newMatrix[c][r] = matrix[c + minWidth][r + minHeight];
         }
       }
-      ArrayList<PuzzleWord> temp = new ArrayList<PuzzleWord>();
+      ArrayList <PuzzleWord> temp = new ArrayList <PuzzleWord> ();
       for (PuzzleWord w : puzzleWords) {
-        PuzzleWord p = new PuzzleWord();
+        PuzzleWord p = new PuzzleWord ();
         p.setColumn (w.getColumn () - minWidth);
         p.setRow (w.getRow () - minHeight);
         p.setDirection (w.getDirection ());
@@ -181,8 +190,11 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
     firstWord = true;
   }
   
-  /** Gets the puzzle as a string
-   * @return s - Returns the puzzle as a string */
+  /**
+   * Gets the puzzle as a string
+   * 
+   * @return s - Returns the puzzle as a string
+   */
   public String toString () {
     String s = "";
     for (int c = 0; c < matrix.length; c++) {
@@ -194,24 +206,33 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
     return s;
   }
   
-  /** Generates the dimension to be used in the word search matrix
+  /**
+   * Generates the dimension to be used in the word search matrix
+   * 
    * @param list
-   * @return an integer specifying the dimension to be used by the Puzzle */
+   * @return an integer specifying the dimension to be used by the Puzzle
+   */
   private int generateDimension (ArrayList <String> list) {
-    int max = 0,temp = 0;
+    int max = 0, temp = 0;
     for (String s : list) {
-      if ( temp++ <= (list.size () + 1 ) / 2)
+      if (temp++ <= (list.size () + 1) / 2)
         max += s.length ();
     }
     return (max);
   }
   
-
-  /** returns a valid start point for a word by length. Does not check intersections.
-   * @param length length of the word.
-   * @param colSize number of columns.
-   * @param rowSize number of rows.
-   * @return int[] - [0] is the x value, and [1] is the y value. */
+  /**
+   * returns a valid start point for a word by length. Does not check
+   * intersections.
+   * 
+   * @param length
+   *          length of the word.
+   * @param colSize
+   *          number of columns.
+   * @param rowSize
+   *          number of rows.
+   * @return int[] - [0] is the x value, and [1] is the y value.
+   */
   private int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
     int [] point = new int [2];
     switch (dir) {

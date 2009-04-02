@@ -6,7 +6,7 @@ import puzzle.Puzzle.Direction;
  * A word that is used in a Puzzle
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public class PuzzleWord {
   /** the word string */

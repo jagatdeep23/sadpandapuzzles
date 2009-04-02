@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * methods that are defined in classes that implement this Puzzle interface.
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public interface Puzzle {
   

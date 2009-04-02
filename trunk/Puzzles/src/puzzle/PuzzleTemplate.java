@@ -5,6 +5,12 @@ import java.util.Random;
 
 import puzzle.Puzzle.Direction;
 
+/**
+ * A template for different Puzzles to use as the core components
+ * 
+ * @author Sad Panda Software
+ * @version 3.0
+ */
 public class PuzzleTemplate {
   
   /** A random number generator */

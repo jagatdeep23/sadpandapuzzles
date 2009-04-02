@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  * Panel to which buttons and contols will be added
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 @SuppressWarnings("serial")
 public class OutputPanel extends JPanel {

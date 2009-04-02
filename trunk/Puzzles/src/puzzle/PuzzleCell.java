@@ -9,7 +9,7 @@ import puzzle.Puzzle.Direction;
  * generated puzzle
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public class PuzzleCell {
   /**

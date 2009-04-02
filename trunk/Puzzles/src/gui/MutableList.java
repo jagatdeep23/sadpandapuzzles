@@ -7,7 +7,7 @@ import javax.swing.JList;
  * Allows items to be added and removed from the program menu
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public class MutableList extends JList {
   private static final long serialVersionUID = 1L;

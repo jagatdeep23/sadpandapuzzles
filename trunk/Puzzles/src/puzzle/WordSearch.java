@@ -10,7 +10,7 @@ import java.util.Collections;
  * randomly placed words that can intersect.
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public class WordSearch extends PuzzleTemplate implements Puzzle {
   
@@ -49,8 +49,6 @@ public class WordSearch extends PuzzleTemplate implements Puzzle {
    * 
    * @param word
    *          puzzleword to be added.
-   * @param matrix
-   *          our current puzzle grid.
    * @return boolean Whether the add was a success or not.
    */
   public boolean addAndValidate (PuzzleWord word) {

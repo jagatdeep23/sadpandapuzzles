@@ -4,7 +4,7 @@ package shared;
  * Program Constants is used in various places throughout the program
  * 
  * @author Sad Panda Software
- * @version 2.0
+ * @version 3.0
  */
 public final class ProgramConstants {
   /**
