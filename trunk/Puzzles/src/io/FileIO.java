@@ -313,6 +313,7 @@ public class FileIO {
     puzzle.setMatrixHeight (height);
     scan2 = new Scanner (scan.nextLine ());
     width = scan2.nextInt ();
+    puzzle.setMatrixWidth (width);
     ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
     for (int i = 0; i < puzzle.getNumWords (); i++) {
       PuzzleWord word = new PuzzleWord ();
