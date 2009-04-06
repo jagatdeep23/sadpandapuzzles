@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 /**
- * The "View" component of the MVC design pattern. What the User sees on the
+ * The "View" component of the MVC design pattern. What the user sees on the
  * screen
  * 
  * @author Sad Panda Software
@@ -35,7 +35,8 @@ public class Window extends JPanel {
     EventListener listener = new EventListener ();
     setLayout (new BorderLayout ());
     add (Components.buildToolbar (), BorderLayout.NORTH);
-    JSplitPane windowPane = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, Components.buildSidebar (), new JScrollPane (Components.getOutputPanel (), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+    JSplitPane windowPane = new JSplitPane (JSplitPane.HORIZONTAL_SPLIT, Components.buildSidebar (), new JScrollPane (Components.getOutputPanel (),
+        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
     windowPane.getLeftComponent ().setPreferredSize (new Dimension (150, 50));
     add (windowPane, BorderLayout.CENTER);
     Components.Buttons.addActionListener (listener);
@@ -115,7 +116,8 @@ public class Window extends JPanel {
         controller.savePuzzle ();
         return true;
       } else {
-        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current word list?", title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current word list?", title, JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.CANCEL_OPTION) {
           return (false);
         } else {

@@ -33,13 +33,13 @@ public class WordSearch extends Puzzle {
     g.setColor (Color.WHITE);
     g.drawRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
-    for (int r = 0; r < getMatrixHeight(); r++) {
-      for (int c = 0; c < getMatrixWidth(); c++) {
-        if (getMatrix()[r][c].getNumWords () > 0)
+    for (int r = 0; r < getMatrixHeight (); r++) {
+      for (int c = 0; c < getMatrixWidth (); c++) {
+        if (getMatrix ()[r][c].getNumWords () > 0)
           g.setColor (Color.RED);
         else
           g.setColor (Color.BLACK);
-        g.drawString (getMatrix()[r][c].toString (), 30 + 24 * r, 30 + 24 * c);
+        g.drawString (getMatrix ()[r][c].toString (), 30 + 24 * r, 30 + 24 * c);
       }
     }
   }
@@ -87,13 +87,13 @@ public class WordSearch extends Puzzle {
     int col = word.getColumn ();
     String w = word.getWord ();
     for (int i = 0; i < w.length (); i++) {
-      PuzzleCell cell = getMatrix()[col][row];
+      PuzzleCell cell = getMatrix ()[col][row];
       char character = w.charAt (i);
       if (!cell.add (character)) {
         for (int j = i - 1; j >= 0; j--) {
           row -= dR;
           col -= dC;
-          getMatrix()[col][row].remove ();
+          getMatrix ()[col][row].remove ();
         }
         return false;
       }
@@ -107,14 +107,14 @@ public class WordSearch extends Puzzle {
    * generates a Word Search puzzle
    */
   public void generate () {
-    if (getWordList().size () > 0) {
-      int length = generateDimension (getWordList());
-      Collections.sort (getWordList(), new shared.Algorithms.SortByLineLength ());
+    if (getWordList ().size () > 0) {
+      int length = generateDimension (getWordList ());
+      Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
       setMatrix (new PuzzleCell [length] [length]);
       fillMatrix (length, true);
-      for (String word : getWordList()) {
+      for (String word : getWordList ()) {
         isValid = false;
         while (!isValid) {
           Direction dir = generateDirection (8);
@@ -131,10 +131,10 @@ public class WordSearch extends Puzzle {
         }
       }
       fillMatrix (length, false);
-      setMatrixWidth(length);
-      setMatrixHeight(length);
-      setNumWords(puzzleWords.size ());
-      setWordList(puzzleWords);
+      setMatrixWidth (length);
+      setMatrixHeight (length);
+      setNumWords (puzzleWords.size ());
+      setWordList (puzzleWords);
     }
   }
   
@@ -145,9 +145,9 @@ public class WordSearch extends Puzzle {
    */
   public String toString () {
     String s = "";
-    for (int r = 0; r < getMatrixHeight(); r++) {
-      for (int c = 0; c < getMatrixWidth(); c++) {
-        s += getMatrix()[r][c] + " ";
+    for (int r = 0; r < getMatrixHeight (); r++) {
+      for (int c = 0; c < getMatrixWidth (); c++) {
+        s += getMatrix ()[r][c] + " ";
       }
       s += "\n";
     }

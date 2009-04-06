@@ -141,7 +141,7 @@ public class Components {
   /**
    * Sets the output panel
    * 
-   * @param p 
+   * @param p
    *          an OutputPanel to draw puzzles
    */
   public static void setOutputPanel (OutputPanel p) {

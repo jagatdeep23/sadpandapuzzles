@@ -14,25 +14,25 @@ import java.util.Random;
 public abstract class Puzzle {
   
   /** A random number generator */
-  private static Random gen;
+  private static Random          gen;
   
   /** the word list of PuzzleWords that are in the Puzzle */
   private ArrayList <PuzzleWord> wordList;
   
   /** the list of words to be added to the puzzle */
-  private ArrayList <String> words;
+  private ArrayList <String>     words;
   
   /** the number of words in the puzzle */
-  private int numWords;
+  private int                    numWords;
   
   /** the height of the puzzle */
-  private int height;
+  private int                    height;
   
   /** the width of the puzzle */
-  private int width;
+  private int                    width;
   
   /** the two-dimensional array used to store arranged letters from PuzzleWords */
-  private PuzzleCell [][] matrix;
+  private PuzzleCell [][]        matrix;
   
   /**
    * The list of all possible directions
@@ -59,7 +59,6 @@ public abstract class Puzzle {
     NORTHWEST
   };
   
-  
   /**
    * adds a word to the puzzle
    * 
@@ -68,7 +67,7 @@ public abstract class Puzzle {
    * @return true if the word was added, false if the word was not added
    */
   public abstract boolean addAndValidate (PuzzleWord word);
-
+  
   /**
    * draws a puzzle
    * 
@@ -76,7 +75,7 @@ public abstract class Puzzle {
    *          the graphics to draw to
    */
   public abstract void draw (Graphics g);
-
+  
   /** generates a puzzle */
   public abstract void generate ();
   
@@ -101,6 +100,7 @@ public abstract class Puzzle {
    * @return int[] - [0] is the x value, and [1] is the y value.
    */
   protected abstract int [] generatePosition (int length, int colSize, int rowSize, Direction dir);
+  
   /**
    * adds a word to the list associated
    * 
@@ -229,7 +229,7 @@ public abstract class Puzzle {
    *          the matrix to set
    */
   public void setMatrix (PuzzleCell [][] cells) {
-    if (cells != null) { 
+    if (cells != null) {
       int i = cells.length, j = cells[0].length;
       matrix = new PuzzleCell [i] [j];
       for (int r = 0; r < i; r++) {

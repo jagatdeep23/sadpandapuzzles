@@ -11,7 +11,7 @@ import puzzle.Crossword;
 import puzzle.WordSearch;
 
 /**
- * Panel to which buttons and contols will be added
+ * Panel that the puzzle prints to
  * 
  * @author Sad Panda Software
  * @version 3.0
@@ -29,8 +29,11 @@ public class OutputPanel extends JPanel {
     this.controller = controller;
   }
   
+  /**
+   * gets the preferred size of the panel
+   */
   @Override
-  public Dimension getPreferredSize() {
+  public Dimension getPreferredSize () {
     Dimension d = new Dimension ();
     if (controller.getPuzzle () != null) {
       if (controller.getPuzzle () instanceof WordSearch) {
@@ -47,7 +50,7 @@ public class OutputPanel extends JPanel {
   /**
    * Draws everything on the output panel
    * 
-   * @param g 
+   * @param g
    *          Graphics
    */
   public void paintComponent (Graphics g) {
@@ -56,12 +59,10 @@ public class OutputPanel extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
     g2d.setColor (Color.BLACK);
     
-    if (controller.getPuzzle () != null) {
-      System.out.println ("Drawing Puzzle");
-      controller.getPuzzle ().draw (g2d);
+    if (controller.getPuzzle() != null) {
+      controller.getPuzzle().draw (g2d);
     }
     
-    super.setPreferredSize (getPreferredSize());
-    setAutoscrolls (true);
+    setPreferredSize (getPreferredSize ());
   }
 }

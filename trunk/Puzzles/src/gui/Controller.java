@@ -25,15 +25,15 @@ import shared.ProgramConstants;
 public class Controller {
   
   /** the model */
-  private Puzzle puzzle;
+  private Puzzle             puzzle;
   
   /** the list of words in the word list */
-  private ArrayList<String> words;
+  private ArrayList <String> words;
   
   /** Default Constructor for the Controller */
   public Controller () {
     puzzle = null;
-    words = new ArrayList<String>();
+    words = new ArrayList <String> ();
     Components.setOutputPanel (new OutputPanel (this));
     buildWindow ();
   }
@@ -65,13 +65,13 @@ public class Controller {
         JOptionPane.showMessageDialog (null, "The word you have entered cannot be recognized\nSince we are nice, we will add it for you anyways.",
             "Woah There!", JOptionPane.INFORMATION_MESSAGE);
       }
-      words.add(word);
+      words.add (word);
       Components.wordList.getContents ().addElement (word);
     } else {
       JOptionPane.showMessageDialog (null, "The word you have entered does not meet the minimum requirement length of 2", "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
-
+  
   /**
    * Initiates the puzzle creation depending on the name of the type that is
    * passed in
@@ -92,18 +92,18 @@ public class Controller {
     puzzle.setList (words);
     puzzle.generate ();
   }
-
+  
   /**
    * Clears the current wordlist
    * 
    */
   public void clearWordList () {
     words.clear ();
-    //puzzle.clearWordList ();
+    // puzzle.clearWordList ();
     Components.wordList.getContents ().removeAllElements ();
     Components.getOutputPanel ().removeAll ();
   }
-
+  
   /**
    * Returns the Instance Model used by the program
    * 
@@ -138,7 +138,7 @@ public class Controller {
   /**
    * Sets the current puzzle
    * 
-   * @param p 
+   * @param p
    *          Puzzle object which will bet set
    */
   public void setPuzzle (Puzzle p) {
