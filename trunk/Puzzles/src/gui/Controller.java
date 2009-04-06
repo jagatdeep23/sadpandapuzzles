@@ -10,8 +10,10 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import puzzle.InstanceModel;
+import puzzle.Crossword;
 import puzzle.Puzzle;
+import puzzle.WordSearch;
+import shared.ProgramConstants;
 
 /**
  * The controller class controls the model of this project as well as the GUI
@@ -23,30 +25,17 @@ import puzzle.Puzzle;
 public class Controller {
   
   /** the model */
-  private InstanceModel model;
+  private Puzzle puzzle;
+  
+  /** the list of words in the word list */
+  private ArrayList<String> words;
   
   /** Default Constructor for the Controller */
   public Controller () {
-    model = new InstanceModel ();
+    puzzle = null;
+    words = new ArrayList<String>();
     Components.setOutputPanel (new OutputPanel (this));
     buildWindow ();
-  }
-  
-  /**
-   * Returns the Instance Model used by the program
-   * 
-   * @return InstanceModel
-   */
-  public InstanceModel getModel () {
-    return model;
-  }
-  
-  /**
-   * Initiates the save puzzle functionality when the save button is pushed
-   * 
-   */
-  public void savePuzzle () {
-    FileIO.savePuzzle (model.getPuzzle ());
   }
   
   /**
@@ -76,21 +65,60 @@ public class Controller {
         JOptionPane.showMessageDialog (null, "The word you have entered cannot be recognized\nSince we are nice, we will add it for you anyways.",
             "Woah There!", JOptionPane.INFORMATION_MESSAGE);
       }
-      model.addWord (word);
+      words.add(word);
       Components.wordList.getContents ().addElement (word);
     } else {
       JOptionPane.showMessageDialog (null, "The word you have entered does not meet the minimum requirement length of 2", "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
-  
+
+  /**
+   * Initiates the puzzle creation depending on the name of the type that is
+   * passed in
+   * 
+   * @param type
+   *          a string that refers to the type
+   */
+  public void buildPuzzle (String type) {
+    if (type.equals (ProgramConstants.WORD_SEARCH)) {
+      if (puzzle == null || puzzle instanceof Crossword) {
+        puzzle = new WordSearch ();
+      }
+    } else if (type.equals (ProgramConstants.CROSSWORD)) {
+      if (puzzle == null || puzzle instanceof WordSearch) {
+        puzzle = new Crossword ();
+      }
+    }
+    puzzle.setList (words);
+    puzzle.generate ();
+  }
+
   /**
    * Clears the current wordlist
    * 
    */
   public void clearWordList () {
-    model.clearWordList ();
+    words.clear ();
+    //puzzle.clearWordList ();
     Components.wordList.getContents ().removeAllElements ();
     Components.getOutputPanel ().removeAll ();
+  }
+
+  /**
+   * Returns the Instance Model used by the program
+   * 
+   * @return InstanceModel
+   */
+  public Puzzle getPuzzle () {
+    return puzzle;
+  }
+  
+  /**
+   * Initiates the save puzzle functionality when the save button is pushed
+   * 
+   */
+  public void savePuzzle () {
+    FileIO.savePuzzle (puzzle);
   }
   
   /**
@@ -101,30 +129,10 @@ public class Controller {
     int index = Components.wordList.getSelectedIndex ();
     if (index >= 0) {
       String word = (String) Components.wordList.getSelectedValue ();
-      model.removeWord (word);
+      words.remove (word);
       Components.wordList.getContents ().remove (index);
       Components.wordList.setSelectedIndex ((index > 0) ? index - 1 : index);
     }
-  }
-  
-  /**
-   * Initiates the puzzle creation depending on the name of the type that is
-   * passed in
-   * 
-   * @param type
-   *          a string that refers to the type
-   */
-  public void buildPuzzle (String type) {
-    model.buildPuzzle (type);
-  }
-  
-  /**
-   * gets the current puzzle
-   * 
-   * @return current puzzle
-   */
-  public Puzzle getPuzzle () {
-    return model.getPuzzle ();
   }
   
   /**
@@ -134,7 +142,7 @@ public class Controller {
    *          Puzzle object which will bet set
    */
   public void setPuzzle (Puzzle p) {
-    model.setPuzzle (p);
+    puzzle = p;
   }
   
   /**
@@ -143,7 +151,7 @@ public class Controller {
    * @return ArrayList<String> - List of words in the puzzle
    */
   public ArrayList <String> getWordList () {
-    return model.getWordList ();
+    return words;
   }
   
   /**

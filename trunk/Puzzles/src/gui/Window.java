@@ -58,7 +58,6 @@ public class Window extends JPanel {
     public void actionPerformed (ActionEvent event) {
       Object obj = event.getSource ();
       if (obj.equals (Components.Buttons.newButton)) {
-        System.out.println ("new");
         if (save ("New")) {
           controller.clearWordList ();
           controller.setPuzzle (null);
@@ -66,7 +65,6 @@ public class Window extends JPanel {
           Components.wordList.removeAll ();
         }
       } else if (obj.equals (Components.Buttons.openButton)) {
-        System.out.println ("open");
         if (save ("Open")) {
           controller.clearWordList ();
           controller.setPuzzle (FileIO.loadPuzzle ());
@@ -79,29 +77,25 @@ public class Window extends JPanel {
       } else if (obj.equals (Components.Buttons.saveButton)) {
         save ("Save");
       } else if (obj.equals (Components.Buttons.exportButton)) {
-        System.out.println ("export");
         FileIO.exportPuzzle (controller.getPuzzle ());
       } else if (obj.equals (Components.Buttons.quitButton)) {
         if (save ("Quit")) {
           System.exit (0);
         }
       } else if (obj.equals (Components.Buttons.helpButton)) {
-        System.out.println ("help");
+        
       } else if (obj.equals (Components.Buttons.generateButton)) {
-        System.out.println ("generate");
         controller.buildPuzzle (Components.getSelectedPuzzleOption ());
         Components.getOutputPanel ().repaint ();
       } else if (obj.equals (Components.Buttons.addWordToList)) {
-        System.out.println ("add");
         controller.addWord (Components.getWordFieldText ());
         Components.wordField.setText ("");
       } else if (obj.equals (Components.Buttons.removeWordFromList)) {
-        System.out.println ("remove");
         controller.removeWord ();
       } else if (obj.equals (Components.Buttons.clearList)) {
-        System.out.println ("clear");
+        controller.setPuzzle (null);
         controller.clearWordList ();
-        controller.getModel ().clearPuzzle ();
+        Components.wordList.getContents ().clear ();
         Components.getOutputPanel ().repaint ();
       } else if (obj.equals (Components.wordField)) {
         controller.addWord (Components.getWordFieldText ());

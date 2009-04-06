@@ -199,7 +199,7 @@ public class FileIO {
    */
   private static void saveWordSearch (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
-    ArrayList <PuzzleWord> list = puzzle.getWordList ();
+    ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     buffer.write ("wordsearch\n");
     buffer.write (puzzle.getNumWords () + "\n");
@@ -228,7 +228,7 @@ public class FileIO {
    */
   private static void saveCrossword (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
-    ArrayList <PuzzleWord> list = puzzle.getWordList ();
+    ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     ArrayList <Direction> dirs = new ArrayList <Direction> ();
     buffer.write ("crossword\n");
@@ -439,7 +439,7 @@ public class FileIO {
    */
   private static void saveCrossHTML (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
-    ArrayList <PuzzleWord> list = puzzle.getWordList ();
+    ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     
     String s = "";
@@ -488,7 +488,7 @@ public class FileIO {
    */
   private static void saveSearchHTML (Puzzle puzzle, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
-    ArrayList <PuzzleWord> list = puzzle.getWordList ();
+    ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     
     String s = "<html><body><h1>Sad Panda Software Word Search</h1><pre>";

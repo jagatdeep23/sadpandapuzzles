@@ -21,11 +21,11 @@ public class Crossword extends Puzzle {
   
   /** default constructor */
   public Crossword () {
-    matrix = null;
-    wordList = null;
-    numWords = 0;
-    height = 0;
-    width = 0;
+    setMatrix (null);
+    setWordList (null);
+    setNumWords (0);
+    setMatrixHeight (0);
+    setMatrixWidth (0);
   }
   
   /**
@@ -47,40 +47,40 @@ public class Crossword extends Puzzle {
       firstWord = false;
     } else {
       try {
-        if (matrix[row - dR][col - dC].hasCharacter ()) {
+        if (getMatrix()[row - dR][col - dC].hasCharacter ()) {
           return false;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
       }
       try {
-        if (matrix[row + dR * length][col + dC * length].hasCharacter ()) {
+        if (getMatrix()[row + dR * length][col + dC * length].hasCharacter ()) {
           return false;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
       }
       for (int i = 0; valid && i < w.length (); i++, col += dC, row += dR) {
         character = w.charAt (i);
-        if (matrix[row][col].isEmpty ()) {
+        if (getMatrix()[row][col].isEmpty ()) {
           try {
-            if (matrix[row - dC][col - dR].hasCharacter ()) {
+            if (getMatrix()[row - dC][col - dR].hasCharacter ()) {
               return false;
             }
           } catch (ArrayIndexOutOfBoundsException e) {
           }
           try {
-            if (matrix[row + dC][col + dR].hasCharacter ()) {
+            if (getMatrix()[row + dC][col + dR].hasCharacter ()) {
               return false;
             }
           } catch (ArrayIndexOutOfBoundsException e) {
           }
         } else {
-          if (!matrix[row][col].hasCharacter (character)) {
+          if (!getMatrix()[row][col].hasCharacter (character)) {
             return false;
           } else {
-            if (matrix[row][col].hasDirection (dir)) {
+            if (getMatrix()[row][col].hasDirection (dir)) {
               return false;
             }
-            if (!isCrossed && matrix[row][col].getNumWords () > 0) {
+            if (!isCrossed && getMatrix()[row][col].getNumWords () > 0) {
               isCrossed = true;
             }
           }
@@ -91,7 +91,7 @@ public class Crossword extends Puzzle {
     col = oldCol;
     if (isCrossed) {
       for (int i = 0; i < length; ++i, col += dC, row += dR) {
-        matrix[row][col].add (w.charAt (i));
+        getMatrix()[row][col].add (w.charAt (i));
       }
     }
     return isCrossed;
@@ -102,11 +102,11 @@ public class Crossword extends Puzzle {
     g.setColor (Color.WHITE);
     g.drawRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
-    for (int r = 0; r < height; r++) {
-      for (int c = 0; c < width; c++) {
-        if (matrix[r][c].hasCharacter ()) {
+    for (int r = 0; r < getMatrixHeight(); r++) {
+      for (int c = 0; c < getMatrixWidth(); c++) {
+        if (getMatrix()[r][c].hasCharacter ()) {
           g.drawRect (30 + 24 * r, 30 + 24 * c, 24, 24);
-          g.drawString (matrix[r][c].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
+          g.drawString (getMatrix()[r][c].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
         }
       }
     }
@@ -114,22 +114,22 @@ public class Crossword extends Puzzle {
   
   /** generates a crossword puzzle */
   public void generate () {
-    if (words.size () > 0) {
-      int length = generateDimension (words), crazy = 0;
-      height = width = length;
-      Collections.sort (words, new shared.Algorithms.SortByLineLength ());
+    if (getWordList().size () > 0) {
+      int length = generateDimension (getWordList()), crazy = 0;
+      setMatrixWidth (length);
+      setMatrixHeight (length);
+      Collections.sort (getWordList(), new shared.Algorithms.SortByLineLength ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
       firstWord = true;
-      matrix = new PuzzleCell [height] [width];
+      setMatrix(new PuzzleCell [getMatrixHeight()] [getMatrixWidth()]);
       fillMatrix (length, true);
-      for (String word : words) {
+      for (String word : getWordList()) {
         isValid = false;
         crazy = 0;
-        System.out.println (word + " " + word.length () + " " + height + " x " + width);
         while (!isValid) {
           Direction dir = generateDirection (2);
-          int [] point = generatePosition (word.length (), height, width, dir);
+          int [] point = generatePosition (word.length (), getMatrixHeight(), getMatrixWidth(), dir);
           PuzzleWord pWord = new PuzzleWord ();
           pWord.setColumn (point[0]);
           pWord.setRow (point[1]);
@@ -142,19 +142,19 @@ public class Crossword extends Puzzle {
           if (++crazy == 200000) {
             JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                 JOptionPane.ERROR_MESSAGE);
-            matrix = null;
-            wordList = null;
-            numWords = 0;
-            height = 0;
-            width = 0;
+            setMatrix (null);
+            setWordList (null);
+            setNumWords (0);
+            setMatrixHeight (0);
+            setMatrixWidth (0);
             return;
           }
         }
       }
       int minWidth = -1, maxWidth = -1, minHeight = -1, maxHeight = -1;
-      for (int r = 0; r < matrix.length; ++r) {
-        for (int c = 0; c < matrix[0].length; ++c) {
-          if (matrix[r][c].hasCharacter ()) {
+      for (int r = 0; r < getMatrixHeight(); ++r) {
+        for (int c = 0; c < getMatrixWidth(); ++c) {
+          if (getMatrix()[r][c].hasCharacter ()) {
             if (minWidth == -1 || minWidth > c)
               minWidth = c;
             if (maxWidth == -1 || maxWidth < c)
@@ -166,12 +166,12 @@ public class Crossword extends Puzzle {
           }
         }
       }
-      width = maxWidth - minWidth + 1;
-      height = maxHeight - minHeight + 1;
-      PuzzleCell [][] newMatrix = new PuzzleCell [height][width];
-      for (int r = 0; r < height; ++r) {
-        for (int c = 0; c < width; ++c) {
-          newMatrix[r][c] = matrix[r + minHeight][c + minWidth];
+      setMatrixWidth(maxWidth - minWidth + 1);
+      setMatrixHeight(maxHeight - minHeight + 1);
+      PuzzleCell [][] newMatrix = new PuzzleCell [getMatrixHeight()][getMatrixWidth()];
+      for (int r = 0; r < getMatrixHeight(); ++r) {
+        for (int c = 0; c < getMatrixWidth(); ++c) {
+          newMatrix[r][c] = getMatrix()[r + minHeight][c + minWidth];
         }
       }
       ArrayList <PuzzleWord> temp = new ArrayList <PuzzleWord> ();
@@ -183,9 +183,9 @@ public class Crossword extends Puzzle {
         p.setWord (w.getWord ());
         temp.add (p);
       }
-      matrix = newMatrix;
-      this.numWords = temp.size ();
-      this.wordList = temp;
+      setMatrix(newMatrix);
+      setNumWords(temp.size ());
+      setWordList(temp);
     }
     firstWord = true;
   }
@@ -197,9 +197,9 @@ public class Crossword extends Puzzle {
    */
   public String toString () {
     String s = "";
-    for (int c = 0; c < matrix.length; c++) {
-      for (int r = 0; r < matrix[0].length; r++) {
-        s += matrix[c][r] + " ";
+    for (int c = 0; c < getMatrixHeight(); c++) {
+      for (int r = 0; r < getMatrixWidth(); r++) {
+        s += getMatrix()[c][r] + " ";
       }
       s += "\n";
     }

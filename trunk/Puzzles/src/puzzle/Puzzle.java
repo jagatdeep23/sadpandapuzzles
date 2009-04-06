@@ -17,22 +17,22 @@ public abstract class Puzzle {
   private static Random gen;
   
   /** the word list of PuzzleWords that are in the Puzzle */
-  protected ArrayList <PuzzleWord> wordList;
+  private ArrayList <PuzzleWord> wordList;
   
   /** the list of words to be added to the puzzle */
-  protected ArrayList <String> words;
+  private ArrayList <String> words;
   
   /** the number of words in the puzzle */
-  protected int numWords;
+  private int numWords;
   
   /** the height of the puzzle */
-  protected int height;
+  private int height;
   
   /** the width of the puzzle */
-  protected int                    width;
+  private int width;
   
   /** the two-dimensional array used to store arranged letters from PuzzleWords */
-  protected PuzzleCell [][]        matrix;
+  private PuzzleCell [][] matrix;
   
   /**
    * The list of all possible directions
@@ -169,8 +169,17 @@ public abstract class Puzzle {
    * 
    * @return wordList - a list of PuzzleWords
    */
-  public ArrayList <PuzzleWord> getWordList () {
+  public ArrayList <PuzzleWord> getPuzzleWordList () {
     return wordList;
+  }
+  
+  /**
+   * Returns an array of words.
+   * 
+   * @return words - a list of PuzzleWords
+   */
+  public ArrayList <String> getWordList () {
+    return words;
   }
   
   /**
@@ -220,12 +229,16 @@ public abstract class Puzzle {
    *          the matrix to set
    */
   public void setMatrix (PuzzleCell [][] cells) {
-    int i = cells.length, j = cells[0].length;
-    matrix = new PuzzleCell [i] [j];
-    for (int r = 0; r < i; r++) {
-      for (int c = 0; c < j; c++) {
-        matrix[r][c] = cells[r][c];
+    if (cells != null) { 
+      int i = cells.length, j = cells[0].length;
+      matrix = new PuzzleCell [i] [j];
+      for (int r = 0; r < i; r++) {
+        for (int c = 0; c < j; c++) {
+          matrix[r][c] = cells[r][c];
+        }
       }
+    } else {
+      matrix = null;
     }
   }
   
