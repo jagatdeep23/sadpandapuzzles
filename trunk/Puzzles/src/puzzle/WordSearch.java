@@ -12,7 +12,7 @@ import java.util.Collections;
  * @author Sad Panda Software
  * @version 3.0
  */
-public class WordSearch extends PuzzleTemplate implements Puzzle {
+public class WordSearch extends Puzzle {
   
   /** default constructor */
   public WordSearch () {
@@ -160,7 +160,7 @@ public class WordSearch extends PuzzleTemplate implements Puzzle {
    * @param list
    * @return an integer specifying the dimension to be used by the Puzzle
    */
-  private int generateDimension (ArrayList <String> list) {
+  protected int generateDimension (ArrayList <String> list) {
     int sum = 0;
     for (String s : list) {
       sum += s.length ();
@@ -186,7 +186,7 @@ public class WordSearch extends PuzzleTemplate implements Puzzle {
    *          number of rows.
    * @return int[] - [0] is the x value, and [1] is the y value.
    */
-  private int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
+  protected int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
     int [] point = new int [2];
     switch (dir) {
       case NORTH:

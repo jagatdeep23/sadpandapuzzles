@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author Sad Panda Software
  * @version 3.0
  */
-public class Crossword extends PuzzleTemplate implements Puzzle {
+public class Crossword extends Puzzle {
   
   /** If first word in crossword */
   private boolean firstWord = true;
@@ -212,7 +212,7 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
    * @param list
    * @return an integer specifying the dimension to be used by the Puzzle
    */
-  private int generateDimension (ArrayList <String> list) {
+  protected int generateDimension (ArrayList <String> list) {
     int max = 0, temp = 0;
     for (String s : list) {
       if (temp++ <= (list.size () + 1) / 2)
@@ -233,7 +233,7 @@ public class Crossword extends PuzzleTemplate implements Puzzle {
    *          number of rows.
    * @return int[] - [0] is the x value, and [1] is the y value.
    */
-  private int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
+  protected int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
     int [] point = new int [2];
     switch (dir) {
       case EAST:
