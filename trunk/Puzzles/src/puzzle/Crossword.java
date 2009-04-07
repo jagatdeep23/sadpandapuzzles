@@ -35,7 +35,7 @@ public class Crossword extends Puzzle {
    *          puzzleword to be added.
    * @return boolean Whether the add was a success or not.
    */
-  public boolean addAndValidate (PuzzleWord word) {
+  protected boolean addAndValidate (PuzzleWord word) {
     Direction dir = word.getDirection ();
     String w = word.getWord ();
     int dC = (dir == Direction.EAST) ? 1 : 0, dR = (dir == Direction.SOUTH) ? 1 : 0;

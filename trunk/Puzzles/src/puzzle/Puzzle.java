@@ -66,7 +66,7 @@ public abstract class Puzzle {
    *          a PuzzleWord to add to the puzzle
    * @return true if the word was added, false if the word was not added
    */
-  public abstract boolean addAndValidate (PuzzleWord word);
+  protected abstract boolean addAndValidate (PuzzleWord word);
   
   /**
    * draws a puzzle

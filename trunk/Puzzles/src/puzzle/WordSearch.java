@@ -51,7 +51,7 @@ public class WordSearch extends Puzzle {
    *          puzzleword to be added.
    * @return boolean Whether the add was a success or not.
    */
-  public boolean addAndValidate (PuzzleWord word) {
+  protected boolean addAndValidate (PuzzleWord word) {
     int dC = 0, dR = 0;
     switch (word.getDirection ()) {
       case NORTH:
