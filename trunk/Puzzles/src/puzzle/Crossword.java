@@ -3,7 +3,6 @@ package puzzle;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -119,10 +118,8 @@ public class Crossword extends Puzzle {
     }
   }
   
-  /** generates a crossword puzzle */
-  public void generate (ArrayList<String> wordList) {
-    if (wordList == null)
-      wordList = getWordList ();
+  /** generates the puzzle*/
+  private void generatePuzzle (ArrayList<String> wordList) {
     if (wordList.size () > 0) {
       Map<String, Integer> failedWords = new HashMap<String, Integer> ();
       int length = generateDimension (wordList), crazy = 0;
@@ -185,7 +182,7 @@ public class Crossword extends Puzzle {
               
               while (itr.hasNext ())
                 retry.add (itr.next ().getKey ());
-              generate (retry);
+              generatePuzzle (retry);
             }
           }
         }
@@ -227,6 +224,11 @@ public class Crossword extends Puzzle {
       setWordList (temp);
     }
     firstWord = true;
+  }
+  
+  /** generates a crossword puzzle */
+  public void generate () {
+    generatePuzzle (getWordList ());
   }
   
   /**
