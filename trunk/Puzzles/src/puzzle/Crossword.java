@@ -3,7 +3,11 @@ package puzzle;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +22,9 @@ public class Crossword extends Puzzle {
   
   /** If first word in crossword */
   private boolean firstWord = true;
+  
+  /** Temporary List to hold words being entered into the puzzle */
+  private ArrayList<PuzzleWord> puzzleWords = new ArrayList<PuzzleWord> ();
   
   /** default constructor */
   public Crossword () {
@@ -113,18 +120,21 @@ public class Crossword extends Puzzle {
   }
   
   /** generates a crossword puzzle */
-  public void generate () {
-    if (getWordList ().size () > 0) {
-      int length = generateDimension (getWordList ()), crazy = 0;
+  public void generate (ArrayList<String> wordList) {
+    if (wordList == null)
+      wordList = getWordList ();
+    if (wordList.size () > 0) {
+      Map<String, Integer> failedWords = new HashMap<String, Integer> ();
+      int length = generateDimension (wordList), crazy = 0;
       setMatrixWidth (length);
       setMatrixHeight (length);
-      Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
-      ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
+      Collections.sort (wordList, new shared.Algorithms.SortByLineLength ());
+      //ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
       firstWord = true;
       setMatrix (new PuzzleCell [getMatrixHeight ()] [getMatrixWidth ()]);
       fillMatrix (length, true);
-      for (String word : getWordList ()) {
+      for (String word : wordList) {
         isValid = false;
         crazy = 0;
         while (!isValid) {
@@ -138,16 +148,45 @@ public class Crossword extends Puzzle {
           isValid = addAndValidate (pWord);
           if (isValid) {
             puzzleWords.add (pWord);
+            wordList.remove (pWord.getWord ());
           }
           if (++crazy == 200000) {
-            JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
-                JOptionPane.ERROR_MESSAGE);
-            setMatrix (null);
-            setWordList (null);
-            setNumWords (0);
-            setMatrixHeight (0);
-            setMatrixWidth (0);
-            return;
+            if (!failedWords.containsKey (pWord.getWord ()))
+            {
+              failedWords.put (pWord.getWord(), 1);
+            } else if (failedWords.get (pWord.getWord ()) < 3)
+            {
+              int tmp = failedWords.get (pWord.getWord ());
+              tmp++;
+              failedWords.remove (pWord.getWord ());
+              failedWords.put (pWord.getWord (), tmp);
+            } else
+            {
+              System.out.println("Could not enter " + pWord.getWord () + "into puzzle");
+              failedWords.remove (pWord.getWord ());
+            }
+            
+            if (failedWords.isEmpty ())
+            {
+              JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
+                  JOptionPane.ERROR_MESSAGE);
+              setMatrix (null);
+              setWordList (null);
+              setNumWords (0);
+              setMatrixHeight (0);
+              setMatrixWidth (0);
+              return;
+            } else if (wordList.isEmpty ())
+            {
+              ArrayList <String> retry = new ArrayList <String>();
+              //Collection<> c = failedWords.values ();
+              
+              Iterator<Map.Entry<String, Integer>> itr = failedWords.entrySet ().iterator ();
+              
+              while (itr.hasNext ())
+                retry.add (itr.next ().getKey ());
+              generate (retry);
+            }
           }
         }
       }
