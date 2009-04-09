@@ -121,6 +121,7 @@ public class Crossword extends Puzzle {
   /** generates the puzzle*/
   private void generatePuzzle (ArrayList<String> wordList) {
     if (wordList.size () > 0) {
+      System.out.println("stupid");
       Map<String, Integer> failedWords = new HashMap<String, Integer> ();
       int length = generateDimension (wordList), crazy = 0;
       setMatrixWidth (length);
@@ -131,6 +132,7 @@ public class Crossword extends Puzzle {
       firstWord = true;
       setMatrix (new PuzzleCell [getMatrixHeight ()] [getMatrixWidth ()]);
       fillMatrix (length, true);
+      System.out.println("blblblba");
       for (String word : wordList) {
         isValid = false;
         crazy = 0;
@@ -145,26 +147,31 @@ public class Crossword extends Puzzle {
           isValid = addAndValidate (pWord);
           if (isValid) {
             puzzleWords.add (pWord);
-            wordList.remove (pWord.getWord ());
+            //wordList.remove (pWord.getWord ());
           }
           if (++crazy == 200000) {
+            System.out.println("here.");
             if (!failedWords.containsKey (pWord.getWord ()))
             {
+              System.out.println("here1");
               failedWords.put (pWord.getWord(), 1);
             } else if (failedWords.get (pWord.getWord ()) < 3)
             {
+              System.out.println("here2");
               int tmp = failedWords.get (pWord.getWord ());
               tmp++;
               failedWords.remove (pWord.getWord ());
               failedWords.put (pWord.getWord (), tmp);
             } else
             {
+              System.out.println("here3");
               System.out.println("Could not enter " + pWord.getWord () + "into puzzle");
               failedWords.remove (pWord.getWord ());
             }
             
             if (failedWords.isEmpty ())
             {
+              System.out.println("here4");
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);
               setMatrix (null);
@@ -173,15 +180,20 @@ public class Crossword extends Puzzle {
               setMatrixHeight (0);
               setMatrixWidth (0);
               return;
-            } else if (wordList.isEmpty ())
+            } else if (failedWords.containsKey (wordList.get (wordList.indexOf (pWord.getWord ()))))
             {
+              System.out.println("here5");
               ArrayList <String> retry = new ArrayList <String>();
               //Collection<> c = failedWords.values ();
               
               Iterator<Map.Entry<String, Integer>> itr = failedWords.entrySet ().iterator ();
               
-              while (itr.hasNext ())
+              while (itr.hasNext ()) {
+                System.out.println(itr.next ().getKey ());
                 retry.add (itr.next ().getKey ());
+                System.out.println("hello");
+              }
+              System.out.println("rawr rawr rawr");
               generatePuzzle (retry);
             }
           }
