@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,6 +23,10 @@ import javax.swing.JSplitPane;
 
 @SuppressWarnings("serial")
 public class Window extends JPanel {
+  
+  /**
+   * the graphical controller that mediates between the model and view
+   */
   private Controller controller;
   
   /**
@@ -69,11 +74,11 @@ public class Window extends JPanel {
         if (save ("Open")) {
           controller.clearWordList ();
           controller.setPuzzle (FileIO.loadPuzzle ());
+          for (String s : controller.getPuzzle ().getWordList ()) {
+            controller.addWord (s);
+          }
           Components.getOutputPanel ().repaint ();
           Components.wordList.removeAll ();
-          for (String s : controller.getWordList ()) {
-            Components.wordList.getContents ().addElement (s);
-          }
         }
       } else if (obj.equals (Components.Buttons.saveButton)) {
         save ("Save");

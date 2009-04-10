@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * The Puzzle interface used throughout the program. This includes prototyped
- * methods that are defined in classes that implement this Puzzle interface.
+ * This is a common puzzle object.  It has attributes common to all puzzle types.
+ * Common functionality includes adding words, getters and setters, as well as
+ * specialized functions such as draw and generate.  All puzzle types use this
+ * class as the framework.
  * 
  * @author Sad Panda Software
  * @version 3.0
@@ -60,15 +62,6 @@ public abstract class Puzzle {
   };
   
   /**
-   * adds a word to the puzzle
-   * 
-   * @param word
-   *          a PuzzleWord to add to the puzzle
-   * @return true if the word was added, false if the word was not added
-   */
-  protected abstract boolean addAndValidate (PuzzleWord word);
-  
-  /**
    * draws a puzzle
    * 
    * @param g
@@ -78,7 +71,16 @@ public abstract class Puzzle {
   
   /** generates a puzzle */
   public abstract void generate ();
-  
+
+  /**
+   * adds a word to the puzzle
+   * 
+   * @param word
+   *          a PuzzleWord to add to the puzzle
+   * @return true if the word was added, false if the word was not added
+   */
+  protected abstract boolean addAndValidate (PuzzleWord word);
+
   /**
    * Generates the dimension to be used in the word search matrix
    * 
