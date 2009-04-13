@@ -48,8 +48,6 @@ public class Crossword extends Puzzle {
     
     if (getWordList ().size () > 0) {
       
-      
-      
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       
       int length = generateDimension (getWordList ()), crazy = 0;
@@ -84,7 +82,6 @@ public class Crossword extends Puzzle {
             list.remove (i);
             list.add (word);
             --i;
-            System.out.println (test + " " + limit);
             isValid = true;
             if (++test == limit || (System.currentTimeMillis () - time) >= 3000) {
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
