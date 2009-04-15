@@ -195,15 +195,27 @@ public class FileIO {
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     
+    boolean isPuzzle = showExportType();
+    
     String s = "";
     s += "<html>\n<body>\n<h1>Sad Panda Software Crossword</h1>\n<table border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" cellpadding=\"0\" cellspacing=\"0\">";
-    for (int r = 0; r < matrix[0].length; r++) {
+    for (int r = -1; r <= matrix[0].length; r++) {
       s += "<tr>";
-      for (int c = 0; c < matrix.length; c++) {
-        if (matrix[c][r].isEmpty ()) {
+      for (int c = -1; c <= matrix.length; c++) {
+        try {
+          if (matrix[c][r].isEmpty ()) {
+            s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"black\"> &nbsp&nbsp&nbsp&nbsp&nbsp </td>";
+          } else {
+            s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"white\"> ";
+            if (isPuzzle) {
+              s += "&nbsp&nbsp&nbsp&nbsp&nbsp";
+            } else {
+              s += "<center><b>" + matrix[c][r]+ "</b></center>";
+            }
+            s += " </td>";
+          }
+        }catch (ArrayIndexOutOfBoundsException e) {
           s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"black\"> &nbsp&nbsp&nbsp&nbsp&nbsp </td>";
-        } else {
-          s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"white\"> &nbsp&nbsp&nbsp&nbsp&nbsp </td>";
         }
       }
       s += "</tr>\n";
@@ -245,10 +257,21 @@ public class FileIO {
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     
+    boolean isPuzzle = showExportType();
+    
     String s = "<html><body><h1>Sad Panda Software Word Search</h1><pre>";
-    for (int r = 0; r < matrix.length; r++) {
-      for (int c = 0; c < matrix[0].length; c++) {
-        s += matrix[r][c] + " ";
+    
+    for (int c = 0; c < matrix[0].length; c++) {
+      for (int r = 0; r < matrix.length; r++) {
+        if (isPuzzle) {
+          s += matrix[r][c] + " ";
+        } else {
+          if (matrix[r][c].getNumWords () > 0) {
+            s += matrix[r][c] + " ";
+          } else {
+            s += "  ";
+          }
+        }
       }
       s += "\n";
     }
@@ -483,5 +506,10 @@ public class FileIO {
         JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
       }
     }
+  }
+  
+  private static boolean showExportType() {
+    String[] list = {"Puzzle", "Solution"};
+    return (0 == JOptionPane.showOptionDialog (null, "What type of puzzle to you wish to export?", "Export", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, list, list[0]));
   }
 }
