@@ -170,7 +170,7 @@ public class Controller {
     }
     
     JFrame.setDefaultLookAndFeelDecorated (true);
-    JFrame frame = new JFrame ("Puzzle Generator 2.0 - Sad Panda Software");
+    JFrame frame = new JFrame ("Puzzle Generator 3.0 - Sad Panda Software");
     frame.setMinimumSize (new Dimension (480, 400));
     frame.getContentPane ().add (new Window (this));
     frame.pack ();
