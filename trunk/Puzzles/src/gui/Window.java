@@ -70,7 +70,7 @@ public class Window extends JPanel {
           Components.wordList.removeAll ();
         }
       } else if (obj.equals (Components.Buttons.openButton)) {
-        if (save ("Open")) {
+        if (Components.wordList.getContents ().size () == 0 || save ("Open")) {
           controller.clearWordList ();
           controller.setPuzzle (FileIO.loadPuzzle ());
           for (String s : controller.getPuzzle ().getWordList ()) {

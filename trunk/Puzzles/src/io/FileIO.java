@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -48,29 +49,34 @@ public class FileIO {
    *          a puzzle
    */
   public static void exportPuzzle (Puzzle puzzle) {
-    int status;
-    File newFile = new File ("empty");
-    status = getFileChooser ().showSaveDialog (null);
-    
-    if (status == JFileChooser.APPROVE_OPTION) {
-      newFile = getFileChooser ().getSelectedFile ();
-      File actualFile = new File (newFile.toString () + ".html");
-      if (puzzle instanceof WordSearch) {
-        try {
-          exportWordSearchHTML (puzzle, actualFile);
-        } catch (IOException e) {
-          JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+    try {
+      //boolean type = showExportType();
+      int status;
+      File newFile = new File ("empty");
+      status = getFileChooser ().showSaveDialog (null);
+
+      if (status == JFileChooser.APPROVE_OPTION) {
+        newFile = getFileChooser ().getSelectedFile ();
+        if (puzzle instanceof WordSearch) {
+          try {
+            exportWordSearchHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
+            exportWordSearchHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
+          } catch (IOException e) {
+            JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+          }
+        } else if (puzzle instanceof Crossword) {
+          try {
+            exportCrosswordHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
+            exportCrosswordHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
+          } catch (IOException e) {
+            JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+          }
+        } else {
+          
         }
-      } else if (puzzle instanceof Crossword) {
-        try {
-          exportCrosswordHTML (puzzle, actualFile);
-        } catch (IOException e) {
-          JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
-        }
-      } else {
-        
       }
-    }
+    } catch (IllegalStateException e) {}
+    
   }
 
   /**
@@ -188,15 +194,15 @@ public class FileIO {
    *          a puzzle
    * @param location
    *          a file
+   * @param isPuzzle
+   *          boolean flag for export type
    * @throws IOException
    */
-  private static void exportCrosswordHTML (Puzzle puzzle, File location) throws IOException {
+  private static void exportCrosswordHTML (Puzzle puzzle, File location, boolean isPuzzle) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
+    Collections.shuffle (list);
     PuzzleCell [][] matrix = puzzle.getMatrix ();
-    
-    boolean isPuzzle = showExportType();
-    
     String s = "";
     s += "<html>\n<body>\n<h1>Sad Panda Software Crossword</h1>\n<table border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" cellpadding=\"0\" cellspacing=\"0\">";
     for (int r = -1; r <= matrix[0].length; r++) {
@@ -223,22 +229,23 @@ public class FileIO {
     s += "</table>\n<br><br>\n";
     buffer.write (s);
     
-    buffer.write ("<b>South</b><br>\n");
-    for (PuzzleWord word : list) {
-      if (word.getDirection ().name ().toLowerCase ().equals ("east")) {
-        buffer.write (word.getWord () + "<br>\n");
+    if (isPuzzle) {
+      buffer.write ("<b>South</b><br>\n");
+      for (PuzzleWord word : list) {
+        if (word.getDirection ().name ().toLowerCase ().equals ("east")) {
+          buffer.write (word.getWord ().toLowerCase () + "<br>\n");
+        }
       }
-    }
-    buffer.write ("<br>\n");
-    
-    buffer.write ("<b>East</b><br>\n");
-    for (PuzzleWord word : list) {
-      if (word.getDirection ().name ().toLowerCase ().equals ("south")) {
-        buffer.write (word.getWord () + "<br>\n");
+      buffer.write ("<br>\n");
+      
+      buffer.write ("<b>East</b><br>\n");
+      for (PuzzleWord word : list) {
+        if (word.getDirection ().name ().toLowerCase ().equals ("south")) {
+          buffer.write (word.getWord ().toLowerCase () + "<br>\n");
+        }
       }
+      buffer.write ("<br>\n");
     }
-    buffer.write ("<br>\n");
-    
     buffer.close ();
     
   }
@@ -250,34 +257,47 @@ public class FileIO {
    *          a puzzle
    * @param location
    *          a file
+   * @param isPuzzle
+   *          boolean flag for export type
    * @throws IOException
    */
-  private static void exportWordSearchHTML (Puzzle puzzle, File location) throws IOException {
+  private static void exportWordSearchHTML (Puzzle puzzle, File location, boolean isPuzzle) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
+    Collections.shuffle (list);
     PuzzleCell [][] matrix = puzzle.getMatrix ();
     
-    boolean isPuzzle = showExportType();
+    String s = "<html><body><h1>Sad Panda Software Word Search</h1>\n";
     
-    String s = "<html><body><h1>Sad Panda Software Word Search</h1><pre>";
-    
-    for (int c = 0; c < matrix[0].length; c++) {
-      for (int r = 0; r < matrix.length; r++) {
-        if (isPuzzle) {
-          s += matrix[r][c] + " ";
-        } else {
-          if (matrix[r][c].getNumWords () > 0) {
-            s += matrix[r][c] + " ";
+    s += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
+    for (int r = -1; r <= matrix[0].length; r++) {
+      s += "<tr>";
+      for (int c = -1; c <= matrix.length; c++) {
+        try {
+          if (matrix[c][r].getNumWords () > 0 || isPuzzle) {
+          s += "<td><center><tt><big>" + matrix[c][r]+ "</big></tt></center></td>";
           } else {
-            s += "  ";
+            s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
           }
+        }catch (ArrayIndexOutOfBoundsException e) {
+          s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
         }
       }
-      s += "\n";
+      s += "</tr>\n";
     }
-    s += "</pre>";
+    s += "</table>\n<br><br>\n";
+    
+    s += "<table border=\"0\">\n";
+    if (!isPuzzle) {
+      s += "<tr><td><b>Word</b></td><td><b>Direction</b></td><td><b>Row</b></td><td><b>Col</b></td></tr>\n";
+    }
     for (PuzzleWord word : list) {
-      s += "<br>" + word.getWord ();
+      s += "<tr>";
+      s += "<td>" + word.getWord ().toLowerCase() + "</td>";
+      if (!isPuzzle) {
+        s+= "<td>" + word.getDirection ().name ().toLowerCase () + "</td><td>" + word.getRow () + "</td><td>" + word.getColumn () + "</td>";
+      }
+      s += "</tr>\n";
     }
     s += "</body></html>";
     buffer.write (s);
@@ -506,10 +526,5 @@ public class FileIO {
         JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
       }
     }
-  }
-  
-  private static boolean showExportType() {
-    String[] list = {"Puzzle", "Solution"};
-    return (0 == JOptionPane.showOptionDialog (null, "What type of puzzle to you wish to export?", "Export", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, list, list[0]));
   }
 }

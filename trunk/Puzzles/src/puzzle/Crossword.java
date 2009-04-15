@@ -83,7 +83,22 @@ public class Crossword extends Puzzle {
             list.add (word);
             --i;
             isValid = true;
-            if (++test == limit || (System.currentTimeMillis () - time) >= 3000) {
+            if (++test == limit) {
+              PuzzleWord pw = puzzleWords.get (puzzleWords.size () - 1);
+              puzzleWords.remove (puzzleWords.size () - 1);
+              int r = pw.getRow ();
+              int c = pw.getColumn ();
+              int dr = (pw.getDirection () == Direction.EAST) ? 0 : 1;
+              int dc = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
+              for (int k = 0; k < pw.getWord ().length (); ++k, r += dr, c += dc) {
+                getMatrix()[r][c].remove (pw.getDirection ());
+              }
+              String wd = list.get (i);
+              list.remove (i);
+              list.add (wd);
+            }
+              
+            if ((System.currentTimeMillis () - time) >= 3000) {
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);
               setMatrix (null);
@@ -131,6 +146,7 @@ public class Crossword extends Puzzle {
       setMatrix (newMatrix);
       setNumWords (temp.size ());
       setWordList (temp);
+      Collections.shuffle (getWordList ());
     }
     firstWord = true;
   }
@@ -229,7 +245,6 @@ public class Crossword extends Puzzle {
   protected int generateDimension (ArrayList <String> list) {
     int max = 0, temp = 0;
     for (String s : list) {
-      System.out.println (s);
       if (temp++ <= (list.size () + 1) / 2)
         max += s.length ();
     }

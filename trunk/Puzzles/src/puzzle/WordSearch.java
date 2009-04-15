@@ -87,14 +87,18 @@ public class WordSearch extends Puzzle {
     int col = word.getColumn ();
     String w = word.getWord ();
     for (int i = 0; i < w.length (); i++) {
-      PuzzleCell cell = getMatrix ()[col][row];
-      char character = w.charAt (i);
-      if (!cell.add (character)) {
-        for (int j = i - 1; j >= 0; j--) {
-          row -= dR;
-          col -= dC;
-          getMatrix ()[col][row].remove ();
+      try {
+        PuzzleCell cell = getMatrix ()[col][row];
+        char character = w.charAt (i);
+        if (!cell.add (character)) {
+          for (int j = i - 1; j >= 0; j--) {
+            row -= dR;
+            col -= dC;
+            getMatrix ()[col][row].remove ();
+          }
+          return false;
         }
+      } catch (ArrayIndexOutOfBoundsException e) {
         return false;
       }
       row += dR;
@@ -135,6 +139,7 @@ public class WordSearch extends Puzzle {
       setMatrixHeight (length);
       setNumWords (puzzleWords.size ());
       setWordList (puzzleWords);
+      Collections.shuffle (getWordList ());
     }
   }
   
@@ -165,9 +170,9 @@ public class WordSearch extends Puzzle {
     for (String s : list) {
       sum += s.length ();
     }
-    sum = (int) (Math.ceil (Math.sqrt (sum * 3 / 2)));
+    sum = (int) (Math.ceil (Math.sqrt (sum * 5 / 3)));
     if (sum < list.get (0).length ()) {
-      sum = list.get (0).length () + 2;
+      sum = list.get (0).length () + 1;
     } else {
       ++sum;
     }
@@ -187,39 +192,81 @@ public class WordSearch extends Puzzle {
    * @return int[] - [0] is the x value, and [1] is the y value.
    */
   protected int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
-    int [] point = new int [2];
+    int [] point = {0, 0};
     switch (dir) {
       case NORTH:
         point[0] = getNumberGenerator ().nextInt (colSize);
-        point[1] = length - 1 + getNumberGenerator ().nextInt (rowSize - length);
+        point[1] = length - 1;
+        try {
+           point[1] =+ getNumberGenerator ().nextInt (rowSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         break;
       case NORTHEAST:
-        point[0] = getNumberGenerator ().nextInt (colSize - length);
-        point[1] = length - 1 + getNumberGenerator ().nextInt (rowSize - length);
+        point[1] = length - 1;
+        try {
+          point[0] = getNumberGenerator ().nextInt (colSize - length);
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+          point[1] += getNumberGenerator ().nextInt (rowSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         break;
       case EAST:
-        point[0] = getNumberGenerator ().nextInt (colSize - length);
+        try {
+          point[0] = getNumberGenerator ().nextInt (colSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         point[1] = getNumberGenerator ().nextInt (rowSize);
         break;
       case SOUTHEAST:
-        point[0] = getNumberGenerator ().nextInt (colSize - length);
-        point[1] = getNumberGenerator ().nextInt (rowSize - length);
+        try {
+          point[0] = getNumberGenerator ().nextInt (colSize - length);
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         break;
       case SOUTH:
         point[0] = getNumberGenerator ().nextInt (colSize);
-        point[1] = getNumberGenerator ().nextInt (rowSize - length);
+        try {
+          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         break;
       case SOUTHWEST:
-        point[0] = length - 1 + getNumberGenerator ().nextInt (colSize - length);
-        point[1] = getNumberGenerator ().nextInt (rowSize - length);
+        point[0] = length - 1;
+        try {
+          point[0] += getNumberGenerator ().nextInt (colSize - length);
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         break;
       case WEST:
-        point[0] = length - 1 + getNumberGenerator ().nextInt (colSize - length);
+        point[0] = length - 1;
+        try {
+          point[0] += getNumberGenerator ().nextInt (colSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         point[1] = getNumberGenerator ().nextInt (rowSize);
         break;
       case NORTHWEST:
-        point[0] = length - 1 + getNumberGenerator ().nextInt (colSize - length);
-        point[1] = length - 1 + getNumberGenerator ().nextInt (rowSize - length);
+        point[0] = length - 1;
+        point[1] = length - 1;
+        try {
+          point[0] += getNumberGenerator ().nextInt (colSize - length);
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+          point[1] += getNumberGenerator ().nextInt (rowSize - length);
+        } catch (IllegalArgumentException e) {
+        }
         break;
     }
     return (point);
