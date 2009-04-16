@@ -52,8 +52,8 @@ public class WordSearch extends Puzzle {
   public void generate () {
     long total = 0;
     if (getWordList ().size () > 0) {
-      int length = generateDimension (getWordList ());
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
+      int length = generateDimension (getWordList ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
       setMatrix (new PuzzleCell [length] [length]);
@@ -177,11 +177,9 @@ public class WordSearch extends Puzzle {
     }
     sum = (int) (Math.ceil (Math.sqrt (sum)));
     if (sum < list.get (0).length ()) {
-      sum = list.get (0).length () + 1;
-    } else {
-      ++sum;
+      sum = list.get (0).length ();
     }
-    return (sum);
+    return (++sum);
   }
   
   /**

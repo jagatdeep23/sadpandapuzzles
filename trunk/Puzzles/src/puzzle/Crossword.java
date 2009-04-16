@@ -99,7 +99,7 @@ public class Crossword extends Puzzle {
               int dr = (pw.getDirection () == Direction.EAST) ? 0 : 1;
               int dc = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
               for (int k = 0; k < pw.getWord ().length (); ++k, r += dr, c += dc) {
-                getMatrix()[r][c].remove (pw.getDirection ());
+                getMatrix()[c][r].remove (pw.getDirection ());
               }
               String wd = list.get (i);
               list.remove (i);
