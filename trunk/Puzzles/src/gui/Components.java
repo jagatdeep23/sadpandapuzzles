@@ -194,6 +194,7 @@ public class Components {
    */
   public static JToolBar buildToolbar () {
     toolBar = new JToolBar ();
+    JToolBar centerBar = new JToolBar ();
     leftBar = new JToolBar ();
     rightBar = new JToolBar ();
     
@@ -203,8 +204,12 @@ public class Components {
     
     leftBar.setFloatable (false);
     rightBar.setFloatable (false);
+    centerBar.setFloatable (false);
     leftBar.setRollover (true);
     rightBar.setRollover (true);
+    centerBar.setRollover (true);
+    
+    centerBar.add (new JLabel(" "));
     
     String [] s = {ProgramConstants.WORD_SEARCH, ProgramConstants.CROSSWORD};
     dropDown = new JComboBox (s);
@@ -225,6 +230,7 @@ public class Components {
     
     toolBar.add (leftBar, BorderLayout.WEST);
     toolBar.add (rightBar, BorderLayout.EAST);
+    toolBar.add (centerBar, BorderLayout.CENTER);
     
     toolBar.setSize (toolBar.getWidth () * 2, toolBar.getHeight () * 2);
     toolBar.setFloatable (false);
@@ -243,7 +249,7 @@ public class Components {
   private static JButton generateButton (String name) {
     
     JButton button;
-    button = new JButton (name, new ImageIcon (name.toLowerCase () + ".png"));
+    button = new JButton (name, new ImageIcon ("images/" + name.toLowerCase () + ".png"));
     button.setVerticalTextPosition (SwingConstants.BOTTOM);
     button.setHorizontalTextPosition (SwingConstants.CENTER);
     button.setRolloverEnabled (true);

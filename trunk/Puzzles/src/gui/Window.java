@@ -121,7 +121,7 @@ public class Window extends JPanel {
           d.add (new JLabel ("8. Generates a puzzle of the selected type"));
           d.add (new JLabel ("16. RMB - Generates a puzzle"));
           
-          c.add (new JLabel (new ImageIcon("helpImage.PNG")), BorderLayout.CENTER);
+          c.add (new JLabel (new ImageIcon("images/helpImage.PNG")), BorderLayout.CENTER);
           c.add (d, BorderLayout.SOUTH);
           popup.add (c);
           popup.pack ();
