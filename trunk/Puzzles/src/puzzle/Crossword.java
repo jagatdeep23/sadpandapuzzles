@@ -1,7 +1,9 @@
 package puzzle;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JOptionPane;
@@ -29,15 +31,19 @@ public class Crossword extends Puzzle {
   }
   
   /** draws the crossword puzzle */
-  public void draw (Graphics g) {
-    g.setColor (Color.WHITE);
-    g.drawRect (0, 0, 5000, 5000);
+  public void draw (Graphics2D g) {
     g.setColor (Color.BLACK);
+    g.setFont (new Font ("Courier", Font.BOLD, 18));
+    g.setStroke (new BasicStroke (3));
+    g.fillRect (0, 0, 5000, 5000);
     for (int r = 0; r < getMatrixHeight (); r++) {
       for (int c = 0; c < getMatrixWidth (); c++) {
         if (getMatrix ()[r][c].hasCharacter ()) {
+          g.setColor (Color.WHITE);
+          g.fillRect (30 + 24 * r, 30 + 24 * c, 24, 24);
+          g.setColor (Color.BLACK);
           g.drawRect (30 + 24 * r, 30 + 24 * c, 24, 24);
-          g.drawString (getMatrix ()[r][c].toString (), 30 + 24 * r + 8, 30 + 24 * c + 15);
+          g.drawString (getMatrix ()[r][c].toString (), 30 + 24 * r + 9, 30 + 24 * c + 18);
         }
       }
     }
@@ -45,6 +51,7 @@ public class Crossword extends Puzzle {
   
   /** generates a crossword puzzle */
   public void generate () {
+    long total = 0;
     
     if (getWordList ().size () > 0) {
       
@@ -75,6 +82,7 @@ public class Crossword extends Puzzle {
           pWord.setRow (point[1]);
           pWord.setDirection (dir);
           pWord.setWord (word);
+          ++total;
           isValid = addAndValidate (pWord);
           if (isValid) {
             puzzleWords.add (pWord);
@@ -99,6 +107,7 @@ public class Crossword extends Puzzle {
             }
               
             if ((System.currentTimeMillis () - time) >= 3000) {
+              System.out.println ("Took " + total + " passes.");
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);
               setMatrix (null);
@@ -149,6 +158,7 @@ public class Crossword extends Puzzle {
       Collections.shuffle (getWordList ());
     }
     firstWord = true;
+    System.out.println ("Took " + total + " passes.");
   }
 
   /**

@@ -1,6 +1,7 @@
 package puzzle;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -67,7 +68,7 @@ public abstract class Puzzle {
    * @param g
    *          the graphics to draw to
    */
-  public abstract void draw (Graphics g);
+  public abstract void draw (Graphics2D g);
   
   /** generates a puzzle */
   public abstract void generate ();
