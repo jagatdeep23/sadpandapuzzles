@@ -30,6 +30,9 @@ public class Controller {
   /** the list of words in the word list */
   private ArrayList <String> words;
   
+  /** the window frame */
+  private JFrame frame;
+  
   /** Default Constructor for the Controller */
   public Controller () {
     puzzle = null;
@@ -170,12 +173,20 @@ public class Controller {
     }
     
     JFrame.setDefaultLookAndFeelDecorated (true);
-    JFrame frame = new JFrame ("Puzzle Generator 3.0 - Sad Panda Software");
+    frame = new JFrame ("Puzzle Generator 3.0 - Sad Panda Software");
     frame.setMinimumSize (new Dimension (480, 400));
     frame.getContentPane ().add (new Window (this));
     frame.pack ();
     frame.setSize (800, 600);
     frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
     frame.setVisible (true);
+  }
+  
+  /**
+   * gets the window frame
+   * @return the window frame
+   */
+  public JFrame getFrame () {
+    return frame;
   }
 }

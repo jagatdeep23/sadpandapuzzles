@@ -3,10 +3,17 @@ package gui;
 import io.FileIO;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,7 +60,7 @@ public class Window extends JPanel {
    * @version 2.0
    */
   public class EventListener implements ActionListener {
-    
+    private boolean helpIsOpen = false;
     /**
      * the action that is performed based on the event passed
      * 
@@ -63,7 +70,7 @@ public class Window extends JPanel {
     public void actionPerformed (ActionEvent event) {
       Object obj = event.getSource ();
       if (obj.equals (Components.Buttons.newButton)) {
-        if (save ("New")) {
+        if (Components.wordList.getContents ().size () == 0 || save ("New")) {
           controller.clearWordList ();
           controller.setPuzzle (null);
           Components.getOutputPanel ().repaint ();
@@ -84,11 +91,42 @@ public class Window extends JPanel {
       } else if (obj.equals (Components.Buttons.exportButton)) {
         FileIO.exportPuzzle (controller.getPuzzle ());
       } else if (obj.equals (Components.Buttons.quitButton)) {
-        if (save ("Quit")) {
+        if (Components.wordList.getContents ().size () == 0 || save ("Quit")) {
           System.exit (0);
         }
       } else if (obj.equals (Components.Buttons.helpButton)) {
-        
+        if (!helpIsOpen) {
+          helpIsOpen = true;
+          JDialog popup = new JDialog(controller.getFrame (), "I can has help?");
+          popup.addWindowListener (new MyWindowListener());
+          Container c = new Container ();
+          c.setLayout (new BorderLayout(5, 5));
+          
+          Container d = new Container();
+          d.setLayout (new GridLayout (8, 2, 0, 5));
+          d.add (new JLabel ("1. Clears all words and puzzles"));
+          d.add (new JLabel ("9. Word List area"));
+          d.add (new JLabel ("2. Prompts user to open a file"));
+          d.add (new JLabel ("10. Text field for entering words"));
+          d.add (new JLabel ("3. Prompts user to save a file"));
+          d.add (new JLabel ("11. Adds a word to the word list"));
+          d.add (new JLabel ("4. Prompts user to export to HTML"));
+          d.add (new JLabel ("12. Removes the selected word from the word list"));
+          d.add (new JLabel ("5. Exits the program"));
+          d.add (new JLabel ("13. Clears the word list"));
+          d.add (new JLabel ("6. How did you get here?"));
+          d.add (new JLabel ("14. The puzzle output area"));
+          d.add (new JLabel ("7. Selects puzzle type"));
+          d.add (new JLabel ("15. LMB - Exports a puzzle (generates if no puzzle)"));
+          d.add (new JLabel ("8. Generates a puzzle of the selected type"));
+          d.add (new JLabel ("16. RMB - Generates a puzzle"));
+          
+          c.add (new JLabel (new ImageIcon("helpImage.PNG")), BorderLayout.CENTER);
+          c.add (d, BorderLayout.SOUTH);
+          popup.add (c);
+          popup.pack ();
+          popup.setVisible (true);
+        }
       } else if (obj.equals (Components.Buttons.generateButton)) {
         controller.buildPuzzle (Components.getSelectedPuzzleOption ());
         Components.getOutputPanel ().repaint ();
@@ -131,6 +169,27 @@ public class Window extends JPanel {
           return (true);
         }
       }
+    }
+    private class MyWindowListener implements WindowListener {
+
+      public void windowActivated (WindowEvent arg0) {}
+
+      public void windowClosed (WindowEvent arg0) {
+        helpIsOpen = false;
+      }
+
+      public void windowClosing (WindowEvent arg0) {
+        helpIsOpen = false;
+      }
+
+      public void windowDeactivated (WindowEvent arg0) {}
+
+      public void windowDeiconified (WindowEvent arg0) {}
+
+      public void windowIconified (WindowEvent arg0) {}
+
+      public void windowOpened (WindowEvent arg0) {}
+      
     }
   }
 }
