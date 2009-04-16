@@ -87,7 +87,7 @@ public class OutputPanel extends JPanel {
      * @param m the mouse event passed
      */
     public void mouseClicked (MouseEvent m) {
-      if (m.getButton () == MouseEvent.BUTTON2) {
+      if (m.getButton () == MouseEvent.BUTTON3) {
         controller.buildPuzzle (Components.getSelectedPuzzleOption ());
         repaint();
       }
