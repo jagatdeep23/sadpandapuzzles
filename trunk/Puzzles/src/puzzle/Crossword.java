@@ -93,17 +93,19 @@ public class Crossword extends Puzzle {
             isValid = true;
             if (++test == limit) {
               PuzzleWord pw = puzzleWords.get (puzzleWords.size () - 1);
-              puzzleWords.remove (puzzleWords.size () - 1);
+              
               int r = pw.getRow ();
               int c = pw.getColumn ();
-              int dr = (pw.getDirection () == Direction.EAST) ? 0 : 1;
-              int dc = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
+              int dr = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
+              int dc = (pw.getDirection () == Direction.SOUTH) ? 0 : 1;
               for (int k = 0; k < pw.getWord ().length (); ++k, r += dr, c += dc) {
-                getMatrix()[c][r].remove (pw.getDirection ());
+                getMatrix()[r][c].remove (pw.getDirection ());
               }
-              String wd = list.get (i);
+              String wd = pw.getWord ();
               list.remove (i);
               list.add (wd);
+              test = 0;
+              puzzleWords.remove (puzzleWords.size () - 1);
             }
               
             if ((System.currentTimeMillis () - time) >= 3000) {
