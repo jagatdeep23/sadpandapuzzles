@@ -9,7 +9,7 @@ import java.util.Collections;
 import javax.swing.JOptionPane;
 
 /**
- * A Crossword puzzle is a specialized Puzzle. It is a retangular shape that
+ * A Crossword puzzle is a specialized Puzzle. It is a rectangular shape that
  * consists of words that must intersect at least one time. Words may never be
  * directly parallel. It is also known as a free-form crossword puzzle.
  * 
@@ -51,8 +51,7 @@ public class Crossword extends Puzzle {
   
   /** generates a crossword puzzle */
   public void generate () {
-    long total = 0;
-    
+    long total = 0, test2 = 0, test3 = 0;
     if (getWordList ().size () > 0) {
       
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
@@ -66,7 +65,7 @@ public class Crossword extends Puzzle {
       firstWord = true;
       setMatrix (new PuzzleCell [getMatrixHeight ()] [getMatrixWidth ()]);
       fillMatrix (length, true);
-      int limit = (int)(Math.pow (list.size(), 2)) / 2;
+      int limit = (int)(Math.pow (list.size(), 2)) / 4;
       int test = 0;
       
       long time = System.currentTimeMillis ();
@@ -91,6 +90,7 @@ public class Crossword extends Puzzle {
             list.add (word);
             --i;
             isValid = true;
+            test3 ++;
             if (++test == limit) {
               PuzzleWord pw = puzzleWords.get (puzzleWords.size () - 1);
               
@@ -102,9 +102,9 @@ public class Crossword extends Puzzle {
                 getMatrix()[r][c].remove (pw.getDirection ());
               }
               String wd = pw.getWord ();
-              list.remove (i);
               list.add (wd);
               test = 0;
+              test2 ++;
               puzzleWords.remove (puzzleWords.size () - 1);
             }
               
@@ -161,6 +161,8 @@ public class Crossword extends Puzzle {
     }
     firstWord = true;
     System.out.println ("Took " + total + " passes.");
+    System.out.println ("Major Shift Occurred " + test2 + " times.");
+    System.out.println ("Minor Shifts Occurred "  + test3 + " times.");
   }
 
   /**
