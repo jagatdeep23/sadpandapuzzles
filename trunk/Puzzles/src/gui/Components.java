@@ -167,14 +167,16 @@ public class Components {
     Buttons.addWordToList = new JButton ("Add New Word");
     Buttons.removeWordFromList = new JButton ("Remove Selected Word");
     Buttons.clearList = new JButton ("Clear Word List");
+    Buttons.loadList = new JButton ("Load Word List");
     wordListLabel = new JLabel ("Word List");
     wordListLabel.setHorizontalAlignment (JLabel.CENTER);
     
-    buttonPanel = new JPanel (new GridLayout (4, 1, 5, 5));
+    buttonPanel = new JPanel (new GridLayout (5, 1, 5, 5));
     buttonPanel.add (wordField);
     buttonPanel.add (Buttons.addWordToList);
     buttonPanel.add (Buttons.removeWordFromList);
     buttonPanel.add (Buttons.clearList);
+    buttonPanel.add (Buttons.loadList);
     
     wordList = new MutableList ();
     JScrollPane scrollPane = new JScrollPane (wordList);
@@ -324,6 +326,11 @@ public class Components {
     public static JButton clearList;
     
     /**
+     * the load list button
+     */
+    public static JButton loadList;
+    
+    /**
      * Adds action listeners to the buttons
      * 
      * @param listener -
@@ -340,6 +347,7 @@ public class Components {
       addWordToList.addActionListener (listener);
       removeWordFromList.addActionListener (listener);
       clearList.addActionListener (listener);
+      loadList.addActionListener (listener);
       wordField.addActionListener (listener);
     }
   }

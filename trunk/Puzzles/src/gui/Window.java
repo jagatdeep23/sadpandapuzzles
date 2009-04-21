@@ -128,21 +128,37 @@ public class Window extends JPanel {
           popup.setVisible (true);
         }
       } else if (obj.equals (Components.Buttons.generateButton)) {
+        
         controller.buildPuzzle (Components.getSelectedPuzzleOption ());
         Components.getOutputPanel ().repaint ();
+        
       } else if (obj.equals (Components.Buttons.addWordToList)) {
+        
         controller.addWord (Components.getWordFieldText ());
         Components.wordField.setText ("");
+        
       } else if (obj.equals (Components.Buttons.removeWordFromList)) {
+        
         controller.removeWord ();
+        
       } else if (obj.equals (Components.Buttons.clearList)) {
+        
         controller.setPuzzle (null);
         controller.clearWordList ();
         Components.wordList.getContents ().clear ();
         Components.getOutputPanel ().repaint ();
+        
       } else if (obj.equals (Components.wordField)) {
+        
         controller.addWord (Components.getWordFieldText ());
         Components.wordField.setText ("");
+        
+      } else if (obj.equals (Components.Buttons.loadList)) {
+        
+        for (String w : FileIO.getFile ()) {
+          controller.addWord (w);
+        }
+        
       }
     }
     

@@ -36,7 +36,7 @@ public class FileIO {
   /**
    * The array list of words
    */
-  private static Vector <String> words = new Vector <String> ();
+  private static ArrayList <String> words = new ArrayList <String> ();
   
   /** The file that is to be loaded */
   private static File            file;
@@ -84,18 +84,18 @@ public class FileIO {
    * 
    * @return ArrayList<String> - A list of words
    */
-  public static Vector <String> getFile () {
+  public static ArrayList <String> getFile () {
     int status;
     status = getFileChooser ().showOpenDialog (null);
     
     if (status == JFileChooser.APPROVE_OPTION) {
       file = getFileChooser ().getSelectedFile ();
     } else {
-      words.clear ();
       return words;
     }
     
     try {
+      words.clear ();
       getWords (file);
     } catch (IOException e) {
       
