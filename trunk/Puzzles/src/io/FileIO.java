@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -49,34 +48,37 @@ public class FileIO {
    *          a puzzle
    */
   public static void exportPuzzle (Puzzle puzzle) {
-    try {
-      //boolean type = showExportType();
-      int status;
-      File newFile = new File ("empty");
-      status = getFileChooser ().showSaveDialog (null);
-
-      if (status == JFileChooser.APPROVE_OPTION) {
-        newFile = getFileChooser ().getSelectedFile ();
-        if (puzzle instanceof WordSearch) {
-          try {
-            exportWordSearchHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
-            exportWordSearchHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
-          } catch (IOException e) {
-            JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+    if (puzzle != null && puzzle.getNumWords () > 0) {
+      try {
+        //boolean type = showExportType();
+        int status;
+        File newFile = new File ("empty");
+        status = getFileChooser ().showSaveDialog (null);
+  
+        if (status == JFileChooser.APPROVE_OPTION) {
+          newFile = getFileChooser ().getSelectedFile ();
+          if (puzzle instanceof WordSearch) {
+            try {
+              exportWordSearchHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
+              exportWordSearchHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
+            } catch (IOException e) {
+              JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+          } else if (puzzle instanceof Crossword) {
+            try {
+              exportCrosswordHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
+              exportCrosswordHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
+            } catch (IOException e) {
+              JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+          } else {
+            //Additional Puzzle Types To Be Implemented Here
           }
-        } else if (puzzle instanceof Crossword) {
-          try {
-            exportCrosswordHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
-            exportCrosswordHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
-          } catch (IOException e) {
-            JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
-          }
-        } else {
-          
         }
-      }
-    } catch (IllegalStateException e) {}
-    
+      } catch (IllegalStateException e) {}
+    } else {
+      JOptionPane.showMessageDialog (null, "Please Generate a Puzzle before Exporting", "Error!", JOptionPane.ERROR_MESSAGE);
+    }
   }
 
   /**

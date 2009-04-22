@@ -80,15 +80,13 @@ public class WordSearch extends Puzzle {
       setMatrixHeight (length);
       setNumWords (puzzleWords.size ());
       setWordList (puzzleWords);
-      Collections.shuffle (getWordList ());
     }
-    System.out.println ("Took " + total + " passes.");
   }
   
   /**
    * Gets the puzzle as a string
    * 
-   * @return s - Returns the puzzle as a string
+   * @return s the puzzle represented as a string
    */
   public String toString () {
     String s = "";
