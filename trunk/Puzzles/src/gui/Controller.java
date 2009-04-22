@@ -96,6 +96,10 @@ public class Controller {
     }
     puzzle.setList (words);
     puzzle.generate ();
+    int height = Components.getScrollPanel ().getHeight ();
+    int width = Components.getScrollPanel ().getWidth ();
+    Components.getScrollPanel ().setSize (width + 1, height);
+    Components.getScrollPanel ().setSize (width, height);
   }
   
   /**

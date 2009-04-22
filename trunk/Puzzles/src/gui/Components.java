@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
@@ -69,6 +70,11 @@ public class Components {
    * The output panel
    */
   private static OutputPanel  outputPanel;
+  
+  /**
+   * the output panel scroll pane
+   */
+  private static JScrollPane scrollArea;
   
   /**
    * An empty JLabel
@@ -158,6 +164,15 @@ public class Components {
   }
   
   /**
+   * Returns the scroll pane
+   * 
+   * @return the scroll pane that contains the output panel
+   */
+  public static JScrollPane getScrollPanel() {
+    return scrollArea;
+  }
+  
+  /**
    * Builds the side panel
    * 
    * @return JPanel
@@ -179,13 +194,12 @@ public class Components {
     buttonPanel.add (Buttons.loadList);
     
     wordList = new MutableList ();
-    JScrollPane scrollPane = new JScrollPane (wordList);
+    scrollArea = new JScrollPane (wordList);
     
     sidebarPanel = new JPanel (new BorderLayout (5, 5));
     sidebarPanel.add (wordListLabel, BorderLayout.NORTH);
     sidebarPanel.add (buttonPanel, BorderLayout.SOUTH);
-    sidebarPanel.add (scrollPane, BorderLayout.CENTER);
-    
+    sidebarPanel.add (scrollArea, BorderLayout.CENTER);
     return sidebarPanel;
   }
   
@@ -256,22 +270,30 @@ public class Components {
     button.setHorizontalTextPosition (SwingConstants.CENTER);
     button.setRolloverEnabled (true);
     button.setFocusable (false);
-    
+    button.setDisplayedMnemonicIndex (0);
     // Assign to the correct value
-    if (name.equals (NEW))
+    if (name.equals (NEW)) {
       Buttons.newButton = button;
-    else if (name.equals (OPEN))
+      Buttons.newButton.setMnemonic ('N');
+    } else if (name.equals (OPEN)) {
       Buttons.openButton = button;
-    else if (name.equals (SAVE))
+      Buttons.openButton.setMnemonic ('O');
+    } else if (name.equals (SAVE)) {
       Buttons.saveButton = button;
-    else if (name.equals (EXPORT))
+      Buttons.saveButton.setMnemonic ('S');
+    } else if (name.equals (EXPORT)) {
       Buttons.exportButton = button;
-    else if (name.equals (QUIT))
+      Buttons.exportButton.setMnemonic ('E');
+    } else if (name.equals (QUIT)) {
       Buttons.quitButton = button;
-    else if (name.equals (HELP))
+      Buttons.quitButton.setMnemonic ('Q');
+    } else if (name.equals (HELP)) {
       Buttons.helpButton = button;
-    else if (name.equals (GENERATE))
+      Buttons.helpButton.setMnemonic ('H');
+    } else if (name.equals (GENERATE)) {
       Buttons.generateButton = button;
+      Buttons.generateButton.setMnemonic ('G');
+    }  
     
     return (button);
   }

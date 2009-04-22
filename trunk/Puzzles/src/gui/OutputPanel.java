@@ -68,6 +68,7 @@ public class OutputPanel extends JPanel {
     }
     
     setPreferredSize (getPreferredSize ());
+    revalidate();
   }
   
   /**
@@ -100,26 +101,9 @@ public class OutputPanel extends JPanel {
         }
       }
     }
-
-    public void mouseEntered (MouseEvent e) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void mouseExited (MouseEvent e) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void mousePressed (MouseEvent e) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void mouseReleased (MouseEvent e) {
-      // TODO Auto-generated method stub
-      
-    }
-    
+    public void mouseEntered (MouseEvent e) { }
+    public void mouseExited (MouseEvent e) { }
+    public void mousePressed (MouseEvent e) { }
+    public void mouseReleased (MouseEvent e) { }
   }
 }
