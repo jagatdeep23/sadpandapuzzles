@@ -3,8 +3,13 @@ package puzzle;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 /**
  * A WordSearch puzzle is a specialized Puzzle. It is a square that consists of
@@ -52,12 +57,25 @@ public class WordSearch extends Puzzle {
   public void generate () {
     long total = 0;
     if (getWordList ().size () > 0) {
+      int progress = 0;
+      JDialog popup = new JDialog();
+      popup.setLayout (new GridLayout (1, 1));
+      JProgressBar bar = new JProgressBar(0, getWordList().size ());
+      bar.setValue (progress);
+      bar.setStringPainted(true);
+      popup.setTitle ("Generating Crossword");
+      popup.setLocation (400, 350);
+      popup.add (bar);
+      popup.setSize (300, 64);
+      popup.setVisible (true);
+      popup.setAlwaysOnTop (true);
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       int length = generateDimension (getWordList ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       boolean isValid;
       setMatrix (new PuzzleCell [length] [length]);
       fillMatrix (length, true);
+      long time = System.currentTimeMillis ();
       for (String word : getWordList ()) {
         isValid = false;
         while (!isValid) {
@@ -71,7 +89,13 @@ public class WordSearch extends Puzzle {
           pWord.setWord (word);
           isValid = addAndValidate (pWord);
           if (isValid) {
+            bar.setValue (++progress);
             puzzleWords.add (pWord);
+          }
+          if (System.currentTimeMillis () - time >= 3000) {
+            popup.dispose ();
+            JOptionPane.showMessageDialog (null, "The Puzzle could not be generated", "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
           }
         }
       }
@@ -80,6 +104,7 @@ public class WordSearch extends Puzzle {
       setMatrixHeight (length);
       setNumWords (puzzleWords.size ());
       setWordList (puzzleWords);
+      popup.dispose ();
     }
   }
   
@@ -173,7 +198,7 @@ public class WordSearch extends Puzzle {
     for (String s : list) {
       sum += s.length ();
     }
-    sum = (int) (Math.ceil (Math.sqrt (sum)));
+    sum = (int) (Math.ceil (Math.sqrt (sum) * 5 / 4));
     if (sum < list.get (0).length ()) {
       sum = list.get (0).length ();
     }
