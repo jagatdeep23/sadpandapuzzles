@@ -98,7 +98,15 @@ public class Window extends JPanel {
         if (!helpIsOpen) {
           helpIsOpen = true;
           JDialog popup = new JDialog(controller.getFrame (), "I can has help?");
-          popup.addWindowListener (new MyWindowListener());
+          popup.addWindowListener (new WindowListener() {
+            public void windowActivated (WindowEvent e) { }
+            public void windowClosed (WindowEvent e) { }
+            public void windowClosing (WindowEvent e) { helpIsOpen = false; }
+            public void windowDeactivated (WindowEvent e) { }
+            public void windowDeiconified (WindowEvent e) { }
+            public void windowIconified (WindowEvent e) { }
+            public void windowOpened (WindowEvent e) { }
+          });
           Container c = new Container ();
           c.setLayout (new BorderLayout(5, 5));
           
@@ -185,27 +193,6 @@ public class Window extends JPanel {
           return (true);
         }
       }
-    }
-    private class MyWindowListener implements WindowListener {
-
-      public void windowActivated (WindowEvent arg0) {}
-
-      public void windowClosed (WindowEvent arg0) {
-        helpIsOpen = false;
-      }
-
-      public void windowClosing (WindowEvent arg0) {
-        helpIsOpen = false;
-      }
-
-      public void windowDeactivated (WindowEvent arg0) {}
-
-      public void windowDeiconified (WindowEvent arg0) {}
-
-      public void windowIconified (WindowEvent arg0) {}
-
-      public void windowOpened (WindowEvent arg0) {}
-      
     }
   }
 }

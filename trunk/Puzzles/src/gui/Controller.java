@@ -182,7 +182,37 @@ public class Controller {
     frame.setSize (800, 600);
     frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
     frame.setVisible (true);
-    frame.addWindowListener (new MyWindowListener());
+    frame.addWindowListener (new WindowListener() {
+      public void windowActivated (WindowEvent arg0) { }
+      public void windowClosed (WindowEvent arg0) { }
+      public void windowClosing (WindowEvent arg0) {
+        if (Components.wordList.getContents ().size () == 0 || save ("Quit")) {
+          System.exit (0);
+        }
+      }
+      public void windowDeactivated (WindowEvent arg0) { }
+      public void windowDeiconified (WindowEvent arg0) { }
+      public void windowIconified (WindowEvent arg0) { }
+      public void windowOpened (WindowEvent arg0) {}
+      
+      private boolean save (String title) {
+        if (title == "Save") {
+          savePuzzle ();
+          return true;
+        } else {
+          int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current puzzle?", title, JOptionPane.YES_NO_CANCEL_OPTION,
+              JOptionPane.QUESTION_MESSAGE);
+          if (result == JOptionPane.CANCEL_OPTION) {
+            return (false);
+          } else {
+            if (result == JOptionPane.YES_OPTION) {
+              savePuzzle ();
+            }
+            return (true);
+          }
+        }
+      }
+    });
   }
   
   /**
@@ -191,62 +221,5 @@ public class Controller {
    */
   public JFrame getFrame () {
     return frame;
-  }
-  
-  private class MyWindowListener implements WindowListener {
-
-    public void windowActivated (WindowEvent arg0) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void windowClosed (WindowEvent arg0) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void windowClosing (WindowEvent arg0) {
-      if (Components.wordList.getContents ().size () == 0 || save ("Quit")) {
-        System.exit (0);
-      }
-    }
-
-    public void windowDeactivated (WindowEvent arg0) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void windowDeiconified (WindowEvent arg0) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void windowIconified (WindowEvent arg0) {
-      // TODO Auto-generated method stub
-      
-    }
-
-    public void windowOpened (WindowEvent arg0) {
-      // TODO Auto-generated method stub
-      
-    }
-    
-    private boolean save (String title) {
-      if (title == "Save") {
-        savePuzzle ();
-        return true;
-      } else {
-        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current puzzle?", title, JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
-        if (result == JOptionPane.CANCEL_OPTION) {
-          return (false);
-        } else {
-          if (result == JOptionPane.YES_OPTION) {
-            savePuzzle ();
-          }
-          return (true);
-        }
-      }
-    }
   }
 }
