@@ -85,6 +85,7 @@ public class FileIO {
    * @return ArrayList<String> - A list of words
    */
   public static ArrayList <String> getFile () {
+    words.clear ();
     int status;
     status = getFileChooser ().showOpenDialog (null);
     
@@ -93,12 +94,10 @@ public class FileIO {
     } else {
       return words;
     }
-    
     try {
-      words.clear ();
       getWords (file);
     } catch (IOException e) {
-      
+      JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
     }
     return words;
   }
@@ -210,9 +209,9 @@ public class FileIO {
       for (int c = -1; c <= matrix.length; c++) {
         try {
           if (matrix[c][r].isEmpty ()) {
-            s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"black\"> &nbsp&nbsp&nbsp&nbsp&nbsp </td>";
+            s += "<td bgcolor=\"black\">&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
           } else {
-            s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"white\"> ";
+            s += "<td bgcolor=\"white\"> ";
             if (isPuzzle) {
               s += "&nbsp&nbsp&nbsp&nbsp&nbsp";
             } else {
@@ -221,7 +220,7 @@ public class FileIO {
             s += " </td>";
           }
         }catch (ArrayIndexOutOfBoundsException e) {
-          s += "<td border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" bgcolor=\"black\"> &nbsp&nbsp&nbsp&nbsp&nbsp </td>";
+          s += "<td bgcolor=\"black\">&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
         }
       }
       s += "</tr>\n";

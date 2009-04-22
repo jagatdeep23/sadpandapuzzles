@@ -174,7 +174,7 @@ public class Window extends JPanel {
         controller.savePuzzle ();
         return true;
       } else {
-        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current word list?", title, JOptionPane.YES_NO_CANCEL_OPTION,
+        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current puzzle?", title, JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.CANCEL_OPTION) {
           return (false);
