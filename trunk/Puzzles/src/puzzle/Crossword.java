@@ -4,9 +4,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 /**
  * A Crossword puzzle is a specialized Puzzle. It is a rectangular shape that
@@ -54,6 +58,13 @@ public class Crossword extends Puzzle {
     long total = 0, test2 = 0, test3 = 0;
     if (getWordList ().size () > 0) {
       
+      JDialog popup = new JDialog();
+      popup.setLayout (new GridLayout (1, 1));
+      JProgressBar bar = new JProgressBar();
+      popup.setTitle ("Generating Word Search");
+      popup.add (bar);
+      popup.setVisible (true);
+      
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       
       int length = generateDimension (getWordList ()), crazy = 0;
@@ -67,6 +78,10 @@ public class Crossword extends Puzzle {
       fillMatrix (length, true);
       int limit = (int)(Math.pow (list.size(), 2)) / 4;
       int test = 0;
+      
+      bar.setMinimum (0);
+      bar.setMaximum (list.size());
+      int progress = 0;
       
       long time = System.currentTimeMillis ();
       for (int i = 0; i < list.size (); ++i) {
@@ -84,6 +99,7 @@ public class Crossword extends Puzzle {
           ++total;
           isValid = addAndValidate (pWord);
           if (isValid) {
+            bar.setValue (++progress);
             puzzleWords.add (pWord);
           } else if (++crazy == 5000) {
             list.remove (i);
@@ -93,7 +109,7 @@ public class Crossword extends Puzzle {
             test3 ++;
             if (++test == limit) {
               PuzzleWord pw = puzzleWords.get (puzzleWords.size () - 1);
-              
+              bar.setValue (--progress);
               int r = pw.getRow ();
               int c = pw.getColumn ();
               int dr = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
@@ -109,6 +125,7 @@ public class Crossword extends Puzzle {
             }
               
             if ((System.currentTimeMillis () - time) >= 3000) {
+              popup.dispose ();
               System.out.println ("Took " + total + " passes.");
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);
@@ -158,6 +175,7 @@ public class Crossword extends Puzzle {
       setNumWords (temp.size ());
       setWordList (temp);
       Collections.shuffle (getWordList ());
+      popup.dispose ();
     }
     firstWord = true;
     System.out.println ("Took " + total + " passes.");
