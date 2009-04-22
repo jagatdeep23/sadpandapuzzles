@@ -111,7 +111,7 @@ public class Window extends JPanel {
           c.setLayout (new BorderLayout(5, 5));
           
           Container d = new Container();
-          d.setLayout (new GridLayout (8, 2, 0, 5));
+          d.setLayout (new GridLayout (9, 2, 0, 5));
           d.add (new JLabel ("1. Clears all words and puzzles"));
           d.add (new JLabel ("9. Word List area"));
           d.add (new JLabel ("2. Prompts user to open a file"));
@@ -128,6 +128,8 @@ public class Window extends JPanel {
           d.add (new JLabel ("15. LMB - Exports a puzzle (generates if no puzzle)"));
           d.add (new JLabel ("8. Generates a puzzle of the selected type"));
           d.add (new JLabel ("16. RMB - Generates a puzzle"));
+          d.add (new JLabel());
+          d.add(new JLabel("17. Adds word to the list from a file"));
           
           c.add (new JLabel (new ImageIcon("images/helpImage.PNG")), BorderLayout.CENTER);
           c.add (d, BorderLayout.SOUTH);
