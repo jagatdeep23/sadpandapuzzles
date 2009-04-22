@@ -41,7 +41,7 @@ public class OutputPanel extends JPanel {
     Dimension d = new Dimension ();
     if (controller.getPuzzle () != null) {
       if (controller.getPuzzle () instanceof WordSearch) {
-        d.setSize (controller.getPuzzle ().getMatrixWidth () * 20 + 75, controller.getPuzzle ().getMatrixHeight () * 20 + 60);
+        d.setSize (controller.getPuzzle ().getMatrixWidth () * 20 + 100, controller.getPuzzle ().getMatrixHeight () * 20 + 60);
       }
       if (controller.getPuzzle () instanceof Crossword) {
         d.setSize (controller.getPuzzle ().getMatrixHeight () * 24 + 37, controller.getPuzzle ().getMatrixWidth () * 24 + 32);
