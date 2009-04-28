@@ -19,16 +19,6 @@ import javax.swing.JProgressBar;
 public abstract class Puzzle {
   
   /**
-   * Number of directions for crossword puzzles
-   */
-  public static final int        Crossword  = 2;
-  
-  /**
-   * Number of directions for wordsearch puzzles
-   */
-  public static final int        Wordsearch = 8;
-  
-  /**
    * flag used for initializing the cells of the puzzle matrix
    */
   public static final boolean    Initialize = true;

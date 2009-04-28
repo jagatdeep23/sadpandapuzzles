@@ -79,7 +79,7 @@ public class Crossword extends Puzzle {
         
         while (!isValid) {
           String word = list.get (0);
-          Direction dir = generateDirection (Puzzle.Crossword);
+          Direction dir = generateDirection (8);
           int [] point = generatePosition (word.length (), getMatrixHeight (), getMatrixWidth (), dir);
           PuzzleWord pWord = new PuzzleWord (point, dir, word);
           isValid = addAndValidate (pWord);
