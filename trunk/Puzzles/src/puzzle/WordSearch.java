@@ -3,12 +3,10 @@ package puzzle;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
 /**
@@ -39,8 +37,8 @@ public class WordSearch extends Puzzle {
     g.setColor (Color.WHITE);
     g.fillRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
-    g.setFont (new Font ("Courier", Font.BOLD, 18))
-;    for (int r = 0; r < getMatrixHeight (); r++) {
+    g.setFont (new Font ("Courier", Font.BOLD, 18));
+    for (int r = 0; r < getMatrixHeight (); r++) {
       for (int c = 0; c < getMatrixWidth (); c++) {
         if (getMatrix ()[r][c].getNumWords () > 0)
           g.setColor (Color.RED);
@@ -58,24 +56,19 @@ public class WordSearch extends Puzzle {
     long total = 0;
     if (getWordList ().size () > 0) {
       int progress = 0;
+      
       JDialog popup = new JDialog();
-      popup.setLayout (new GridLayout (1, 1));
       JProgressBar bar = new JProgressBar(0, getWordList().size ());
-      bar.setValue (progress);
-      bar.setStringPainted(true);
-      popup.setTitle ("Generating Crossword");
-      popup.setLocation (400, 350);
-      popup.add (bar);
-      popup.setSize (300, 64);
-      popup.setVisible (true);
-      popup.setAlwaysOnTop (true);
+      buildPopup (popup, bar, "Generating Crossword");
+
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
+      
       int length = generateDimension (getWordList ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
+      
+      initializeMatrix (length);
+      
       boolean isValid;
-      setMatrix (new PuzzleCell [length] [length]);
-      fillMatrix (length, true);
-      long time = System.currentTimeMillis ();
       for (String word : getWordList ()) {
         isValid = false;
         while (!isValid) {
@@ -92,14 +85,9 @@ public class WordSearch extends Puzzle {
             bar.setValue (++progress);
             puzzleWords.add (pWord);
           }
-          if (System.currentTimeMillis () - time >= 3000) {
-            popup.dispose ();
-            JOptionPane.showMessageDialog (null, "The Puzzle could not be generated", "Error!", JOptionPane.ERROR_MESSAGE);
-            return;
-          }
         }
       }
-      fillMatrix (length, false);
+      fillMatrix (Puzzle.FillRandom);
       setMatrixWidth (length);
       setMatrixHeight (length);
       setNumWords (puzzleWords.size ());
@@ -132,37 +120,9 @@ public class WordSearch extends Puzzle {
    * @return boolean Whether the add was a success or not.
    */
   protected boolean addAndValidate (PuzzleWord word) {
-    int dC = 0, dR = 0;
-    switch (word.getDirection ()) {
-      case NORTH:
-        dR = -1;
-        break;
-      case NORTHEAST:
-        dR = -1;
-        dC = 1;
-        break;
-      case EAST:
-        dC = 1;
-        break;
-      case SOUTHEAST:
-        dR = 1;
-        dC = 1;
-        break;
-      case SOUTH:
-        dR = 1;
-        break;
-      case SOUTHWEST:
-        dR = 1;
-        dC = -1;
-        break;
-      case WEST:
-        dC = -1;
-        break;
-      case NORTHWEST:
-        dR = -1;
-        dC = -1;
-        break;
-    }
+    int dC = getColumnChange (word.getDirection ());
+    int dR = getRowChange (word.getDirection ());
+    
     int row = word.getRow (), oldRow = word.getRow ();
     int col = word.getColumn (), oldCol = word.getColumn ();
     String w = word.getWord ();

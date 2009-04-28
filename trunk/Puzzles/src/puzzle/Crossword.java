@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -27,11 +26,7 @@ public class Crossword extends Puzzle {
   
   /** default constructor */
   public Crossword () {
-    setMatrix (null);
-    setWordList (null);
-    setNumWords (0);
-    setMatrixHeight (0);
-    setMatrixWidth (0);
+    reset();
   }
   
   /** draws the crossword puzzle */
@@ -59,11 +54,8 @@ public class Crossword extends Puzzle {
       
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       
-      int length = generateDimension (getWordList ()), crazy = 0;
-      setMatrixWidth (length);
-      setMatrixHeight (length);
-      setMatrix (new PuzzleCell [getMatrixHeight ()] [getMatrixWidth ()]);
-      fillMatrix (length, true);
+      int length = generateDimension (getWordList ()), attempts = 0;
+      initializeMatrix(length);
       
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       ArrayList <String> list = new ArrayList<String>(getWordList());
@@ -73,81 +65,61 @@ public class Crossword extends Puzzle {
       
       int limit = list.size() * list.size() / 2;
       int test = 0;
-      int progress = 0;
       int words = 0;
       
       JDialog popup = new JDialog();
-      popup.setLayout (new GridLayout (1, 1));
       JProgressBar bar = new JProgressBar(0, list.size ());
-      bar.setValue (progress);
-      bar.setStringPainted(true);
-      popup.setTitle ("Generating Crossword");
-      popup.setLocation (400, 350);
-      popup.add (bar);
-      popup.setSize (300, 64);
-      popup.setVisible (true);
-      popup.setAlwaysOnTop (true);
+      buildPopup (popup, bar, "Generating Crossword");
       
       long time = System.currentTimeMillis ();
       
       while (list.size () != 0) {
         isValid = false;
-        crazy = 0;
+        attempts = 0;
+        
         while (!isValid) {
           String word = list.get (0);
-          Direction dir = generateDirection (2);
+          Direction dir = generateDirection (Puzzle.Crossword);
           int [] point = generatePosition (word.length (), getMatrixHeight (), getMatrixWidth (), dir);
-          
-          PuzzleWord pWord = new PuzzleWord ();
-          pWord.setColumn (point[0]);
-          pWord.setRow (point[1]);
-          pWord.setDirection (dir);
-          pWord.setWord (word);
+          PuzzleWord pWord = new PuzzleWord (point, dir, word);
           isValid = addAndValidate (pWord);
+          
           if (isValid) {
+            
             list.remove (0);
-            bar.setValue (++progress);
-            bar.paintImmediately (0, 0, 500, 100);
             puzzleWords.add (pWord);
             words++;
-          } else if (++crazy >= 5000) {
-            crazy = 0;
+            
+            updateProgressBar (bar, words, null);
+            
+          } else if (++attempts >= 5000) {
+            
+            attempts = 0;
             list.remove (0);
             list.add (word);
+            
             if (++test >= limit) {
-              PuzzleWord pw = puzzleWords.get (--words);
+              
+              words --;
+              PuzzleWord pw = puzzleWords.get (words);
               puzzleWords.remove (words);
+              removeWordFromPuzzle(pw);
               list.add (pw.getWord ());
-              
-              bar.setValue (--progress);
-              bar.setString ("We might not be able to get through this...");
-              bar.paintImmediately (0, 0, 500, 100);
-              
-              int r = pw.getRow ();
-              int c = pw.getColumn ();
-              int dr = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
-              int dc = (pw.getDirection () == Direction.SOUTH) ? 0 : 1;
-              for (int k = 0; k < pw.getWord ().length (); ++k, r += dr, c += dc) {
-                getMatrix()[r][c].remove (pw.getDirection ());
-              }
-              
               test = 0;
+              
+              updateProgressBar (bar, words, "We might not be able to get through this...");
             }
             if ((System.currentTimeMillis () - time) >= 4000 || list.size() == 1) {
               popup.dispose ();
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);
-              setMatrix (null);
-              setWordList (null);
-              setNumWords (0);
-              setMatrixHeight (0);
-              setMatrixWidth (0);
+              reset();
               return;
             }
           }
         }
       }
-      trim(puzzleWords);
+      trim (puzzleWords);
       popup.dispose ();
     }
     firstWord = true;
@@ -177,12 +149,23 @@ public class Crossword extends Puzzle {
    * @return boolean Whether the add was a success or not.
    */
   protected boolean addAndValidate (PuzzleWord word) {
+    
     Direction dir = word.getDirection ();
     String w = word.getWord ();
-    int dC = (dir == Direction.EAST) ? 1 : 0, dR = (dir == Direction.SOUTH) ? 1 : 0;
-    int row = word.getRow (), col = word.getColumn (), length = w.length (), oldRow = row, oldCol = col;
-    boolean isCrossed = false, valid = true;
+    
+    int dC = super.getColumnChange (dir);
+    int dR = super.getRowChange (dir);
+    int row = word.getRow ();
+    int col = word.getColumn ();
+    int length = w.length ();
+    int oldRow = row;
+    int oldCol = col;
+    
+    boolean isCrossed = false;
+    boolean valid = true;
+    
     char character;
+    
     if (firstWord) {
       isCrossed = true;
       firstWord = false;
@@ -289,23 +272,32 @@ public class Crossword extends Puzzle {
     }
     return (point);
   }
-  
+
+  private void removeWordFromPuzzle (PuzzleWord pw) {
+    int r = pw.getRow ();
+    int c = pw.getColumn ();
+    int dr = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
+    int dc = (pw.getDirection () == Direction.SOUTH) ? 0 : 1;
+    for (int k = 0; k < pw.getWord ().length (); ++k, r += dr, c += dc) {
+      getMatrix()[r][c].remove (pw.getDirection ());
+    }
+  }
+
   /**
    * trims the matrix to size
    * @param puzzleWords the list of puzzleWords
    */
   private void trim(ArrayList<PuzzleWord> puzzleWords) {
     int minWidth = 999, maxWidth = -1, minHeight = 999, maxHeight = -1;
-    for (int r = 0; r < getMatrixHeight (); ++r) {
-      for (int c = 0; c < getMatrixWidth (); ++c) {
-        if (getMatrix ()[r][c].hasCharacter ()) {
-          minWidth = Math.min (minWidth, c);
-          maxWidth = Math.max (maxWidth, c);
-          minHeight = Math.min (minHeight, r);
-          maxHeight = Math.max (maxHeight, r);
-        }
-      }
+    for (PuzzleWord word : puzzleWords) {
+      int dC = getColumnChange(word.getDirection ());
+      int dR = getRowChange(word.getDirection ());
+      minWidth = Math.min (minWidth, word.getColumn ());
+      maxWidth = Math.max (maxWidth, word.getColumn () + dC);
+      minHeight = Math.min (minHeight, word.getRow ());
+      maxHeight = Math.max (maxHeight, word.getRow () + dR);
     }
+    
     setMatrixWidth (maxWidth - minWidth + 1);
     setMatrixHeight (maxHeight - minHeight + 1);
     PuzzleCell [][] newMatrix = new PuzzleCell [getMatrixHeight ()] [getMatrixWidth ()];

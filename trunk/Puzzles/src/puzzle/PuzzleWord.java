@@ -29,6 +29,20 @@ public class PuzzleWord {
     word = "";
   }
   
+  public PuzzleWord (int row, int col, Direction dir, String word) {
+    setRow(row);
+    setColumn(col);
+    setDirection(dir);
+    setWord(word);
+  }
+  
+  public PuzzleWord (int[] point, Direction dir, String word) {
+    setRow(point[1]);
+    setColumn(point[0]);
+    setDirection(dir);
+    setWord(word);
+  }
+  
   /**
    * Gets the number of columns
    * 

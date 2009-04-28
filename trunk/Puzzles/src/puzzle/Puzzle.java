@@ -4,16 +4,39 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JDialog;
+import javax.swing.JProgressBar;
+
 /**
- * This is a common puzzle object.  It has attributes common to all puzzle types.
+ * This is a common puzzle object. It has attributes common to all puzzle types.
  * Common functionality includes adding words, getters and setters, as well as
- * specialized functions such as draw and generate.  All puzzle types use this
+ * specialized functions such as draw and generate. All puzzle types use this
  * class as the framework.
  * 
  * @author Sad Panda Software
  * @version 3.0
  */
 public abstract class Puzzle {
+  
+  /**
+   * Number of directions for crossword puzzles
+   */
+  public static final int        Crossword  = 2;
+  
+  /**
+   * Number of directions for wordsearch puzzles
+   */
+  public static final int        Wordsearch = 8;
+  
+  /**
+   * flag used for initializing the cells of the puzzle matrix
+   */
+  public static final boolean    Initialize = true;
+  
+  /**
+   * flag used for filling in the puzzle matrix with random characters
+   */
+  public static final boolean    FillRandom = false;
   
   /** A random number generator */
   private static Random          gen;
@@ -40,7 +63,7 @@ public abstract class Puzzle {
    * The list of all possible directions
    * 
    * @author Sad Panda Software
-   * @version 2.0
+   * @version 3.0
    */
   public static enum Direction {
     /** East */
@@ -71,7 +94,7 @@ public abstract class Puzzle {
   
   /** generates a puzzle */
   public abstract void generate ();
-
+  
   /**
    * adds a word to the puzzle
    * 
@@ -80,7 +103,7 @@ public abstract class Puzzle {
    * @return true if the word was added, false if the word was not added
    */
   protected abstract boolean addAndValidate (PuzzleWord word);
-
+  
   /**
    * Generates the dimension to be used in the word search matrix
    * 
@@ -255,6 +278,27 @@ public abstract class Puzzle {
   }
   
   /**
+   * Builds a popup window that shows the progress of the puzzle generation
+   * 
+   * @param popup
+   *          the popup dialog
+   * @param bar
+   *          the progress bar
+   * @param text
+   *          the title of the window
+   */
+  protected void buildPopup (JDialog popup, JProgressBar bar, String text) {
+    bar.setValue (0);
+    bar.setStringPainted (true);
+    popup.setTitle (text);
+    popup.setLocation (400, 350);
+    popup.add (bar);
+    popup.setSize (320, 100);
+    popup.setVisible (true);
+    popup.setAlwaysOnTop (true);
+  }
+  
+  /**
    * fills the matrix with random characters or spaces
    * 
    * @param length
@@ -262,9 +306,9 @@ public abstract class Puzzle {
    *          flag; true if blanks are desired, false if random chars are
    *          desired
    */
-  protected void fillMatrix (int length, boolean fillBlank) {
-    for (int r = 0; r < length; r++) {
-      for (int c = 0; c < length; c++) {
+  protected void fillMatrix (boolean fillBlank) {
+    for (int r = 0; r < matrix.length; r++) {
+      for (int c = 0; c < matrix[0].length; c++) {
         if (fillBlank) {
           matrix[r][c] = new PuzzleCell ();
         } else if (!matrix[r][c].hasCharacter ()) {
@@ -284,6 +328,31 @@ public abstract class Puzzle {
     return (Direction.values ()[num]);
   }
   
+  protected int getColumnChange (Direction dir) {
+    int dC = 0;
+    switch (dir) {
+      case NORTHEAST:
+        dC = 1;
+        break;
+      case EAST:
+        dC = 1;
+        break;
+      case SOUTHEAST:
+        dC = 1;
+        break;
+      case SOUTHWEST:
+        dC = -1;
+        break;
+      case WEST:
+        dC = -1;
+        break;
+      case NORTHWEST:
+        dC = -1;
+        break;
+    }
+    return dC;
+  }
+  
   /**
    * A Singleton object used by any instance of puzzle as a number generator
    * 
@@ -296,4 +365,71 @@ public abstract class Puzzle {
     return gen;
   }
   
+  protected int getRowChange (Direction dir) {
+    int dR = 0;
+    switch (dir) {
+      case NORTH:
+        dR = -1;
+        break;
+      case NORTHEAST:
+        dR = -1;
+        break;
+      case SOUTHEAST:
+        dR = 1;
+        break;
+      case SOUTH:
+        dR = 1;
+        break;
+      case SOUTHWEST:
+        dR = 1;
+        break;
+      case NORTHWEST:
+        dR = -1;
+        break;
+    }
+    return dR;
+  }
+  
+  /**
+   * 
+   * @param length
+   *          the dimension of the matrix
+   */
+  protected void initializeMatrix (int length) {
+    setMatrix (new PuzzleCell [length] [length]);
+    setMatrixWidth (length);
+    setMatrixHeight (length);
+    fillMatrix (Puzzle.Initialize);
+  }
+  
+  /**
+   * resets the attributes of the puzzle
+   * 
+   */
+  protected void reset () {
+    setMatrix (null);
+    setWordList (null);
+    setNumWords (0);
+    setMatrixHeight (0);
+    setMatrixWidth (0);
+  }
+  
+  /**
+   * updates the progress bar to a specified value
+   * 
+   * @param bar
+   *          the progress bar
+   * @param val
+   *          the value to set to the progress bar
+   * @param s
+   *          the string to output
+   */
+  protected void updateProgressBar (JProgressBar bar, int val, String s) {
+    bar.setValue (val);
+    if (s != null) {
+      bar.setString (s);
+      bar.setStringPainted (true);
+    }
+    bar.paintImmediately (0, 0, 600, 100);
+  }
 }

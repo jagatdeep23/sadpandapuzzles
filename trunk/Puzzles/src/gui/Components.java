@@ -58,7 +58,7 @@ public class Components {
   /**
    * The actual drop down menu in the dropDownPanel
    */
-  private static JComboBox    dropDown;
+  public static JComboBox    dropDown;
   
   /**
    * Label for the Word List
