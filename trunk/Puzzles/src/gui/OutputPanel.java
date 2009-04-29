@@ -97,7 +97,7 @@ public class OutputPanel extends JPanel {
           controller.buildPuzzle (Components.getSelectedPuzzleOption ());
           repaint();
         } else {
-          io.FileIO.exportPuzzle (controller.getPuzzle ());
+          controller.exportPuzzle ();
         }
       }
     }

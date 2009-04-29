@@ -63,7 +63,7 @@ public class Crossword extends Puzzle {
       int words = 0;
       JDialog popup = new JDialog();
       JProgressBar bar = new JProgressBar(0, list.size ());
-      super.buildPopup (popup, bar, "Generating Crossword");
+      super.buildPopup (popup, bar);
       long time = System.currentTimeMillis ();
       while (list.size () != 0) {
         isValid = false;
@@ -97,7 +97,7 @@ public class Crossword extends Puzzle {
               
               super.updateProgressBar (bar, words, "We might not be able to get through this...");
             }
-            if ((System.currentTimeMillis () - time) >= 4000 || list.size() == 1) {
+            if ((System.currentTimeMillis () - time) >= 10000 || list.size() == 1) {
               popup.dispose ();
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);

@@ -30,44 +30,58 @@ import puzzle.Direction;
 public class FileIO {
   
   /** A file chooser */
-  private static JFileChooser    chooser;
-  
-  /**
-   * The array list of words
-   */
-  private static ArrayList <String> words = new ArrayList <String> ();
+  private static JFileChooser chooser;
   
   /** The file that is to be loaded */
-  private static File            file;
+  private static File         file;
+  
+  /** the puzzle */
+  private Puzzle              puzzle;
+  
+  /**
+   * Default Constructor
+   */
+  public FileIO () {
+    this (null);
+  }
+  
+  /**
+   * Creates a new FileIO manager with a puzzle
+   */
+  public FileIO (Puzzle puzzle) {
+    setPuzzle (puzzle);
+  }
+  
+  /**
+   * sets the puzzle of the FileIO manager
+   */
+  public void setPuzzle (Puzzle p) {
+    puzzle = p;
+  }
   
   /**
    * Initiates the export to HTML process to export a puzzle and its state to an
    * HTML file
-   * 
-   * @param puzzle
-   *          a puzzle
    */
-  public static void exportPuzzle (Puzzle puzzle) {
+  public void exportPuzzle () {
     if (puzzle != null && puzzle.getNumWords () > 0) {
       try {
-        //boolean type = showExportType();
         int status;
         File newFile = new File ("empty");
         status = getFileChooser ().showSaveDialog (null);
-  
         if (status == JFileChooser.APPROVE_OPTION) {
           newFile = getFileChooser ().getSelectedFile ();
           if (puzzle instanceof WordSearch) {
             try {
-              exportWordSearchHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
-              exportWordSearchHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
+              exportWordSearchHTML (new File (newFile.toString () + " puzzle.html"), true);
+              exportWordSearchHTML (new File (newFile.toString () + " solution.html"), false);
             } catch (IOException e) {
               JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
             }
           } else if (puzzle instanceof Crossword) {
             try {
-              exportCrosswordHTML (puzzle, new File (newFile.toString () + " puzzle.html"), true);
-              exportCrosswordHTML (puzzle, new File (newFile.toString () + " solution.html"), false);
+              exportCrosswordHTML (new File (newFile.toString () + " puzzle.html"), true);
+              exportCrosswordHTML (new File (newFile.toString () + " solution.html"), false);
             } catch (IOException e) {
               JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
             }
@@ -75,33 +89,40 @@ public class FileIO {
             //Additional Puzzle Types To Be Implemented Here
           }
         }
-      } catch (IllegalStateException e) {}
+      } catch (IllegalStateException e) {
+      }
     } else {
       JOptionPane.showMessageDialog (null, "Please Generate a Puzzle before Exporting", "Error!", JOptionPane.ERROR_MESSAGE);
     }
   }
-
+  
   /**
    * Returns a list of words sorted by length (longest first)
    * 
    * @return ArrayList<String> - A list of words
    */
-  public static ArrayList <String> getFile () {
-    words.clear ();
-    int status;
-    status = getFileChooser ().showOpenDialog (null);
-    
-    if (status == JFileChooser.APPROVE_OPTION) {
+  public ArrayList <String> loadWordList () {
+    ArrayList <String> words = new ArrayList <String> ();
+    if (getFileChooser ().showOpenDialog (null) == JFileChooser.APPROVE_OPTION) {
       file = getFileChooser ().getSelectedFile ();
     } else {
       return words;
     }
     try {
-      getWords (file);
+      words = getWords (file);
     } catch (IOException e) {
       JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
     }
     return words;
+  }
+  
+  /**
+   * grabs the puzzle saved in the state of the manager
+   * 
+   * @return a puzzle
+   */
+  public Puzzle getPuzzle () {
+    return puzzle;
   }
   
   /**
@@ -110,37 +131,30 @@ public class FileIO {
    * 
    * @return puzzle - The puzzle that is loaded
    */
-  public static Puzzle loadPuzzle () {
+  public void loadPuzzle () {
     int status;
     status = getFileChooser ().showOpenDialog (null);
-    Puzzle puzzle = null;
     Scanner scan = null;
     String type = "";
-    
     if (status == JFileChooser.APPROVE_OPTION) {
       file = getFileChooser ().getSelectedFile ();
-    } else {
-      return puzzle;
-    }
-    try {
-      scan = new Scanner (file);
-      type = scan.nextLine ();
-    } catch (FileNotFoundException e) {
-      JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+      try {
+        scan = new Scanner (file);
+        type = scan.nextLine ();
+      } catch (FileNotFoundException e) {
+        JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
+      }
+      if (type.equals ("wordsearch")) {
+        loadWordSearch (scan);
+      } else if (type.equals ("crossword")) {
+        loadCrossword (scan);
+      } else {
+        JOptionPane.showMessageDialog (null, "The file you have loaded cannot be recognized", "Oh Noes!", JOptionPane.ERROR_MESSAGE);
+      }
     }
     
-    if (type.equals ("wordsearch")) {
-      puzzle = loadWordSearch (scan);
-      return puzzle;
-    } else if (type.equals ("crossword")) {
-      puzzle = loadCrossword (scan);
-      return puzzle;
-    } else {
-      JOptionPane.showMessageDialog (null, "The file you have loaded cannot be recognized", "Oh Noes!", JOptionPane.ERROR_MESSAGE);
-      return puzzle;
-    }
   }
-
+  
   /**
    * Will call the appropriate save function based on whether or not a file has
    * been associated yet. If one has not, a new file will be created.
@@ -149,22 +163,16 @@ public class FileIO {
    *          Vector<String>
    * @throws IOException
    */
-  public static void saveWords (ArrayList <String> list) {
-    if (file != null) {
-      try {
-        save (list, file);
-      } catch (IOException e) {
-      }
-    } else
-      saveWordsAs (list);
+  public void saveWords (ArrayList <String> list) {
+    saveWordsAs (list);
   }
-
+  
   /**
    * Initiates the save functions to save the state of the current puzzle
    * 
    * @param puzzle
    */
-  public static void savePuzzle (Puzzle puzzle) {
+  public void savePuzzle () {
     int status;
     File newFile = new File ("empty");
     status = getFileChooser ().showSaveDialog (null);
@@ -173,13 +181,13 @@ public class FileIO {
       newFile = getFileChooser ().getSelectedFile ();
       if (puzzle instanceof WordSearch) {
         try {
-          saveWordSearch (puzzle, newFile);
+          saveWordSearch (newFile);
         } catch (IOException e) {
           JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
         }
       } else if (puzzle instanceof Crossword) {
         try {
-          saveCrossword (puzzle, newFile);
+          saveCrossword (newFile);
         } catch (IOException e) {
         }
       } else {
@@ -187,7 +195,7 @@ public class FileIO {
       }
     }
   }
-
+  
   /**
    * Exports the current Crossword puzzle and its state to an HTML file
    * 
@@ -199,7 +207,7 @@ public class FileIO {
    *          boolean flag for export type
    * @throws IOException
    */
-  private static void exportCrosswordHTML (Puzzle puzzle, File location, boolean isPuzzle) throws IOException {
+  private void exportCrosswordHTML (File location, boolean isPuzzle) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     Collections.shuffle (list);
@@ -217,11 +225,11 @@ public class FileIO {
             if (isPuzzle) {
               s += "&nbsp&nbsp&nbsp&nbsp&nbsp";
             } else {
-              s += "<center><b>" + matrix[c][r]+ "</b></center>";
+              s += "<center><b>" + matrix[c][r] + "</b></center>";
             }
             s += " </td>";
           }
-        }catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
           s += "<td bgcolor=\"black\">&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
         }
       }
@@ -229,7 +237,6 @@ public class FileIO {
     }
     s += "</table>\n<br><br>\n";
     buffer.write (s);
-    
     if (isPuzzle) {
       buffer.write ("<b>South</b><br>\n");
       for (PuzzleWord word : list) {
@@ -237,9 +244,7 @@ public class FileIO {
           buffer.write (word.getWord ().toLowerCase () + "<br>\n");
         }
       }
-      buffer.write ("<br>\n");
-      
-      buffer.write ("<b>East</b><br>\n");
+      buffer.write ("<br>\n<b>East</b><br>\n");
       for (PuzzleWord word : list) {
         if (word.getDirection ().name ().toLowerCase ().equals ("south")) {
           buffer.write (word.getWord ().toLowerCase () + "<br>\n");
@@ -250,7 +255,7 @@ public class FileIO {
     buffer.close ();
     
   }
-
+  
   /**
    * Exports the current Word Search puzzle and its state to an HTML file
    * 
@@ -262,25 +267,23 @@ public class FileIO {
    *          boolean flag for export type
    * @throws IOException
    */
-  private static void exportWordSearchHTML (Puzzle puzzle, File location, boolean isPuzzle) throws IOException {
+  private void exportWordSearchHTML (File location, boolean isPuzzle) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     Collections.shuffle (list);
     PuzzleCell [][] matrix = puzzle.getMatrix ();
-    
     String s = "<html><body><h1>Sad Panda Software Word Search</h1>\n";
-    
     s += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
     for (int r = -1; r <= matrix[0].length; r++) {
       s += "<tr>";
       for (int c = -1; c <= matrix.length; c++) {
         try {
           if (matrix[r][c].getNumWords () > 0 || isPuzzle) {
-          s += "<td><center><tt><big>" + matrix[r][c]+ "</big></tt></center></td>";
+            s += "<td><center><tt><big>" + matrix[r][c] + "</big></tt></center></td>";
           } else {
             s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
           }
-        }catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
           s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
         }
       }
@@ -294,9 +297,9 @@ public class FileIO {
     }
     for (PuzzleWord word : list) {
       s += "<tr>";
-      s += "<td>" + word.getWord ().toLowerCase() + "</td>";
+      s += "<td>" + word.getWord ().toLowerCase () + "</td>";
       if (!isPuzzle) {
-        s+= "<td>" + word.getDirection ().name ().toLowerCase () + "</td><td>" + word.getRow () + "</td><td>" + word.getColumn () + "</td>";
+        s += "<td>" + word.getDirection ().name ().toLowerCase () + "</td><td>" + word.getRow () + "</td><td>" + word.getColumn () + "</td>";
       }
       s += "</tr>\n";
     }
@@ -304,13 +307,13 @@ public class FileIO {
     buffer.write (s);
     buffer.close ();
   }
-
+  
   /**
    * Creates a new JFileChooser
    * 
    * @return JFileChooser
    */
-  private static JFileChooser getFileChooser () {
+  private JFileChooser getFileChooser () {
     if (chooser == null) {
       chooser = new JFileChooser ();
     }
@@ -324,14 +327,15 @@ public class FileIO {
    *          a File
    * @throws IOException
    */
-  private static void getWords (File input) throws IOException {
+  private ArrayList <String> getWords (File input) throws IOException {
     FileReader fileReader = new FileReader (input);
     BufferedReader buffer = new BufferedReader (fileReader);
     String temp;
-    
+    ArrayList <String> words = new ArrayList <String> ();
     while ((temp = buffer.readLine ()) != null)
       words.add (temp);
     buffer.close ();
+    return words;
   }
   
   /**
@@ -341,8 +345,8 @@ public class FileIO {
    *          a scanner
    * @return Puzzle a Crossword puzzle
    */
-  private static Puzzle loadCrossword (Scanner scan) {
-    Puzzle puzzle = new Crossword ();
+  private void loadCrossword (Scanner scan) {
+    puzzle = new Crossword ();
     int height, width;
     Scanner scan2 = new Scanner (scan.nextLine ());
     puzzle.setNumWords (scan2.nextInt ());
@@ -355,7 +359,7 @@ public class FileIO {
     PuzzleCell [][] matrix = new PuzzleCell [height] [width];
     puzzle.setMatrix (matrix);
     ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
-    ArrayList <String> w = new ArrayList <String>();
+    ArrayList <String> w = new ArrayList <String> ();
     for (int i = 0; i < puzzle.getNumWords (); i++) {
       PuzzleWord word = new PuzzleWord ();
       scan2 = new Scanner (scan.nextLine ());
@@ -381,9 +385,8 @@ public class FileIO {
       }
     }
     puzzle.setMatrix (matrix);
-    return puzzle;
   }
-
+  
   /**
    * Loads a Word Search puzzle and its state from a file
    * 
@@ -391,9 +394,8 @@ public class FileIO {
    *          a scanner
    * @return Puzzle a Word Search puzzle
    */
-  private static Puzzle loadWordSearch (Scanner scan) {
-    Puzzle puzzle = new WordSearch ();
-    
+  private void loadWordSearch (Scanner scan) {
+    puzzle = new WordSearch ();
     int height, width;
     Scanner scan2 = new Scanner (scan.nextLine ());
     puzzle.setNumWords (scan2.nextInt ());
@@ -404,7 +406,7 @@ public class FileIO {
     width = scan2.nextInt ();
     puzzle.setMatrixWidth (width);
     ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
-    ArrayList <String> w = new ArrayList <String>();
+    ArrayList <String> w = new ArrayList <String> ();
     for (int i = 0; i < puzzle.getNumWords (); i++) {
       PuzzleWord word = new PuzzleWord ();
       scan2 = new Scanner (scan.nextLine ());
@@ -423,14 +425,13 @@ public class FileIO {
       scan2 = new Scanner (scan.nextLine ());
       for (int c = 0; c < matrix[0].length; c++) {
         matrix[r][c] = new PuzzleCell ();
-        matrix[r][c].setCharacter (scan2.next().charAt (0));
+        matrix[r][c].setCharacter (scan2.next ().charAt (0));
         matrix[r][c].setNumWords (scan2.nextInt ());
       }
     }
     puzzle.setMatrix (matrix);
-    return puzzle;
   }
-
+  
   /**
    * Will perform the actual save of the word list to the location provided.
    * 
@@ -440,7 +441,7 @@ public class FileIO {
    *          Location of file
    * @throws IOException
    */
-  private static void save (ArrayList <String> list, File location) throws IOException {
+  private void saveWordList (ArrayList <String> list, File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     for (String word : list) {
       buffer.write (word + "\n");
@@ -455,7 +456,7 @@ public class FileIO {
    * @param location
    * @throws IOException
    */
-  private static void saveCrossword (Puzzle puzzle, File location) throws IOException {
+  private void saveCrossword (File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
@@ -476,7 +477,7 @@ public class FileIO {
     buffer.write (s);
     buffer.close ();
   }
-
+  
   /**
    * Saves the state of the current Word Search puzzle to a file
    * 
@@ -484,7 +485,7 @@ public class FileIO {
    * @param location
    * @throws IOException
    */
-  private static void saveWordSearch (Puzzle puzzle, File location) throws IOException {
+  private void saveWordSearch (File location) throws IOException {
     BufferedWriter buffer = new BufferedWriter (new FileWriter (location));
     ArrayList <PuzzleWord> list = puzzle.getPuzzleWordList ();
     PuzzleCell [][] matrix = puzzle.getMatrix ();
@@ -514,15 +515,12 @@ public class FileIO {
    *          ArrayList<String>
    * @throws IOException
    */
-  private static void saveWordsAs (ArrayList <String> list) {
-    int status;
-    File newFile = new File ("empty");
-    status = getFileChooser ().showSaveDialog (null);
+  private void saveWordsAs (ArrayList <String> list) {
     
-    if (status == JFileChooser.APPROVE_OPTION) {
-      newFile = getFileChooser ().getSelectedFile ();
+    if (getFileChooser ().showSaveDialog (null) == JFileChooser.APPROVE_OPTION) {
+      File newFile = getFileChooser ().getSelectedFile ();
       try {
-        save (list, newFile);
+        saveWordList (list, newFile);
       } catch (IOException e) {
         JOptionPane.showMessageDialog (null, "File IO Exception\n" + e.getLocalizedMessage (), "Error!", JOptionPane.ERROR_MESSAGE);
       }

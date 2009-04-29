@@ -59,7 +59,7 @@ public class WordSearch extends Puzzle {
       
       JDialog popup = new JDialog();
       JProgressBar bar = new JProgressBar(0, getWordList().size ());
-      super.buildPopup (popup, bar, "Generating Crossword");
+      super.buildPopup (popup, bar);
 
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       int length = generateDimension (getWordList ());

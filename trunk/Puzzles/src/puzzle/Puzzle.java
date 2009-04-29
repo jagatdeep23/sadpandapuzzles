@@ -263,13 +263,13 @@ public abstract class Puzzle {
    * @param text
    *          the title of the window
    */
-  protected void buildPopup (JDialog popup, JProgressBar bar, String text) {
+  protected void buildPopup (JDialog popup, JProgressBar bar) {
     bar.setValue (0);
     bar.setStringPainted (true);
-    popup.setTitle (text);
+    popup.setTitle ("Generating...");
     popup.setLocation (400, 350);
     popup.add (bar);
-    popup.setSize (320, 100);
+    popup.pack ();
     popup.setVisible (true);
     popup.setAlwaysOnTop (true);
   }

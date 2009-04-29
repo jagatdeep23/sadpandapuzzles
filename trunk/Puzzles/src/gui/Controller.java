@@ -33,34 +33,31 @@ public class Controller {
   private ArrayList <String> words;
   
   /** the window frame */
-  private JFrame frame;
+  private JFrame             frame;
+  
+  /** the File IO manager */
+  private FileIO             fileManager;
   
   /** Default Constructor for the Controller */
   public Controller () {
     puzzle = null;
     words = new ArrayList <String> ();
+    fileManager = new FileIO ();
     Components.setOutputPanel (new OutputPanel (this));
     buildWindow ();
   }
   
   /**
-   * Adds a word to the wordlist which will be added to the puzzle next time
-   * generate is pushed
+   * Adds a word to the word list
    * 
    * @param word
+   *          a word
    */
   public void addWord (String word) {
+    word = word.toUpperCase ();
     if (word.length () > 1) {
-      word = word.toUpperCase ();
-      int count = 0;
-      String s = "";
-      for (int i = 0; i < word.length (); ++i) {
-        if (word.charAt (i) < 'A' || word.charAt (i) > 'Z') {
-          s += "\"" + word.charAt (i) + "\" ";
-          count++;
-        }
-      }
-      if (count > 0) {
+      String s = validateWord (word);
+      if (!s.equals ("")) {
         JOptionPane.showMessageDialog (null, "The word you have entered contained invalid characters\nInvalid characters are: " + s, "Error",
             JOptionPane.ERROR_MESSAGE);
         return;
@@ -75,6 +72,28 @@ public class Controller {
     } else {
       JOptionPane.showMessageDialog (null, "The word you have entered does not meet the minimum requirement length of 2", "Error", JOptionPane.ERROR_MESSAGE);
     }
+  }
+  
+  /**
+   * Removes the selected word from the word list
+   */
+  public void removeWord () {
+    int index = Components.wordList.getSelectedIndex ();
+    if (index >= 0) {
+      String word = (String) Components.wordList.getSelectedValue ();
+      words.remove (word);
+      Components.wordList.getContents ().remove (index);
+      Components.wordList.setSelectedIndex ((index > 0) ? index - 1 : index);
+    }
+  }
+  
+  /**
+   * Clears the current wordlist
+   * 
+   */
+  public void clearWordList () {
+    words.clear ();
+    Components.wordList.getContents ().removeAllElements ();
   }
   
   /**
@@ -103,45 +122,75 @@ public class Controller {
   }
   
   /**
-   * Clears the current wordlist
+   * gets the window frame
    * 
+   * @return the window frame
    */
-  public void clearWordList () {
-    words.clear ();
-    // puzzle.clearWordList ();
-    Components.wordList.getContents ().removeAllElements ();
-    Components.getOutputPanel ().removeAll ();
+  public JFrame getFrame () {
+    return frame;
   }
   
   /**
-   * Returns the Instance Model used by the program
+   * Returns the puzzle associated with the controller
    * 
-   * @return InstanceModel
+   * @return puzzle the puzzle
    */
   public Puzzle getPuzzle () {
     return puzzle;
   }
   
   /**
-   * Initiates the save puzzle functionality when the save button is pushed
+   * Returns the list of words in the Wordlist
    * 
+   * @return ArrayList<String> - List of words in the puzzle
    */
-  public void savePuzzle () {
-    FileIO.savePuzzle (puzzle);
+  public ArrayList <String> getWordList () {
+    return words;
   }
   
   /**
-   * Removes the selected word from the word list
-   * 
+   * loads a puzzle
    */
-  public void removeWord () {
-    int index = Components.wordList.getSelectedIndex ();
-    if (index >= 0) {
-      String word = (String) Components.wordList.getSelectedValue ();
-      words.remove (word);
-      Components.wordList.getContents ().remove (index);
-      Components.wordList.setSelectedIndex ((index > 0) ? index - 1 : index);
+  public void loadPuzzle () {
+    fileManager.loadPuzzle ();
+    puzzle = fileManager.getPuzzle();
+    if (puzzle != null) {
+      for (String s : puzzle.getWordList ()) {
+        addWord (s);
+      }
     }
+  }
+  
+  public void loadList () {
+    ArrayList<String> list = fileManager.loadWordList();
+    if (list != null) {
+      for (String s : list) {
+        addWord(s);
+      }
+    }
+  }
+  
+  /**
+   * Initiates the save puzzle functionality
+   */
+  public void savePuzzle () {
+    fileManager.setPuzzle (puzzle);
+    fileManager.savePuzzle ();
+  }
+  
+  /**
+   * Initiates the save word list functionality
+   */
+  public void saveWordList () {
+    fileManager.saveWords (words);
+  }
+  
+  /**
+   * Initiates the export puzzle functionality
+   */
+  public void exportPuzzle () {
+    fileManager.setPuzzle (puzzle);
+    fileManager.exportPuzzle ();
   }
   
   /**
@@ -152,15 +201,6 @@ public class Controller {
    */
   public void setPuzzle (Puzzle p) {
     puzzle = p;
-  }
-  
-  /**
-   * Returns the list of words in the Wordlist
-   * 
-   * @return ArrayList<String> - List of words in the puzzle
-   */
-  public ArrayList <String> getWordList () {
-    return words;
   }
   
   /**
@@ -186,44 +226,61 @@ public class Controller {
     frame.setSize (800, 600);
     frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
     frame.setVisible (true);
-    frame.addWindowListener (new WindowListener() {
-      public void windowActivated (WindowEvent arg0) { }
-      public void windowClosed (WindowEvent arg0) { }
+    frame.addWindowListener (new WindowListener () {
+      public void windowActivated (WindowEvent arg0) {
+      }
+      
+      public void windowClosed (WindowEvent arg0) {
+      }
+      
       public void windowClosing (WindowEvent arg0) {
         if (Components.wordList.getContents ().size () == 0 || save ("Quit")) {
           System.exit (0);
         }
       }
-      public void windowDeactivated (WindowEvent arg0) { }
-      public void windowDeiconified (WindowEvent arg0) { }
-      public void windowIconified (WindowEvent arg0) { }
-      public void windowOpened (WindowEvent arg0) {}
+      
+      public void windowDeactivated (WindowEvent arg0) {
+      }
+      
+      public void windowDeiconified (WindowEvent arg0) {
+      }
+      
+      public void windowIconified (WindowEvent arg0) {
+      }
+      
+      public void windowOpened (WindowEvent arg0) {
+      }
       
       private boolean save (String title) {
-        if (title == "Save") {
-          savePuzzle ();
-          return true;
-        } else {
-          int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current puzzle?", title, JOptionPane.YES_NO_CANCEL_OPTION,
-              JOptionPane.QUESTION_MESSAGE);
-          if (result == JOptionPane.CANCEL_OPTION) {
-            return (false);
-          } else {
-            if (result == JOptionPane.YES_OPTION) {
-              savePuzzle ();
-            }
-            return (true);
-          }
+        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current puzzle?", title, JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+        switch (result) {
+          case JOptionPane.CANCEL_OPTION:
+            return false;
+          case JOptionPane.YES_OPTION:
+            savePuzzle ();
+          case JOptionPane.NO_OPTION:
+            return true;
         }
+        return true;
       }
     });
   }
   
   /**
-   * gets the window frame
-   * @return the window frame
+   * checks to see if any invalid characters are in the word
+   * 
+   * @param word
+   *          a word
+   * @return chars a string specifying invalid characters in the string;
    */
-  public JFrame getFrame () {
-    return frame;
+  private String validateWord (String word) {
+    String chars = "";
+    for (int i = 0; i < word.length (); ++i) {
+      if (!Character.isLetter (word.charAt (i))) {
+        chars += "\"" + word.charAt (i) + "\" ";
+      }
+    }
+    return chars;
   }
 }
