@@ -50,31 +50,6 @@ public abstract class Puzzle {
   private PuzzleCell [][]        matrix;
   
   /**
-   * The list of all possible directions
-   * 
-   * @author Sad Panda Software
-   * @version 3.0
-   */
-  public static enum Direction {
-    /** East */
-    EAST,
-    /** South */
-    SOUTH,
-    /** West */
-    WEST,
-    /** North */
-    NORTH,
-    /** Northeast */
-    NORTHEAST,
-    /** Southeast */
-    SOUTHEAST,
-    /** Southwest */
-    SOUTHWEST,
-    /** Northwest */
-    NORTHWEST
-  };
-  
-  /**
    * draws a puzzle
    * 
    * @param g

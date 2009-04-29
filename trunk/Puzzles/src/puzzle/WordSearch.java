@@ -59,35 +59,31 @@ public class WordSearch extends Puzzle {
       
       JDialog popup = new JDialog();
       JProgressBar bar = new JProgressBar(0, getWordList().size ());
-      buildPopup (popup, bar, "Generating Crossword");
+      super.buildPopup (popup, bar, "Generating Crossword");
 
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
-      
       int length = generateDimension (getWordList ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       
-      initializeMatrix (length);
+      super.initializeMatrix (length);
       
       boolean isValid;
       for (String word : getWordList ()) {
         isValid = false;
+        PuzzleWord pWord = new PuzzleWord();
         while (!isValid) {
           ++total;
-          Direction dir = generateDirection (8);
+          Direction dir = super.generateDirection (8);
           int [] point = generatePosition (word.length (), length, length, dir);
-          PuzzleWord pWord = new PuzzleWord ();
-          pWord.setColumn (point[0]);
-          pWord.setRow (point[1]);
+          pWord.setPoint (point);
           pWord.setDirection (dir);
           pWord.setWord (word);
           isValid = addAndValidate (pWord);
-          if (isValid) {
-            bar.setValue (++progress);
-            puzzleWords.add (pWord);
-          }
         }
+        bar.setValue (++progress);
+        puzzleWords.add (pWord);
       }
-      fillMatrix (FillRandom);
+      super.fillMatrix (FillRandom);
       setMatrixWidth (length);
       setMatrixHeight (length);
       setNumWords (puzzleWords.size ());
@@ -120,9 +116,8 @@ public class WordSearch extends Puzzle {
    * @return boolean Whether the add was a success or not.
    */
   protected boolean addAndValidate (PuzzleWord word) {
-    int dC = getColumnChange (word.getDirection ());
-    int dR = getRowChange (word.getDirection ());
-    
+    int dC = super.getColumnChange (word.getDirection ());
+    int dR = super.getRowChange (word.getDirection ());
     int row = word.getRow (), oldRow = word.getRow ();
     int col = word.getColumn (), oldCol = word.getColumn ();
     String w = word.getWord ();
@@ -181,76 +176,76 @@ public class WordSearch extends Puzzle {
     int [] point = {0, 0};
     switch (dir) {
       case NORTH:
-        point[0] = getNumberGenerator ().nextInt (row);
+        point[0] = super.getNumberGenerator ().nextInt (row);
         point[1] = length - 1;
         try {
-           point[1] =+ getNumberGenerator ().nextInt (col - length);
+           point[1] =+ super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case NORTHEAST:
         point[1] = length - 1;
         try {
-          point[0] = getNumberGenerator ().nextInt (row - length);
+          point[0] = super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] += getNumberGenerator ().nextInt (col - length);
+          point[1] += super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case EAST:
         try {
-          point[0] = getNumberGenerator ().nextInt (row - length);
+          point[0] = super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
-        point[1] = getNumberGenerator ().nextInt (col);
+        point[1] = super.getNumberGenerator ().nextInt (col);
         break;
       case SOUTHEAST:
         try {
-          point[0] = getNumberGenerator ().nextInt (row - length);
+          point[0] = super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] = getNumberGenerator ().nextInt (col - length);
+          point[1] = super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case SOUTH:
-        point[0] = getNumberGenerator ().nextInt (row);
+        point[0] = super.getNumberGenerator ().nextInt (row);
         try {
-          point[1] = getNumberGenerator ().nextInt (col - length);
+          point[1] = super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case SOUTHWEST:
         point[0] = length - 1;
         try {
-          point[0] += getNumberGenerator ().nextInt (row - length);
+          point[0] += super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] = getNumberGenerator ().nextInt (col - length);
+          point[1] = super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case WEST:
         point[0] = length - 1;
         try {
-          point[0] += getNumberGenerator ().nextInt (row - length);
+          point[0] += super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
-        point[1] = getNumberGenerator ().nextInt (col);
+        point[1] = super.getNumberGenerator ().nextInt (col);
         break;
       case NORTHWEST:
         point[0] = length - 1;
         point[1] = length - 1;
         try {
-          point[0] += getNumberGenerator ().nextInt (row - length);
+          point[0] += super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] += getNumberGenerator ().nextInt (col - length);
+          point[1] += super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;

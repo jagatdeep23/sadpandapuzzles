@@ -19,7 +19,7 @@ import puzzle.Puzzle;
 import puzzle.PuzzleCell;
 import puzzle.PuzzleWord;
 import puzzle.WordSearch;
-import puzzle.Puzzle.Direction;
+import puzzle.Direction;
 
 /**
  * This class contains all of the File Input and Output methods.

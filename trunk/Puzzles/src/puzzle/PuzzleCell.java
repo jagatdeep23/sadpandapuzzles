@@ -2,7 +2,7 @@ package puzzle;
 
 import java.util.ArrayList;
 
-import puzzle.Puzzle.Direction;
+import puzzle.Direction;
 
 /**
  * A PuzzleCell is used as a specialized container for a character used in the

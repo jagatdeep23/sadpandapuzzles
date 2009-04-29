@@ -1,6 +1,6 @@
 package puzzle;
 
-import puzzle.Puzzle.Direction;
+import puzzle.Direction;
 
 /**
  * A word that is used in a Puzzle
@@ -29,6 +29,13 @@ public class PuzzleWord {
     word = "";
   }
   
+  /**
+   * Creates a new PuzzleWord
+   * @param row the row
+   * @param col the column
+   * @param dir the direction
+   * @param word the word
+   */
   public PuzzleWord (int row, int col, Direction dir, String word) {
     setColumn(col);
     setRow(row);
@@ -36,6 +43,12 @@ public class PuzzleWord {
     setWord(word);
   }
   
+  /**
+   * Creates a new PuzzleWord
+   * @param point the point corresponding the row and column
+   * @param dir the direction
+   * @param word the word
+   */
   public PuzzleWord (int[] point, Direction dir, String word) {
     setColumn(point[0]);
     setRow(point[1]);
@@ -60,6 +73,15 @@ public class PuzzleWord {
    */
   public void setColumn (int col) {
     this.col = col;
+  }
+  
+  /**
+   * Sets the row and column to the passed point
+   * @param point the ordinal pair corresponding to a row and column
+   */
+  public void setPoint (int[] point) {
+    col = point[0];
+    row = point[1];
   }
   
   /**

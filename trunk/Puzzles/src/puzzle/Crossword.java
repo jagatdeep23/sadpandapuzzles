@@ -26,7 +26,7 @@ public class Crossword extends Puzzle {
   
   /** default constructor */
   public Crossword () {
-    reset();
+    super.reset();
   }
   
   /** draws the crossword puzzle */
@@ -53,7 +53,7 @@ public class Crossword extends Puzzle {
     if (getWordList ().size () > 0) {
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       int length = generateDimension (getWordList ()), attempts = 0;
-      initializeMatrix(length);
+      super.initializeMatrix(length);
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
       ArrayList <String> list = new ArrayList<String>(getWordList());
       boolean isValid;
@@ -63,14 +63,14 @@ public class Crossword extends Puzzle {
       int words = 0;
       JDialog popup = new JDialog();
       JProgressBar bar = new JProgressBar(0, list.size ());
-      buildPopup (popup, bar, "Generating Crossword");
+      super.buildPopup (popup, bar, "Generating Crossword");
       long time = System.currentTimeMillis ();
       while (list.size () != 0) {
         isValid = false;
         attempts = 0;
         while (!isValid) {
           String word = list.get (0);
-          Direction dir = generateDirection (2);
+          Direction dir = super.generateDirection (2);
           int [] point = generatePosition (word.length (), getMatrixHeight (), getMatrixWidth (), dir);
           PuzzleWord pWord = new PuzzleWord (point, dir, word);
           isValid = addAndValidate (pWord);
@@ -95,13 +95,13 @@ public class Crossword extends Puzzle {
               list.add (pw.getWord ());
               test = 0;
               
-              updateProgressBar (bar, words, "We might not be able to get through this...");
+              super.updateProgressBar (bar, words, "We might not be able to get through this...");
             }
             if ((System.currentTimeMillis () - time) >= 4000 || list.size() == 1) {
               popup.dispose ();
               JOptionPane.showMessageDialog (null, "This program cannot create a puzzle from your input!\nPlease remove word(s) and try again.", "Oh No!",
                   JOptionPane.ERROR_MESSAGE);
-              reset();
+              super.reset();
               return;
             }
           }
@@ -147,8 +147,8 @@ public class Crossword extends Puzzle {
     if (isCrossed) {
       Direction dir = word.getDirection ();
       String w = word.getWord ();
-      int dC = getColumnChange (dir);
-      int dR = getRowChange (dir);
+      int dC = super.getColumnChange (dir);
+      int dR = super.getRowChange (dir);
       int row = word.getRow ();
       int col = word.getColumn ();
       int length = w.length ();
@@ -169,18 +169,20 @@ public class Crossword extends Puzzle {
     Direction dir = word.getDirection ();
     int col = word.getColumn ();
     int row = word.getRow ();
-    int dC = getColumnChange (dir);
-    int dR = getRowChange (dir);
+    int dC = super.getColumnChange (dir);
+    int dR = super.getRowChange (dir);
     boolean valid = false;
     for (int i = 0; i < w.length (); i++, col += dC, row += dR) {
       char character = w.charAt (i);
       if (!getMatrixElement (row, col).isEmpty ()) {
         if (getMatrixElement (row, col).hasDirection (dir)) {
           return false;
-        } else if (getMatrixElement (row, col).getCharacter () == character) {  
-          valid = true;
-        } else if (getMatrixElement (row, col).getCharacter () != character) {
-          return false;
+        } else {
+          if (getMatrixElement (row, col).getCharacter () == character) {  
+            valid = true;
+          } else {
+            return false;
+          }
         }
       }
     }
@@ -198,8 +200,8 @@ public class Crossword extends Puzzle {
     int col = word.getColumn ();
     int row = word.getRow ();
     int length = w.length ();
-    int dC = getColumnChange (dir);
-    int dR = getRowChange (dir);
+    int dC = super.getColumnChange (dir);
+    int dR = super.getRowChange (dir);
     try {
       if (getMatrixElement (row - dR, col - dC).hasCharacter ()) {
         return false;
@@ -266,8 +268,8 @@ public class Crossword extends Puzzle {
           point[0] = (colSize / 2) - (length / 2);
           point[1] = rowSize / 2;
         } else {
-          point[0] = getNumberGenerator ().nextInt (colSize - length);
-          point[1] = getNumberGenerator ().nextInt (rowSize);
+          point[0] = super.getNumberGenerator ().nextInt (colSize - length);
+          point[1] = super.getNumberGenerator ().nextInt (rowSize);
         }
         break;
       case SOUTH:
@@ -275,19 +277,23 @@ public class Crossword extends Puzzle {
           point[0] = colSize / 2;
           point[1] = (rowSize / 2) - (length / 2);
         } else {
-          point[0] = getNumberGenerator ().nextInt (colSize);
-          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+          point[0] = super.getNumberGenerator ().nextInt (colSize);
+          point[1] = super.getNumberGenerator ().nextInt (rowSize - length);
         }
         break;
     }
     return (point);
   }
 
+  /**
+   * 
+   * @param pw the puzzle word to remove
+   */
   protected void removeWordFromPuzzle (PuzzleWord pw) {
     int r = pw.getRow ();
     int c = pw.getColumn ();
-    int dr = (pw.getDirection () == Direction.SOUTH) ? 1 : 0;
-    int dc = (pw.getDirection () == Direction.SOUTH) ? 0 : 1;
+    int dr = super.getRowChange (pw.getDirection());
+    int dc = super.getColumnChange (pw.getDirection());
     for (int k = 0; k < pw.getWord ().length (); ++k, r += dr, c += dc) {
       getMatrixElement (r, c).remove (pw.getDirection ());
     }
@@ -300,14 +306,13 @@ public class Crossword extends Puzzle {
   protected void trim(ArrayList<PuzzleWord> puzzleWords) {
     int minWidth = 999, maxWidth = -1, minHeight = 999, maxHeight = -1;
     for (PuzzleWord word : puzzleWords) {
-      int dC = getColumnChange(word.getDirection ());
-      int dR = getRowChange(word.getDirection ());
+      int dC = super.getColumnChange(word.getDirection ());
+      int dR = super.getRowChange(word.getDirection ());
       minWidth = Math.min (minWidth, word.getColumn ());
       maxWidth = Math.max (maxWidth, word.getColumn () + dC * word.getWord ().length ());
       minHeight = Math.min (minHeight, word.getRow ());
       maxHeight = Math.max (maxHeight, word.getRow () + dR * word.getWord ().length ());
     }
-    
     setMatrixWidth (maxWidth - minWidth + 1);
     setMatrixHeight (maxHeight - minHeight + 1);
     PuzzleCell [][] newMatrix = new PuzzleCell [getMatrixHeight ()] [getMatrixWidth ()];
