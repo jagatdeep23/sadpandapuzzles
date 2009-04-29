@@ -185,6 +185,12 @@ public class Components {
     wordListLabel = new JLabel ("Word List");
     wordListLabel.setHorizontalAlignment (JLabel.CENTER);
     
+    Buttons.addWordToList.setMnemonic ('a');
+    Buttons.removeWordFromList.setMnemonic ('r');
+    Buttons.clearList.setMnemonic ('c');
+    Buttons.loadList.setMnemonic ('l');
+    
+    
     buttonPanel = new JPanel (new GridLayout (5, 1, 5, 5));
     buttonPanel.add (wordField);
     buttonPanel.add (Buttons.addWordToList);
