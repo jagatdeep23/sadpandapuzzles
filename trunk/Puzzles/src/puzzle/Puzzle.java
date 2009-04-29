@@ -21,12 +21,12 @@ public abstract class Puzzle {
   /**
    * flag used for initializing the cells of the puzzle matrix
    */
-  public static final boolean    Initialize = true;
+  protected static final boolean    Initialize = true;
   
   /**
    * flag used for filling in the puzzle matrix with random characters
    */
-  public static final boolean    FillRandom = false;
+  protected static final boolean    FillRandom = false;
   
   /** A random number generator */
   private static Random          gen;
@@ -150,6 +150,17 @@ public abstract class Puzzle {
    */
   public PuzzleCell [][] getMatrix () {
     return matrix;
+  }
+  
+  /**
+   * gets the specified matrix cell
+   * @param r the row
+   * @param c the column
+   * @return the matrix cell desired
+   * @throws ArrayIndexOutOfBoundsException
+   */
+  public PuzzleCell getMatrixElement (int r, int c) throws ArrayIndexOutOfBoundsException {
+    return matrix[r][c];
   }
   
   /**
@@ -330,13 +341,13 @@ public abstract class Puzzle {
       case SOUTHEAST:
         dC = 1;
         break;
-      case SOUTHWEST:
+      case NORTHWEST:
         dC = -1;
         break;
       case WEST:
         dC = -1;
         break;
-      case NORTHWEST:
+      case SOUTHWEST:
         dC = -1;
         break;
     }
@@ -358,23 +369,23 @@ public abstract class Puzzle {
   protected int getRowChange (Direction dir) {
     int dR = 0;
     switch (dir) {
+      case NORTHWEST:
+        dR = -1;
+        break;
       case NORTH:
         dR = -1;
         break;
       case NORTHEAST:
         dR = -1;
         break;
-      case SOUTHEAST:
+      case SOUTHWEST:
         dR = 1;
         break;
       case SOUTH:
         dR = 1;
         break;
-      case SOUTHWEST:
+      case SOUTHEAST:
         dR = 1;
-        break;
-      case NORTHWEST:
-        dR = -1;
         break;
     }
     return dR;
@@ -389,7 +400,7 @@ public abstract class Puzzle {
     setMatrix (new PuzzleCell [length] [length]);
     setMatrixWidth (length);
     setMatrixHeight (length);
-    fillMatrix (Puzzle.Initialize);
+    fillMatrix (Initialize);
   }
   
   /**

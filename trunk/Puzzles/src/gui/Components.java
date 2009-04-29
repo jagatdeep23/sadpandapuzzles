@@ -193,6 +193,7 @@ public class Components {
     buttonPanel.add (Buttons.loadList);
     
     wordList = new MutableList ();
+    wordList.setFocusable (false);
     scrollArea = new JScrollPane (wordList);
     
     sidebarPanel = new JPanel (new BorderLayout (5, 5));
@@ -228,6 +229,7 @@ public class Components {
     
     String [] s = {ProgramConstants.WORD_SEARCH, ProgramConstants.CROSSWORD};
     dropDown = new JComboBox (s);
+    dropDown.setFocusable (false);
     dropDownPanel = new JPanel (new GridLayout (3, 1));
     dropDownPanel.add (EMPTY_LABEL);
     dropDownPanel.add (EMPTY_LABEL);

@@ -30,15 +30,15 @@ public class PuzzleWord {
   }
   
   public PuzzleWord (int row, int col, Direction dir, String word) {
-    setRow(row);
     setColumn(col);
+    setRow(row);
     setDirection(dir);
     setWord(word);
   }
   
   public PuzzleWord (int[] point, Direction dir, String word) {
-    setRow(point[1]);
     setColumn(point[0]);
+    setRow(point[1]);
     setDirection(dir);
     setWord(word);
   }

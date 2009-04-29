@@ -275,8 +275,8 @@ public class FileIO {
       s += "<tr>";
       for (int c = -1; c <= matrix.length; c++) {
         try {
-          if (matrix[c][r].getNumWords () > 0 || isPuzzle) {
-          s += "<td><center><tt><big>" + matrix[c][r]+ "</big></tt></center></td>";
+          if (matrix[r][c].getNumWords () > 0 || isPuzzle) {
+          s += "<td><center><tt><big>" + matrix[r][c]+ "</big></tt></center></td>";
           } else {
             s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
           }

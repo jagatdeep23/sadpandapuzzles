@@ -196,6 +196,12 @@ public class PuzzleCell {
     return (character == '\0');
   }
   
+  public char getCharacter () {
+    if (character == '\0')
+      return '?';
+    return character;
+  }
+  
   public ArrayList <Direction> getDirList () {
     return dirs;
   }

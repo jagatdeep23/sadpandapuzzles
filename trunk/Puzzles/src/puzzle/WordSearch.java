@@ -38,13 +38,13 @@ public class WordSearch extends Puzzle {
     g.fillRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
     g.setFont (new Font ("Courier", Font.BOLD, 18));
-    for (int r = 0; r < getMatrixHeight (); r++) {
-      for (int c = 0; c < getMatrixWidth (); c++) {
-        if (getMatrix ()[r][c].getNumWords () > 0)
+    for (int c = 0; c < getMatrixWidth (); c++) {
+      for (int r = 0; r < getMatrixHeight (); r++) {
+        if (getMatrixElement (c, r).getNumWords () > 0)
           g.setColor (Color.RED);
         else
           g.setColor (Color.BLACK);
-        g.drawString (getMatrix ()[r][c].toString (), 30 + 24 * r, 30 + 24 * c);
+        g.drawString (getMatrixElement (c, r).toString (), 30 + 24 * r, 30 + 24 * c);
       }
     }
   }
@@ -87,7 +87,7 @@ public class WordSearch extends Puzzle {
           }
         }
       }
-      fillMatrix (Puzzle.FillRandom);
+      fillMatrix (FillRandom);
       setMatrixWidth (length);
       setMatrixHeight (length);
       setNumWords (puzzleWords.size ());
@@ -105,7 +105,7 @@ public class WordSearch extends Puzzle {
     String s = "";
     for (int r = 0; r < getMatrixHeight (); r++) {
       for (int c = 0; c < getMatrixWidth (); c++) {
-        s += getMatrix ()[r][c] + " ";
+        s += getMatrixElement (r, c) + " ";
       }
       s += "\n";
     }
@@ -128,7 +128,7 @@ public class WordSearch extends Puzzle {
     String w = word.getWord ();
     for (int i = 0; i < w.length (); i++) {
       try {
-        char test = getMatrix ()[col][row].toString().charAt (0);
+        char test = getMatrixElement (row,col).getCharacter ();
         if (test != '?' && test != w.charAt (i))
           return false;
       } catch (ArrayIndexOutOfBoundsException e) {
@@ -140,7 +140,7 @@ public class WordSearch extends Puzzle {
     row = oldRow;
     col = oldCol;
     for (int i = 0; i < w.length (); ++i) {
-      getMatrix()[col][row].add (w.charAt (i));
+      getMatrixElement (row, col).add (w.charAt (i));
       col += dC;
       row += dR;
     }
@@ -171,86 +171,86 @@ public class WordSearch extends Puzzle {
    * 
    * @param length
    *          length of the word.
-   * @param colSize
+   * @param row
    *          number of columns.
-   * @param rowSize
+   * @param col
    *          number of rows.
    * @return int[] - [0] is the x value, and [1] is the y value.
    */
-  protected int [] generatePosition (int length, int colSize, int rowSize, Direction dir) {
+  protected int [] generatePosition (int length, int col, int row, Direction dir) {
     int [] point = {0, 0};
     switch (dir) {
       case NORTH:
-        point[0] = getNumberGenerator ().nextInt (colSize);
+        point[0] = getNumberGenerator ().nextInt (row);
         point[1] = length - 1;
         try {
-           point[1] =+ getNumberGenerator ().nextInt (rowSize - length);
+           point[1] =+ getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case NORTHEAST:
         point[1] = length - 1;
         try {
-          point[0] = getNumberGenerator ().nextInt (colSize - length);
+          point[0] = getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] += getNumberGenerator ().nextInt (rowSize - length);
+          point[1] += getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case EAST:
         try {
-          point[0] = getNumberGenerator ().nextInt (colSize - length);
+          point[0] = getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
-        point[1] = getNumberGenerator ().nextInt (rowSize);
+        point[1] = getNumberGenerator ().nextInt (col);
         break;
       case SOUTHEAST:
         try {
-          point[0] = getNumberGenerator ().nextInt (colSize - length);
+          point[0] = getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+          point[1] = getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case SOUTH:
-        point[0] = getNumberGenerator ().nextInt (colSize);
+        point[0] = getNumberGenerator ().nextInt (row);
         try {
-          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+          point[1] = getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case SOUTHWEST:
         point[0] = length - 1;
         try {
-          point[0] += getNumberGenerator ().nextInt (colSize - length);
+          point[0] += getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] = getNumberGenerator ().nextInt (rowSize - length);
+          point[1] = getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
       case WEST:
         point[0] = length - 1;
         try {
-          point[0] += getNumberGenerator ().nextInt (colSize - length);
+          point[0] += getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
-        point[1] = getNumberGenerator ().nextInt (rowSize);
+        point[1] = getNumberGenerator ().nextInt (col);
         break;
       case NORTHWEST:
         point[0] = length - 1;
         point[1] = length - 1;
         try {
-          point[0] += getNumberGenerator ().nextInt (colSize - length);
+          point[0] += getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] += getNumberGenerator ().nextInt (rowSize - length);
+          point[1] += getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
