@@ -236,8 +236,9 @@ public abstract class Puzzle {
    * @param r the row
    * @param c the column
    * @param cell the cell you wish to set
+   * @throws ArrayIndexOutOfBoundsException
    */
-  public void setMatrixElement (int r, int c,PuzzleCell cell) {
+  public void setMatrixElement (int r, int c, PuzzleCell cell) throws ArrayIndexOutOfBoundsException{
     matrix[r][c] = cell;
   }
 

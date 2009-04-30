@@ -30,6 +30,10 @@ public class Crossword extends Puzzle {
     super.reset();
   }
   
+  /**
+   * Builds a crossword from a file scanner
+   * @param scan a file scanner
+   */
   public Crossword (Scanner scan) {
     load(scan);
   }
@@ -53,7 +57,11 @@ public class Crossword extends Puzzle {
     }
   }
   
-  @Override
+  /**
+   * Generates a string that represents the puzzle in HTML
+   * @param isPuzzle flag to generate solution or puzzle
+   * @return a string that represents the puzzle in HTML
+   */
   public String export (boolean isPuzzle) {
     String s = "<html>\n<body>\n<h1>Sad Panda Software Crossword</h1>\n<table border=\"1\" bordercolor=\"000000\" borderstyle=\"solid\" cellpadding=\"0\" cellspacing=\"0\">";
     for (int r = -1; r <= getMatrixHeight (); r++) {
@@ -161,7 +169,10 @@ public class Crossword extends Puzzle {
     firstWord = true;
   }
 
-  @Override
+  /**
+   * loads a puzzle
+   * @param scan a file scanner
+   */
   public void load (Scanner scan){
     reset();
     Scanner scan2 = new Scanner (scan.nextLine ());

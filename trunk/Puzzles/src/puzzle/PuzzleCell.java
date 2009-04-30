@@ -104,7 +104,84 @@ public class PuzzleCell {
       setCharacter ('\0');
     }
   }
-  
+
+  /**
+   * checks to see if the PuzzleCell has any character
+   * 
+   * @return true if the PuzzleCell has a character; false otherwise
+   */
+  public boolean hasCharacter () {
+    return (character != '\0');
+  }
+
+  /**
+   * checks to see if the PuzzleCell has a specified character
+   * 
+   * @param c
+   *          a character
+   * @return true if the PuzzleCell has <tt>c</tt> as the character
+   */
+  public boolean hasCharacter (char c) {
+    return (character == c);
+  }
+
+  /**
+   * checks to see if any directions are associated with the PuzzleCell
+   * 
+   * @return true if the PuzzleCell has any direction; false otherwise
+   */
+  public boolean hasDirection () {
+    return (!hasNoDirection ());
+  }
+
+  /**
+   * checks to see if the passed direction is in PuzzleCell
+   * 
+   * @param dir
+   *          a direction
+   * @return true if the PuzzleCell has the direction; false otherwise
+   */
+  public boolean hasDirection (Direction dir) {
+    return (dirs.contains (dir));
+  }
+
+  /**
+   * checks to see if no directions are associated with the PuzzleCell
+   * 
+   * @return true if the PuzzleCell has no direction; false otherwise
+   */
+  public boolean hasNoDirection () {
+    return (dirs.isEmpty ());
+  }
+
+  /**
+   * checks to see if the PuzzleCell is empty
+   * 
+   * @return true if the PuzzleCell is empty; false otherwise
+   */
+  public boolean isEmpty () {
+    return (character == '\0');
+  }
+
+  public char getCharacter () {
+    if (character == '\0')
+      return '?';
+    return character;
+  }
+
+  public ArrayList <Direction> getDirList () {
+    return dirs;
+  }
+
+  /**
+   * gets the number of words associated with the PuzzleCell
+   * 
+   * @return number of words
+   */
+  public int getNumWords () {
+    return numWords;
+  }
+
   /**
    * Sets the char the puzzle cell contains.
    * 
@@ -127,83 +204,6 @@ public class PuzzleCell {
    */
   public void setNumWords (int i) {
     numWords = i;
-  }
-  
-  /**
-   * gets the number of words associated with the PuzzleCell
-   * 
-   * @return number of words
-   */
-  public int getNumWords () {
-    return numWords;
-  }
-  
-  /**
-   * checks to see if any directions are associated with the PuzzleCell
-   * 
-   * @return true if the PuzzleCell has any direction; false otherwise
-   */
-  public boolean hasDirection () {
-    return (!hasNoDirection ());
-  }
-  
-  /**
-   * checks to see if the passed direction is in PuzzleCell
-   * 
-   * @param dir
-   *          a direction
-   * @return true if the PuzzleCell has the direction; false otherwise
-   */
-  public boolean hasDirection (Direction dir) {
-    return (dirs.contains (dir));
-  }
-  
-  /**
-   * checks to see if no directions are associated with the PuzzleCell
-   * 
-   * @return true if the PuzzleCell has no direction; false otherwise
-   */
-  public boolean hasNoDirection () {
-    return (dirs.isEmpty ());
-  }
-  
-  /**
-   * checks to see if the PuzzleCell has any character
-   * 
-   * @return true if the PuzzleCell has a character; false otherwise
-   */
-  public boolean hasCharacter () {
-    return (character != '\0');
-  }
-  
-  /**
-   * checks to see if the PuzzleCell has a specified character
-   * 
-   * @param c
-   *          a character
-   * @return true if the PuzzleCell has <tt>c</tt> as the character
-   */
-  public boolean hasCharacter (char c) {
-    return (character == c);
-  }
-  
-  /**
-   * checks to see if the PuzzleCell is empty
-   * 
-   * @return true if the PuzzleCell is empty; false otherwise
-   */
-  public boolean isEmpty () {
-    return (character == '\0');
-  }
-  
-  public char getCharacter () {
-    if (character == '\0')
-      return '?';
-    return character;
-  }
-  
-  public ArrayList <Direction> getDirList () {
-    return dirs;
   }
   
   /**

@@ -66,6 +66,33 @@ public class PuzzleWord {
   }
   
   /**
+   * Returns the direction the word is traveling.
+   * 
+   * @return dir returns the direction the word is traveling.
+   */
+  public Direction getDirection () {
+    return dir;
+  }
+
+  /**
+   * Returns the number of rows.
+   * 
+   * @return row - returns the number of rows.
+   */
+  public int getRow () {
+    return row;
+  }
+
+  /**
+   * Returns the word as a string.
+   * 
+   * @return word the word as a string.
+   */
+  public String getWord () {
+    return word;
+  }
+
+  /**
    * Sets the number of columns
    * 
    * @param col
@@ -74,25 +101,7 @@ public class PuzzleWord {
   public void setColumn (int col) {
     this.col = col;
   }
-  
-  /**
-   * Sets the row and column to the passed point
-   * @param point the ordinal pair corresponding to a row and column
-   */
-  public void setPoint (int[] point) {
-    col = point[0];
-    row = point[1];
-  }
-  
-  /**
-   * Returns the direction the word is traveling.
-   * 
-   * @return dir returns the direction the word is traveling.
-   */
-  public Direction getDirection () {
-    return dir;
-  }
-  
+
   /**
    * Sets the direction the word is traveling.
    * 
@@ -102,16 +111,16 @@ public class PuzzleWord {
   public void setDirection (Direction dir) {
     this.dir = dir;
   }
-  
+
   /**
-   * Returns the number of rows.
-   * 
-   * @return row - returns the number of rows.
+   * Sets the row and column to the passed point
+   * @param point the ordinal pair corresponding to a row and column
    */
-  public int getRow () {
-    return row;
+  public void setPoint (int[] point) {
+    col = point[0];
+    row = point[1];
   }
-  
+
   /**
    * Sets the number of rows.
    * 
@@ -120,15 +129,6 @@ public class PuzzleWord {
    */
   public void setRow (int row) {
     this.row = row;
-  }
-  
-  /**
-   * Returns the word as a string.
-   * 
-   * @return word the word as a string.
-   */
-  public String getWord () {
-    return word;
   }
   
   /**

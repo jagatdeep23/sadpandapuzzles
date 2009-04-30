@@ -24,6 +24,10 @@ public class WordSearch extends Puzzle {
     reset();
   }
   
+  /**
+   * Builds a word search from a file scanner
+   * @param scan a file scanner
+   */
   public WordSearch (Scanner scan) {
     load(scan);
   }
@@ -50,7 +54,11 @@ public class WordSearch extends Puzzle {
     }
   }
   
-  @Override
+  /**
+   * Generates a string that represents the puzzle in HTML
+   * @param isPuzzle flag to generate solution or puzzle
+   * @return a string that represents the puzzle in HTML
+   */
   public String export (boolean isPuzzle) {
     String s = "<html><body><h1>Sad Panda Software Word Search</h1>\n";
     s += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
@@ -130,7 +138,10 @@ public class WordSearch extends Puzzle {
     }
   }
   
-  @Override
+  /**
+   * loads a puzzle
+   * @param scan a file scanner
+   */
   public void load (Scanner scan) {
     reset();
     Scanner scan2 = new Scanner (scan.nextLine ());
