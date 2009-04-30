@@ -218,26 +218,8 @@ public class FileIO {
    */
   private void loadCrossword (Scanner scan) {
     puzzle = new Crossword ();
-    int height, width;
     Scanner scan2 = new Scanner (scan.nextLine ());
-    puzzle.setNumWords (scan2.nextInt ());
-    scan2 = new Scanner (scan.nextLine ());
-    height = scan2.nextInt ();
-    puzzle.setMatrixHeight (height);
-    scan2 = new Scanner (scan.nextLine ());
-    width = scan2.nextInt ();
-    puzzle.setMatrixWidth (width);
-    puzzle.buildMatrix ();
-    ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
-    ArrayList <String> w = new ArrayList <String> ();
-    for (int i = 0; i < puzzle.getNumWords (); i++) {
-      scan2 = new Scanner (scan.nextLine ());
-      String s = scan2.next ();
-      w.add (s);
-      words.add (new PuzzleWord (scan2.nextInt (), scan2.nextInt (), Direction.values ()[scan2.nextInt ()], s));
-    }
-    puzzle.setWordList (words);
-    puzzle.setList (w);
+    processFileHeader (puzzle, scan, scan2);
     for (int r = 0; r < puzzle.getMatrixHeight (); r++) {
       scan2 = new Scanner (scan.nextLine ());
       for (int c = 0; c < puzzle.getMatrixWidth (); c++) {
@@ -260,22 +242,7 @@ public class FileIO {
   private void loadWordSearch (Scanner scan) {
     puzzle = new WordSearch ();
     Scanner scan2 = new Scanner (scan.nextLine ());
-    puzzle.setNumWords (scan2.nextInt ());
-    scan2 = new Scanner (scan.nextLine ());
-    puzzle.setMatrixHeight (scan2.nextInt ());
-    scan2 = new Scanner (scan.nextLine ());
-    puzzle.setMatrixWidth (scan2.nextInt ());
-    ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
-    ArrayList <String> w = new ArrayList <String> ();
-    for (int i = 0; i < puzzle.getNumWords (); i++) {
-      scan2 = new Scanner (scan.nextLine ());
-      String s = scan2.next ();
-      w.add (s);
-      words.add (new PuzzleWord (scan2.nextInt (), scan2.nextInt (), Direction.values ()[scan2.nextInt ()], s));
-    }
-    puzzle.setWordList (words);
-    puzzle.setList (w);
-    puzzle.buildMatrix ();
+    processFileHeader (puzzle, scan, scan2);
     for (int r = 0; r < puzzle.getMatrixHeight (); r++) {
       scan2 = new Scanner (scan.nextLine ());
       for (int c = 0; c < puzzle.getMatrixWidth (); c++) {
@@ -285,5 +252,24 @@ public class FileIO {
         puzzle.setMatrixElement (r, c, cell);
       }
     }
+  }
+  
+  private void processFileHeader (Puzzle puzzle, Scanner fileScanner, Scanner lineScanner) {
+    puzzle.setNumWords (lineScanner.nextInt ());
+    lineScanner = new Scanner (fileScanner.nextLine ());
+    puzzle.setMatrixHeight (lineScanner.nextInt ());
+    lineScanner = new Scanner (fileScanner.nextLine ());
+    puzzle.setMatrixWidth (lineScanner.nextInt ());
+    ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
+    ArrayList <String> w = new ArrayList <String> ();
+    for (int i = 0; i < puzzle.getNumWords (); i++) {
+      lineScanner = new Scanner (fileScanner.nextLine ());
+      String s = lineScanner.next ();
+      w.add (s);
+      words.add (new PuzzleWord (lineScanner.nextInt (), lineScanner.nextInt (), Direction.values ()[lineScanner.nextInt ()], s));
+    }
+    puzzle.setWordList (words);
+    puzzle.setList (w);
+    puzzle.buildMatrix ();
   }
 }

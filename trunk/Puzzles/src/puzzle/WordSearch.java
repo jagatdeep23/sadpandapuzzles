@@ -235,7 +235,7 @@ public class WordSearch extends Puzzle {
         point[0] = super.getNumberGenerator ().nextInt (row);
         point[1] = length - 1;
         try {
-           point[1] =+ super.getNumberGenerator ().nextInt (col - length);
+           point[1] -= super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
@@ -246,7 +246,7 @@ public class WordSearch extends Puzzle {
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] += super.getNumberGenerator ().nextInt (col - length);
+          point[1] -= super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
@@ -277,7 +277,7 @@ public class WordSearch extends Puzzle {
       case SOUTHWEST:
         point[0] = length - 1;
         try {
-          point[0] += super.getNumberGenerator ().nextInt (row - length);
+          point[0] -= super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
@@ -288,7 +288,7 @@ public class WordSearch extends Puzzle {
       case WEST:
         point[0] = length - 1;
         try {
-          point[0] += super.getNumberGenerator ().nextInt (row - length);
+          point[0] -= super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         point[1] = super.getNumberGenerator ().nextInt (col);
@@ -297,11 +297,11 @@ public class WordSearch extends Puzzle {
         point[0] = length - 1;
         point[1] = length - 1;
         try {
-          point[0] += super.getNumberGenerator ().nextInt (row - length);
+          point[0] -= super.getNumberGenerator ().nextInt (row - length);
         } catch (IllegalArgumentException e) {
         }
         try {
-          point[1] += super.getNumberGenerator ().nextInt (col - length);
+          point[1] -= super.getNumberGenerator ().nextInt (col - length);
         } catch (IllegalArgumentException e) {
         }
         break;
