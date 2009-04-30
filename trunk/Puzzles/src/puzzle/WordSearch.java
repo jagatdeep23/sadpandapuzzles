@@ -20,7 +20,6 @@ public class WordSearch extends Puzzle {
   
   /** default constructor */
   public WordSearch () {
-    setMatrix (null);
     setWordList (null);
     setNumWords (0);
     setMatrixHeight (0);
@@ -49,6 +48,43 @@ public class WordSearch extends Puzzle {
     }
   }
   
+  @Override
+  public String export (boolean isPuzzle) {
+    String s = "<html><body><h1>Sad Panda Software Word Search</h1>\n";
+    s += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
+    for (int r = -1; r <= getMatrixHeight(); r++) {
+      s += "<tr>";
+      for (int c = -1; c <= getMatrixWidth(); c++) {
+        try {
+          if (getMatrixElement(r,c).getNumWords () > 0 || isPuzzle) {
+            s += "<td><center><tt><big>" + getMatrixElement(r,c) + "</big></tt></center></td>";
+          } else {
+            s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
+          }
+        } catch (ArrayIndexOutOfBoundsException e) {
+          s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
+        }
+      }
+      s += "</tr>\n";
+    }
+    s += "</table>\n<br><br>\n";
+    
+    s += "<table border=\"0\">\n";
+    if (!isPuzzle) {
+      s += "<tr><td><b>Word</b></td><td><b>Direction</b></td><td><b>Row</b></td><td><b>Col</b></td></tr>\n";
+    }
+    for (PuzzleWord word : getPuzzleWordList ()) {
+      s += "<tr>";
+      s += "<td>" + word.getWord ().toLowerCase () + "</td>";
+      if (!isPuzzle) {
+        s += "<td>" + word.getDirection ().name ().toLowerCase () + "</td><td>" + word.getRow () + "</td><td>" + word.getColumn () + "</td>";
+      }
+      s += "</tr>\n";
+    }
+    s += "</body></html>";
+    return s;
+  }
+
   /**
    * generates a Word Search puzzle
    */
@@ -92,6 +128,26 @@ public class WordSearch extends Puzzle {
     }
   }
   
+  /**
+   * generates a string for saving the word search puzzle
+   */
+  public String save () {
+    String s = "wordsearch\n";
+    s += getNumWords () + "\n";
+    s += getMatrixHeight () + "\n";
+    s += getMatrixWidth () + "\n";
+    for (PuzzleWord word : getPuzzleWordList ()) {
+      s += word.getWord () + " " + word.getRow () + " " + word.getColumn () + " " + word.getDirection ().ordinal () + "\n";
+    }
+    for (int r = 0; r < getMatrixHeight (); r++) {
+      for (int c = 0; c < getMatrixWidth (); c++) {
+        s += getMatrixElement(r, c) + " " + getMatrixElement(r,c).getNumWords () + " ";
+      }
+      s += "\n";
+    }
+    return s;
+  }
+
   /**
    * Gets the puzzle as a string
    * 

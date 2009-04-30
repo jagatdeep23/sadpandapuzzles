@@ -1,4 +1,9 @@
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import gui.Controller;
+import gui.Window;
 
 /**
  * Main class to execute program
@@ -13,7 +18,19 @@ public class PuzzleGenerator {
    * @param args
    */
   public static void main (String [] args) {
-    // creates a new controller to manage the GUI and model
-    new Controller ();
+    if (System.getProperty ("mrj.version") != null) {
+      System.setProperty ("apple.laf.useScreenMenuBar", "true");
+    }
+    try {
+      UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName ());
+    } catch (ClassNotFoundException e) {
+    } catch (InstantiationException e) {
+    } catch (IllegalAccessException e) {
+    } catch (UnsupportedLookAndFeelException e) {
+    }
+    
+    JFrame.setDefaultLookAndFeelDecorated (true);
+    Controller controller = new Controller();
+    new Window (controller);
   }
 }

@@ -2,15 +2,9 @@ package gui;
 
 import io.FileIO;
 
-import java.awt.Dimension;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import puzzle.Crossword;
 import puzzle.Puzzle;
@@ -32,9 +26,6 @@ public class Controller {
   /** the list of words in the word list */
   private ArrayList <String> words;
   
-  /** the window frame */
-  private JFrame             frame;
-  
   /** the File IO manager */
   private FileIO             fileManager;
   
@@ -43,8 +34,6 @@ public class Controller {
     puzzle = null;
     words = new ArrayList <String> ();
     fileManager = new FileIO ();
-    Components.setOutputPanel (new OutputPanel (this));
-    buildWindow ();
   }
   
   /**
@@ -62,18 +51,14 @@ public class Controller {
             JOptionPane.ERROR_MESSAGE);
         return;
       }
-      if (word.startsWith ("IMAC") || word.equals ("APPLE") || word.equals ("KATZ") || word.startsWith ("IPOD") || word.startsWith ("IPHONE")
-          || word.startsWith ("MAC") && !word.startsWith ("MACR") && !word.startsWith ("MACE")) {
-        JOptionPane.showMessageDialog (null, "The word you have entered cannot be recognized\nSince we are nice, we will add it for you anyways.",
-            "Woah There!", JOptionPane.INFORMATION_MESSAGE);
-      }
+      checkEasterEgg (word);
       words.add (word);
       Components.wordList.getContents ().addElement (word);
     } else {
       JOptionPane.showMessageDialog (null, "The word you have entered does not meet the minimum requirement length of 2", "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
-  
+
   /**
    * Removes the selected word from the word list
    */
@@ -122,15 +107,6 @@ public class Controller {
   }
   
   /**
-   * gets the window frame
-   * 
-   * @return the window frame
-   */
-  public JFrame getFrame () {
-    return frame;
-  }
-  
-  /**
    * Returns the puzzle associated with the controller
    * 
    * @return puzzle the puzzle
@@ -170,19 +146,15 @@ public class Controller {
     }
   }
   
-  /**
-   * Initiates the save puzzle functionality
-   */
-  public void savePuzzle () {
-    fileManager.setPuzzle (puzzle);
-    fileManager.savePuzzle ();
-  }
-  
-  /**
-   * Initiates the save word list functionality
-   */
-  public void saveWordList () {
-    fileManager.saveWords (words);
+  public void save () {
+    String[] options = {"Word List", "Puzzle", "Cancel"};
+    int result = JOptionPane.showOptionDialog (null, "What Do You Want To Save?", "Save", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+    if (result == 0) {
+      fileManager.saveWords (words);
+    } else if (result == 1){
+      fileManager.setPuzzle (puzzle);
+      fileManager.savePuzzle ();
+    }
   }
   
   /**
@@ -204,70 +176,6 @@ public class Controller {
   }
   
   /**
-   * Builds the main GUI window
-   */
-  private void buildWindow () {
-    if (System.getProperty ("mrj.version") != null) {
-      System.setProperty ("apple.laf.useScreenMenuBar", "true");
-    }
-    try {
-      UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName ());
-    } catch (ClassNotFoundException e) {
-    } catch (InstantiationException e) {
-    } catch (IllegalAccessException e) {
-    } catch (UnsupportedLookAndFeelException e) {
-    }
-    
-    JFrame.setDefaultLookAndFeelDecorated (true);
-    frame = new JFrame ("Puzzle Generator 3.0 - Sad Panda Software");
-    frame.setMinimumSize (new Dimension (480, 400));
-    frame.getContentPane ().add (new Window (this));
-    frame.pack ();
-    frame.setSize (800, 600);
-    frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
-    frame.setVisible (true);
-    frame.addWindowListener (new WindowListener () {
-      public void windowActivated (WindowEvent arg0) {
-      }
-      
-      public void windowClosed (WindowEvent arg0) {
-      }
-      
-      public void windowClosing (WindowEvent arg0) {
-        if (Components.wordList.getContents ().size () == 0 || save ("Quit")) {
-          System.exit (0);
-        }
-      }
-      
-      public void windowDeactivated (WindowEvent arg0) {
-      }
-      
-      public void windowDeiconified (WindowEvent arg0) {
-      }
-      
-      public void windowIconified (WindowEvent arg0) {
-      }
-      
-      public void windowOpened (WindowEvent arg0) {
-      }
-      
-      private boolean save (String title) {
-        int result = JOptionPane.showConfirmDialog (null, "Would you like to save the current puzzle?", title, JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
-        switch (result) {
-          case JOptionPane.CANCEL_OPTION:
-            return false;
-          case JOptionPane.YES_OPTION:
-            savePuzzle ();
-          case JOptionPane.NO_OPTION:
-            return true;
-        }
-        return true;
-      }
-    });
-  }
-  
-  /**
    * checks to see if any invalid characters are in the word
    * 
    * @param word
@@ -282,5 +190,17 @@ public class Controller {
       }
     }
     return chars;
+  }
+  
+  /**
+   * checks the word to see if it is "special"
+   * @param word a word
+   */
+  private void checkEasterEgg (String word) {
+    if (word.startsWith ("IMAC") || word.equals ("APPLE") || word.equals ("KATZ") || word.startsWith ("IPOD") || word.startsWith ("IPHONE")
+        || word.startsWith ("MAC") && !word.startsWith ("MACR") && !word.startsWith ("MACE")) {
+      JOptionPane.showMessageDialog (null, "The word you have entered cannot be recognized\nSince we are nice, we will add it for you anyways.",
+          "Woah There!", JOptionPane.INFORMATION_MESSAGE);
+    }
   }
 }

@@ -60,6 +60,16 @@ public abstract class Puzzle {
   /** generates a puzzle */
   public abstract void generate ();
   
+  /** saves a puzzle */
+  public abstract String save ();
+  
+  /**
+   * Generates a string that represents the puzzle as HTML
+   * @param isPuzzle flag to generate puzzle or solution
+   * @return string represents the puzzle in HTML
+   */
+  public abstract String export (boolean isPuzzle);
+  
   /**
    * adds a word to the puzzle
    * 
@@ -116,15 +126,6 @@ public abstract class Puzzle {
    */
   public void clearWordList () {
     words.clear ();
-  }
-  
-  /**
-   * gets the matrix
-   * 
-   * @return matrix the matrix of PuzzleCells
-   */
-  public PuzzleCell [][] getMatrix () {
-    return matrix;
   }
   
   /**
@@ -224,12 +225,33 @@ public abstract class Puzzle {
   }
   
   /**
+   * Sets a puzzle cell in the matrix
+   * @param r the row
+   * @param c the column
+   * @param cell the cell you wish to set
+   */
+  public void setMatrixElement (int r, int c,PuzzleCell cell) {
+    matrix[r][c] = cell;
+  }
+
+  /**
+   * builds a matrix based on the assigned height and width of the puzzle
+   */
+  public void buildMatrix () {
+    matrix = new PuzzleCell [height][width];
+    for (int r = 0; r < height; ++r)
+      for (int c = 0; c < width; ++c)
+        matrix[r][c] = new PuzzleCell();
+  }
+  
+  /**
    * sets the PuzzleCell matrix
    * 
    * @param cells
    *          the matrix to set
    */
-  public void setMatrix (PuzzleCell [][] cells) {
+  
+  protected void setMatrix (PuzzleCell [][] cells) {
     if (cells != null) {
       int i = cells.length, j = cells[0].length;
       matrix = new PuzzleCell [i] [j];

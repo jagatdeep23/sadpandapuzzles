@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
@@ -30,7 +28,6 @@ public class OutputPanel extends JPanel {
    */
   public OutputPanel (Controller controller) {
     this.controller = controller;
-    this.addMouseListener (new MyMouseListener());
   }
   
   /**
@@ -69,41 +66,5 @@ public class OutputPanel extends JPanel {
     
     setPreferredSize (getPreferredSize ());
     revalidate();
-  }
-  
-  /**
-   * 
-   * The MouseListener that gets added to the output panel
-   * 
-   * @author Sad Panda Software
-   * @version 3.0
-   *
-   */
-  private class MyMouseListener implements MouseListener {
-
-    /**
-     * This method checks to see what mouse button was clicked and
-     * determines what action gets performed based on the input.
-     * 
-     * @param m the mouse event passed
-     */
-    public void mouseClicked (MouseEvent m) {
-      if (m.getButton () == MouseEvent.BUTTON3) {
-        controller.buildPuzzle (Components.getSelectedPuzzleOption ());
-        repaint();
-      }
-      if (m.getButton () == MouseEvent.BUTTON1 && m.getClickCount () == 2) {
-        if (controller.getPuzzle () == null) {
-          controller.buildPuzzle (Components.getSelectedPuzzleOption ());
-          repaint();
-        } else {
-          controller.exportPuzzle ();
-        }
-      }
-    }
-    public void mouseEntered (MouseEvent e) { }
-    public void mouseExited (MouseEvent e) { }
-    public void mousePressed (MouseEvent e) { }
-    public void mouseReleased (MouseEvent e) { }
   }
 }

@@ -68,7 +68,7 @@ public class Components {
   /**
    * The output panel
    */
-  private static OutputPanel  outputPanel;
+  public static OutputPanel  outputPanel;
   
   /**
    * the output panel scroll pane
@@ -99,11 +99,6 @@ public class Components {
    * String - Export
    */
   private static final String EXPORT      = "Export";
-  
-  /**
-   * String - Quit
-   */
-  private static final String QUIT        = "Quit";
   
   /**
    * String - Help
@@ -151,15 +146,6 @@ public class Components {
    */
   public static void setOutputPanel (OutputPanel p) {
     outputPanel = p;
-  }
-  
-  /**
-   * Returns the output panel
-   * 
-   * @return OutputPanel
-   */
-  public static OutputPanel getOutputPanel () {
-    return outputPanel;
   }
   
   /**
@@ -245,7 +231,6 @@ public class Components {
     leftBar.add (generateButton (OPEN));
     leftBar.add (generateButton (SAVE));
     leftBar.add (generateButton (EXPORT));
-    leftBar.add (generateButton (QUIT));
     leftBar.add (generateButton (HELP));
     
     rightBar.add (dropDownPanel, BorderLayout.CENTER);
@@ -291,9 +276,6 @@ public class Components {
     } else if (name.equals (EXPORT)) {
       Buttons.exportButton = button;
       Buttons.exportButton.setMnemonic ('E');
-    } else if (name.equals (QUIT)) {
-      Buttons.quitButton = button;
-      Buttons.quitButton.setMnemonic ('Q');
     } else if (name.equals (HELP)) {
       Buttons.helpButton = button;
       Buttons.helpButton.setMnemonic ('H');
@@ -329,10 +311,6 @@ public class Components {
      * the export button
      */
     public static JButton exportButton;
-    /**
-     * the quit button
-     */
-    public static JButton quitButton;
     /**
      * the help button
      */
@@ -370,7 +348,6 @@ public class Components {
       openButton.addActionListener (listener);
       saveButton.addActionListener (listener);
       exportButton.addActionListener (listener);
-      quitButton.addActionListener (listener);
       helpButton.addActionListener (listener);
       generateButton.addActionListener (listener);
       addWordToList.addActionListener (listener);
