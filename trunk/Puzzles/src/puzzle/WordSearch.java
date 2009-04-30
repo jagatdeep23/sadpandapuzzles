@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 import javax.swing.JDialog;
 import javax.swing.JProgressBar;
@@ -20,10 +21,11 @@ public class WordSearch extends Puzzle {
   
   /** default constructor */
   public WordSearch () {
-    setWordList (null);
-    setNumWords (0);
-    setMatrixHeight (0);
-    setMatrixWidth (0);
+    reset();
+  }
+  
+  public WordSearch (Scanner scan) {
+    load(scan);
   }
   
   /**
@@ -128,6 +130,22 @@ public class WordSearch extends Puzzle {
     }
   }
   
+  @Override
+  public void load (Scanner scan) {
+    reset();
+    Scanner scan2 = new Scanner (scan.nextLine ());
+    processFileHeader (scan, scan2);
+    for (int r = 0; r < getMatrixHeight (); r++) {
+      scan2 = new Scanner (scan.nextLine ());
+      for (int c = 0; c < getMatrixWidth (); c++) {
+        PuzzleCell cell = new PuzzleCell();
+        cell.setCharacter (scan2.next ().charAt (0));
+        cell.setNumWords (scan2.nextInt ());
+        setMatrixElement (r, c, cell);
+      }
+    }
+  }
+
   /**
    * generates a string for saving the word search puzzle
    */

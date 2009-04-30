@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -27,6 +28,10 @@ public class Crossword extends Puzzle {
   /** default constructor */
   public Crossword () {
     super.reset();
+  }
+  
+  public Crossword (Scanner scan) {
+    load(scan);
   }
   
   /** draws the crossword puzzle */
@@ -154,6 +159,23 @@ public class Crossword extends Puzzle {
       popup.dispose ();
     }
     firstWord = true;
+  }
+
+  @Override
+  public void load (Scanner scan){
+    reset();
+    Scanner scan2 = new Scanner (scan.nextLine ());
+    processFileHeader (scan, scan2);
+    for (int r = 0; r < getMatrixHeight (); r++) {
+      scan2 = new Scanner (scan.nextLine ());
+      for (int c = 0; c < getMatrixWidth (); c++) {
+        setMatrixElement (r, c, new PuzzleCell());
+        char t = scan2.next ().charAt (0);
+        if (t != '?') {
+          getMatrixElement(r,c).setCharacter (t);
+        }
+      }
+    }
   }
 
   /**

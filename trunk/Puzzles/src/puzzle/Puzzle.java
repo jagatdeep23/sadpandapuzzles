@@ -3,6 +3,7 @@ package puzzle;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.JDialog;
 import javax.swing.JProgressBar;
@@ -57,19 +58,25 @@ public abstract class Puzzle {
    */
   public abstract void draw (Graphics2D g);
   
-  /** generates a puzzle */
-  public abstract void generate ();
-  
-  /** saves a puzzle */
-  public abstract String save ();
-  
   /**
    * Generates a string that represents the puzzle as HTML
    * @param isPuzzle flag to generate puzzle or solution
    * @return string represents the puzzle in HTML
    */
   public abstract String export (boolean isPuzzle);
+
+  /** generates a puzzle */
+  public abstract void generate ();
   
+  /**
+   * loads a puzzle
+   * @param scan a file scanner
+   */
+  public abstract void load(Scanner scan);
+
+  /** saves a puzzle */
+  public abstract String save ();
+
   /**
    * adds a word to the puzzle
    * 
@@ -128,6 +135,16 @@ public abstract class Puzzle {
     words.clear ();
   }
   
+  /**
+   * builds a matrix based on the assigned height and width of the puzzle
+   */
+  public void buildMatrix () {
+    matrix = new PuzzleCell [height][width];
+    for (int r = 0; r < height; ++r)
+      for (int c = 0; c < width; ++c)
+        matrix[r][c] = new PuzzleCell();
+  }
+
   /**
    * gets the specified matrix cell
    * @param r the row
@@ -195,15 +212,15 @@ public abstract class Puzzle {
   }
   
   /**
-   * sets the number of words
+   * sets the matrix height of the puzzle
    * 
-   * @param words
-   *          the number of words
+   * @param i
+   *          the height to set
    */
-  public void setNumWords (int words) {
-    numWords = words;
+  public void setMatrixHeight (int i) {
+    height = i;
   }
-  
+
   /**
    * sets the matrix width of the puzzle
    * 
@@ -213,17 +230,7 @@ public abstract class Puzzle {
   public void setMatrixWidth (int i) {
     width = i;
   }
-  
-  /**
-   * sets the matrix height of the puzzle
-   * 
-   * @param i
-   *          the height to set
-   */
-  public void setMatrixHeight (int i) {
-    height = i;
-  }
-  
+
   /**
    * Sets a puzzle cell in the matrix
    * @param r the row
@@ -235,36 +242,15 @@ public abstract class Puzzle {
   }
 
   /**
-   * builds a matrix based on the assigned height and width of the puzzle
-   */
-  public void buildMatrix () {
-    matrix = new PuzzleCell [height][width];
-    for (int r = 0; r < height; ++r)
-      for (int c = 0; c < width; ++c)
-        matrix[r][c] = new PuzzleCell();
-  }
-  
-  /**
-   * sets the PuzzleCell matrix
+   * sets the number of words
    * 
-   * @param cells
-   *          the matrix to set
+   * @param words
+   *          the number of words
    */
-  
-  protected void setMatrix (PuzzleCell [][] cells) {
-    if (cells != null) {
-      int i = cells.length, j = cells[0].length;
-      matrix = new PuzzleCell [i] [j];
-      for (int r = 0; r < i; r++) {
-        for (int c = 0; c < j; c++) {
-          matrix[r][c] = cells[r][c];
-        }
-      }
-    } else {
-      matrix = null;
-    }
+  public void setNumWords (int words) {
+    numWords = words;
   }
-  
+
   /**
    * sets the word list
    * 
@@ -274,7 +260,7 @@ public abstract class Puzzle {
   public void setWordList (ArrayList <PuzzleWord> words) {
     wordList = words;
   }
-  
+
   /**
    * Builds a popup window that shows the progress of the puzzle generation
    * 
@@ -295,7 +281,7 @@ public abstract class Puzzle {
     popup.setVisible (true);
     popup.setAlwaysOnTop (true);
   }
-  
+
   /**
    * fills the matrix with random characters or spaces
    * 
@@ -315,7 +301,7 @@ public abstract class Puzzle {
       }
     }
   }
-  
+
   /**
    * Generates a random direction.
    * 
@@ -325,7 +311,11 @@ public abstract class Puzzle {
     int num = (int) (max * Math.random ());
     return (Direction.values ()[num]);
   }
-  
+
+  /**
+   * @param dir a direction
+   * @return num the change in column direction (-1, 0, or 1)
+   */
   protected int getColumnChange (Direction dir) {
     int dC = 0;
     switch (dir) {
@@ -350,19 +340,11 @@ public abstract class Puzzle {
     }
     return dC;
   }
-  
+
   /**
-   * A Singleton object used by any instance of puzzle as a number generator
-   * 
-   * @return a random number generator
+   * @param dir a direction
+   * @return num the change in row direction (-1, 0, or 1)
    */
-  protected Random getNumberGenerator () {
-    if (gen == null) {
-      gen = new Random ();
-    }
-    return gen;
-  }
-  
   protected int getRowChange (Direction dir) {
     int dR = 0;
     switch (dir) {
@@ -387,9 +369,20 @@ public abstract class Puzzle {
     }
     return dR;
   }
-  
+
   /**
+   * A Singleton object used by any instance of puzzle as a number generator
    * 
+   * @return a random number generator
+   */
+  protected Random getNumberGenerator () {
+    if (gen == null) {
+      gen = new Random ();
+    }
+    return gen;
+  }
+
+  /**
    * @param length
    *          the dimension of the matrix
    */
@@ -399,10 +392,33 @@ public abstract class Puzzle {
     setMatrixHeight (length);
     fillMatrix (Initialize);
   }
-  
+
+  /**
+   * Processes the header for file loading
+   * @param fileScanner scanner for the file
+   * @param lineScanner temporary scanner for the line
+   */
+  protected void processFileHeader (Scanner fileScanner, Scanner lineScanner) {
+    setNumWords (lineScanner.nextInt ());
+    lineScanner = new Scanner (fileScanner.nextLine ());
+    setMatrixHeight (lineScanner.nextInt ());
+    lineScanner = new Scanner (fileScanner.nextLine ());
+    setMatrixWidth (lineScanner.nextInt ());
+    ArrayList <PuzzleWord> words = new ArrayList <PuzzleWord> ();
+    ArrayList <String> w = new ArrayList <String> ();
+    for (int i = 0; i < getNumWords (); i++) {
+      lineScanner = new Scanner (fileScanner.nextLine ());
+      String s = lineScanner.next ();
+      w.add (s);
+      words.add (new PuzzleWord (lineScanner.nextInt (), lineScanner.nextInt (), Direction.values ()[lineScanner.nextInt ()], s));
+    }
+    setWordList (words);
+    setList (w);
+    buildMatrix ();
+  }
+
   /**
    * resets the attributes of the puzzle
-   * 
    */
   protected void reset () {
     setMatrix (null);
@@ -410,6 +426,27 @@ public abstract class Puzzle {
     setNumWords (0);
     setMatrixHeight (0);
     setMatrixWidth (0);
+  }
+
+  /**
+   * sets the PuzzleCell matrix
+   * 
+   * @param cells
+   *          the matrix to set
+   */
+  
+  protected void setMatrix (PuzzleCell [][] cells) {
+    if (cells != null) {
+      int i = cells.length, j = cells[0].length;
+      matrix = new PuzzleCell [i] [j];
+      for (int r = 0; r < i; r++) {
+        for (int c = 0; c < j; c++) {
+          matrix[r][c] = cells[r][c];
+        }
+      }
+    } else {
+      matrix = null;
+    }
   }
   
   /**
