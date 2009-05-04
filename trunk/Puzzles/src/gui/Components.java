@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import shared.ProgramConstants;
+import puzzle.Puzzle;
 
 /**
  * The components of the GUI
@@ -25,6 +25,26 @@ import shared.ProgramConstants;
  */
 public class Components {
   
+  /**
+   * The actual drop down menu in the dropDownPanel
+   */
+  public static JComboBox    dropDown;
+
+  /**
+   * Area for storing the word list
+   */
+  public static MutableList   wordList;
+
+  /**
+   * The output panel
+   */
+  private static OutputPanel  outputPanel;
+
+  /**
+   * Text area for inputting words
+   */
+  private static JTextField    wordField;
+
   /**
    * Top toolbar in the interface
    */
@@ -56,19 +76,9 @@ public class Components {
   private static JPanel       sidebarPanel;
   
   /**
-   * The actual drop down menu in the dropDownPanel
-   */
-  public static JComboBox    dropDown;
-  
-  /**
    * Label for the Word List
    */
   private static JLabel       wordListLabel;
-  
-  /**
-   * The output panel
-   */
-  public static OutputPanel  outputPanel;
   
   /**
    * the output panel scroll pane
@@ -101,65 +111,12 @@ public class Components {
   private static final String EXPORT      = "Export";
   
   /**
-   * String - Help
-   */
-  private static final String HELP        = "Help";
-  
-  /**
    * String - Generate
    */
   private static final String GENERATE    = "Generate";
   
   /**
-   * Area for storing the word list
-   */
-  public static MutableList   wordList;
-  
-  /**
-   * Text area for inputting words
-   */
-  public static JTextField    wordField;
-  
-  /**
-   * gets the name of the currently drop-down item
-   * 
-   * @return selected drop-down item name
-   */
-  public static String getSelectedPuzzleOption () {
-    return ((String) (dropDown.getSelectedItem ()));
-  }
-  
-  /**
-   * Returns the currently inputted word in uppercase
-   * 
-   * @return text of the word field
-   */
-  public static String getWordFieldText () {
-    return (wordField.getText ().toUpperCase ());
-  }
-  
-  /**
-   * Sets the output panel
-   * 
-   * @param p
-   *          an OutputPanel to draw puzzles
-   */
-  public static void setOutputPanel (OutputPanel p) {
-    outputPanel = p;
-  }
-  
-  /**
-   * Returns the scroll pane
-   * 
-   * @return the scroll pane that contains the output panel
-   */
-  public static JScrollPane getScrollPanel() {
-    return scrollArea;
-  }
-  
-  /**
    * Builds the side panel
-   * 
    * @return JPanel
    */
   public static JPanel buildSidebar () {
@@ -194,11 +151,10 @@ public class Components {
     sidebarPanel.add (scrollArea, BorderLayout.CENTER);
     return sidebarPanel;
   }
-  
+
   /**
    * Builds the toolbar
-   * 
-   * @return JToolBar
+   * @return JToolBar the toolbar at the top of the screen
    */
   public static JToolBar buildToolbar () {
     toolBar = new JToolBar ();
@@ -219,7 +175,7 @@ public class Components {
     
     centerBar.add (new JLabel(" "));
     
-    String [] s = {ProgramConstants.WORD_SEARCH, ProgramConstants.CROSSWORD};
+    String [] s = Puzzle.getPuzzleTypes ();
     dropDown = new JComboBox (s);
     dropDown.setFocusable (false);
     dropDownPanel = new JPanel (new GridLayout (3, 1));
@@ -231,7 +187,6 @@ public class Components {
     leftBar.add (generateButton (OPEN));
     leftBar.add (generateButton (SAVE));
     leftBar.add (generateButton (EXPORT));
-    leftBar.add (generateButton (HELP));
     
     rightBar.add (dropDownPanel, BorderLayout.CENTER);
     rightBar.add (generateButton (GENERATE), BorderLayout.EAST);
@@ -246,7 +201,64 @@ public class Components {
     
     return toolBar;
   }
+
+  /**
+   * Gets the output panel
+   * @return panel the panel where puzzles are displayed
+   */
+  public static OutputPanel getOutputPanel () {
+    return outputPanel;
+  }
   
+  /**
+   * Gets the scroll pane
+   * @return the scroll pane that contains the output panel
+   */
+  public static JScrollPane getScrollPanel() {
+    return scrollArea;
+  }
+  
+  /**
+   * Gets the name of the currently drop-down item
+   * @return selected drop-down item name
+   */
+  public static String getSelectedPuzzleOption () {
+    return ((String) (dropDown.getSelectedItem ()));
+  }
+
+  /**
+   * gets the input word field
+   * @return wordField the word field
+   */
+  public static JTextField getWordField() {
+    return wordField;
+  }
+  
+  /**
+   * Sets the word field text to the passed string
+   * @param s the text
+   */
+  public static void setWordFieldText (String s) {
+    wordField.setText (s);
+  }
+  
+  /**
+   * Returns the currently inputed word in upper-case
+   * @return text of the word field
+   */
+  public static String getWordFieldText () {
+    return (wordField.getText ().toUpperCase ());
+  }
+
+  /**
+   * Sets the output panel
+   * @param p
+   *          an OutputPanel to draw puzzles
+   */
+  public static void setOutputPanel (OutputPanel p) {
+    outputPanel = p;
+  }
+
   /**
    * Generates a button given its name
    * 
@@ -276,9 +288,6 @@ public class Components {
     } else if (name.equals (EXPORT)) {
       Buttons.exportButton = button;
       Buttons.exportButton.setMnemonic ('E');
-    } else if (name.equals (HELP)) {
-      Buttons.helpButton = button;
-      Buttons.helpButton.setMnemonic ('H');
     } else if (name.equals (GENERATE)) {
       Buttons.generateButton = button;
       Buttons.generateButton.setMnemonic ('G');
@@ -289,66 +298,45 @@ public class Components {
   
   /**
    * Buttons used in the interface
-   * 
    * @author Sad Panda Software
-   * @version 2.0
+   * @version 3.0
    */
-  public static class Buttons {
+  public static final class Buttons {
     
-    /**
-     * the new button
-     */
+    /** the new button */
     public static JButton newButton;
-    /**
-     * the open button
-     */
+    
+    /** the open button */
     public static JButton openButton;
-    /**
-     * the save button
-     */
+    
+    /** the save button */
     public static JButton saveButton;
-    /**
-     * the export button
-     */
+    
+    /** the export button */
     public static JButton exportButton;
-    /**
-     * the help button
-     */
-    public static JButton helpButton;
-    /**
-     * the generate button
-     */
+    
+    /** the generate button */
     public static JButton generateButton;
-    /**
-     * the add to list button
-     */
+    
+    /** the add to list button */
     public static JButton addWordToList;
-    /**
-     * the remove from list button
-     */
+    
+    /** the remove from list button */
     public static JButton removeWordFromList;
-    /**
-     * the clear list button
-     */
+    
+    /** the clear list button */
     public static JButton clearList;
     
-    /**
-     * the load list button
-     */
+    /** the load list button */
     public static JButton loadList;
     
-    /**
-     * Adds action listeners to the buttons
-     * 
-     * @param listener -
-     *          ActionListener
-     */
+    /** Adds action listeners to the button
+     * @param listener - an ActionListener */
     public static void addActionListener (ActionListener listener) {
       newButton.addActionListener (listener);
       openButton.addActionListener (listener);
       saveButton.addActionListener (listener);
       exportButton.addActionListener (listener);
-      helpButton.addActionListener (listener);
       generateButton.addActionListener (listener);
       addWordToList.addActionListener (listener);
       removeWordFromList.addActionListener (listener);

@@ -10,13 +10,10 @@ import java.util.Scanner;
 import javax.swing.JDialog;
 import javax.swing.JProgressBar;
 
-/**
- * A WordSearch puzzle is a specialized Puzzle. It is a square that consists of
+/** A WordSearch puzzle is a specialized Puzzle. It is a square that consists of
  * randomly placed words that can intersect.
- * 
  * @author Sad Panda Software
- * @version 3.0
- */
+ * @version 3.0 */
 public class WordSearch extends Puzzle {
   
   /** default constructor */
@@ -24,26 +21,14 @@ public class WordSearch extends Puzzle {
     reset();
   }
   
-  /**
-   * Builds a word search from a file scanner
-   * @param scan a file scanner
-   */
-  public WordSearch (Scanner scan) {
-    load(scan);
-  }
-  
-  /**
-   * draws the WordSearch puzzle
-   * 
-   * @param g
-   *          the graphics to draw to
-   */
+  /** draws the WordSearch puzzle
+   * @param g the graphics to draw the puzzle */
   public void draw (Graphics2D g) {
     g.setColor (Color.WHITE);
     g.fillRect (0, 0, 5000, 5000);
     g.setColor (Color.BLACK);
     g.setFont (new Font ("Courier", Font.BOLD, 18));
-    for (int c = 0; c < getMatrixWidth (); c++) {
+    for (int c = 0; c < getMatrixWidth (); c++)
       for (int r = 0; r < getMatrixHeight (); r++) {
         if (getMatrixElement (c, r).getNumWords () > 0)
           g.setColor (Color.RED);
@@ -51,68 +36,52 @@ public class WordSearch extends Puzzle {
           g.setColor (Color.BLACK);
         g.drawString (getMatrixElement (c, r).toString (), 30 + 24 * r, 30 + 24 * c);
       }
-    }
   }
   
-  /**
-   * Generates a string that represents the puzzle in HTML
+  /** Generates a string that represents the puzzle in HTML
    * @param isPuzzle flag to generate solution or puzzle
-   * @return a string that represents the puzzle in HTML
-   */
+   * @return a string that represents the puzzle in HTML */
   public String export (boolean isPuzzle) {
     String s = "<html><body><h1>Sad Panda Software Word Search</h1>\n";
     s += "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
-    for (int r = -1; r <= getMatrixHeight(); r++) {
+    for (int r = -1; r <= getMatrixHeight(); r++, s += "</tr>\n") {
       s += "<tr>";
-      for (int c = -1; c <= getMatrixWidth(); c++) {
+      for (int c = -1; c <= getMatrixWidth(); c++, s += "</td>") {
         try {
-          if (getMatrixElement(r,c).getNumWords () > 0 || isPuzzle) {
-            s += "<td><center><tt><big>" + getMatrixElement(r,c) + "</big></tt></center></td>";
-          } else {
-            s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
-          }
+          if (getMatrixElement(r,c).getNumWords () > 0 || isPuzzle)
+            s += "<td><center><tt><big>" + getMatrixElement(r,c) + "</big></tt></center>";
+          else
+            s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp";
         } catch (ArrayIndexOutOfBoundsException e) {
-          s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp</td>";
+          s += "<td>&nbsp&nbsp&nbsp&nbsp&nbsp";
         }
       }
-      s += "</tr>\n";
     }
-    s += "</table>\n<br><br>\n";
-    
-    s += "<table border=\"0\">\n";
-    if (!isPuzzle) {
+    s += "</table>\n<br><br>\n<table border=\"0\">\n";
+    if (!isPuzzle)
       s += "<tr><td><b>Word</b></td><td><b>Direction</b></td><td><b>Row</b></td><td><b>Col</b></td></tr>\n";
-    }
     for (PuzzleWord word : getPuzzleWordList ()) {
-      s += "<tr>";
-      s += "<td>" + word.getWord ().toLowerCase () + "</td>";
-      if (!isPuzzle) {
+      s += "<tr><td>" + word.getWord ().toLowerCase () + "</td>";
+      if (!isPuzzle)
         s += "<td>" + word.getDirection ().name ().toLowerCase () + "</td><td>" + word.getRow () + "</td><td>" + word.getColumn () + "</td>";
-      }
       s += "</tr>\n";
     }
     s += "</body></html>";
     return s;
   }
 
-  /**
-   * generates a Word Search puzzle
-   */
+  /** generates a Word Search puzzle */
   public void generate () {
     long total = 0;
     if (getWordList ().size () > 0) {
       int progress = 0;
-      
       JDialog popup = new JDialog();
       JProgressBar bar = new JProgressBar(0, getWordList().size ());
       super.buildPopup (popup, bar);
-
       Collections.sort (getWordList (), new shared.Algorithms.SortByLineLength ());
       int length = generateDimension (getWordList ());
       ArrayList <PuzzleWord> puzzleWords = new ArrayList <PuzzleWord> ();
-      
       super.initializeMatrix (length);
-      
       boolean isValid;
       for (String word : getWordList ()) {
         isValid = false;
@@ -138,10 +107,8 @@ public class WordSearch extends Puzzle {
     }
   }
   
-  /**
-   * loads a puzzle
-   * @param scan a file scanner
-   */
+  /** loads a puzzle
+   * @param scan a file scanner */
   public void load (Scanner scan) {
     reset();
     Scanner scan2 = new Scanner (scan.nextLine ());
@@ -157,23 +124,17 @@ public class WordSearch extends Puzzle {
     }
   }
 
-  /**
-   * generates a string for saving the word search puzzle
-   */
+  /** generates a string for saving the word search puzzle */
   public String save () {
     String s = "wordsearch\n";
     s += getNumWords () + "\n";
     s += getMatrixHeight () + "\n";
     s += getMatrixWidth () + "\n";
-    for (PuzzleWord word : getPuzzleWordList ()) {
+    for (PuzzleWord word : getPuzzleWordList ())
       s += word.getWord () + " " + word.getRow () + " " + word.getColumn () + " " + word.getDirection ().ordinal () + "\n";
-    }
-    for (int r = 0; r < getMatrixHeight (); r++) {
-      for (int c = 0; c < getMatrixWidth (); c++) {
+    for (int r = 0; r < getMatrixHeight (); r++, s += "\n")
+      for (int c = 0; c < getMatrixWidth (); c++)
         s += getMatrixElement(r, c) + " " + getMatrixElement(r,c).getNumWords () + " ";
-      }
-      s += "\n";
-    }
     return s;
   }
 
@@ -184,22 +145,15 @@ public class WordSearch extends Puzzle {
    */
   public String toString () {
     String s = "";
-    for (int r = 0; r < getMatrixHeight (); r++) {
-      for (int c = 0; c < getMatrixWidth (); c++) {
+    for (int r = 0; r < getMatrixHeight (); r++, s += "\n")
+      for (int c = 0; c < getMatrixWidth (); c++)
         s += getMatrixElement (r, c) + " ";
-      }
-      s += "\n";
-    }
     return s;
   }
 
-  /**
-   * Adds and word and validates to ensure that it will fit into the grid
-   * 
-   * @param word
-   *          puzzleword to be added.
-   * @return boolean Whether the add was a success or not.
-   */
+  /** Adds and word and validates to ensure that it will fit into the grid
+   * @param word puzzleword to be added.
+   * @return boolean Whether the add was a success or not. */
   protected boolean addAndValidate (PuzzleWord word) {
     int dC = super.getColumnChange (word.getDirection ());
     int dR = super.getRowChange (word.getDirection ());
@@ -227,36 +181,24 @@ public class WordSearch extends Puzzle {
     return (true);
   }
 
-  /**
-   * Generates the dimension to be used in the word search matrix
-   * 
-   * @param list
-   * @return an integer specifying the dimension to be used by the Puzzle
-   */
+  /** Generates the dimension to be used in the word search matrix
+   * @param list a list of words
+   * @return an integer specifying the dimension to be used by the Puzzle */
   protected int generateDimension (ArrayList <String> list) {
     int sum = 0;
-    for (String s : list) {
+    for (String s : list)
       sum += s.length ();
-    }
     sum = (int) (Math.ceil (Math.sqrt (sum) * 5 / 4));
-    if (sum < list.get (0).length ()) {
+    if (sum < list.get (0).length ())
       sum = list.get (0).length ();
-    }
     return (++sum);
   }
   
-  /**
-   * returns a valid start point for a word by length. Does not check
-   * intersections.
-   * 
-   * @param length
-   *          length of the word.
-   * @param row
-   *          number of columns.
-   * @param col
-   *          number of rows.
-   * @return int[] - [0] is the x value, and [1] is the y value.
-   */
+  /** returns a valid start point for a word by length. Does not check intersections.
+   * @param length length of the word.
+   * @param row number of columns.
+   * @param col number of rows.
+   * @return int[] - [0] is the x value, and [1] is the y value. */
   protected int [] generatePosition (int length, int col, int row, Direction dir) {
     int [] point = {0, 0};
     switch (dir) {
@@ -265,61 +207,51 @@ public class WordSearch extends Puzzle {
         point[1] = length - 1;
         try {
            point[1] -= super.getNumberGenerator ().nextInt (col - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         break;
       case NORTHEAST:
         point[1] = length - 1;
         try {
           point[0] = super.getNumberGenerator ().nextInt (row - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         try {
           point[1] -= super.getNumberGenerator ().nextInt (col - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         break;
       case EAST:
         try {
           point[0] = super.getNumberGenerator ().nextInt (row - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         point[1] = super.getNumberGenerator ().nextInt (col);
         break;
       case SOUTHEAST:
         try {
           point[0] = super.getNumberGenerator ().nextInt (row - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         try {
           point[1] = super.getNumberGenerator ().nextInt (col - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         break;
       case SOUTH:
         point[0] = super.getNumberGenerator ().nextInt (row);
         try {
           point[1] = super.getNumberGenerator ().nextInt (col - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         break;
       case SOUTHWEST:
         point[0] = length - 1;
         try {
           point[0] -= super.getNumberGenerator ().nextInt (row - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         try {
           point[1] = super.getNumberGenerator ().nextInt (col - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         break;
       case WEST:
         point[0] = length - 1;
         try {
           point[0] -= super.getNumberGenerator ().nextInt (row - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         point[1] = super.getNumberGenerator ().nextInt (col);
         break;
       case NORTHWEST:
@@ -327,12 +259,10 @@ public class WordSearch extends Puzzle {
         point[1] = length - 1;
         try {
           point[0] -= super.getNumberGenerator ().nextInt (row - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         try {
           point[1] -= super.getNumberGenerator ().nextInt (col - length);
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         break;
     }
     return (point);

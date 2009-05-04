@@ -12,18 +12,17 @@ import puzzle.WordSearch;
 
 /**
  * Panel that the puzzle prints to
- * 
  * @author Sad Panda Software
  * @version 3.0
  */
 @SuppressWarnings("serial")
 public class OutputPanel extends JPanel {
   
+  /** the controller that maintains the puzzle */
   private Controller controller;
   
   /**
    * Sets the controller for the output panel
-   * 
    * @param controller
    */
   public OutputPanel (Controller controller) {
