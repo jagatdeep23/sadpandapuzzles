@@ -16,266 +16,160 @@ import javax.swing.SwingConstants;
 
 import puzzle.Puzzle;
 
-/**
- * The components of the GUI
- * 
+/** The components of the GUI
  * @author Sad Panda Software
- * @version 3.0
- * 
- */
+ * @version 3.0 */
 public class Components {
   
-  /**
-   * The actual drop down menu in the dropDownPanel
-   */
+  /** The drop down menu */
   public static JComboBox    dropDown;
 
-  /**
-   * Area for storing the word list
-   */
+  /** Area for storing the word list */
   public static MutableList   wordList;
 
-  /**
-   * The output panel
-   */
+  /** The output panel */
   private static OutputPanel  outputPanel;
 
-  /**
-   * Text area for inputting words
-   */
+  /** Text area for inputting words */
   private static JTextField    wordField;
-
-  /**
-   * Top toolbar in the interface
-   */
-  private static JToolBar     toolBar;
   
-  /**
-   * Left toolbar
-   */
-  private static JToolBar     leftBar;
-  
-  /**
-   * right toolbar
-   */
-  private static JToolBar     rightBar;
-  
-  /**
-   * Panel used in the interface for dropdown models
-   */
-  private static JPanel       dropDownPanel;
-  
-  /**
-   * Panel for buttons
-   */
-  private static JPanel       buttonPanel;
-  
-  /**
-   * The side Panel
-   */
-  private static JPanel       sidebarPanel;
-  
-  /**
-   * Label for the Word List
-   */
-  private static JLabel       wordListLabel;
-  
-  /**
-   * the output panel scroll pane
-   */
+  /** the output panel scroll pane */
   private static JScrollPane scrollArea;
   
-  /**
-   * An empty JLabel
-   */
+  /** An empty JLabel */
   private static final JLabel EMPTY_LABEL = new JLabel (" ");
   
-  /**
-   * String - New
-   */
+  /** New String*/
   private static final String NEW         = "New";
   
-  /**
-   * String - Open
-   */
+  /** Open String*/
   private static final String OPEN        = "Open";
   
-  /**
-   * String - Save
-   */
+  /** Save String*/
   private static final String SAVE        = "Save";
   
-  /**
-   * String - Export
-   */
+  /** Export String*/
   private static final String EXPORT      = "Export";
   
-  /**
-   * String - Generate
-   */
+  /** Generate String*/
   private static final String GENERATE    = "Generate";
   
-  /**
-   * Builds the side panel
-   * @return JPanel
-   */
+  /** Builds the side panel
+   * @return JPanel */
   public static JPanel buildSidebar () {
     wordField = new JTextField ();
     Buttons.addWordToList = new JButton ("Add New Word");
     Buttons.removeWordFromList = new JButton ("Remove Selected Word");
     Buttons.clearList = new JButton ("Clear Word List");
     Buttons.loadList = new JButton ("Load Word List");
-    wordListLabel = new JLabel ("Word List");
+    JLabel wordListLabel = new JLabel ("Word List");
     wordListLabel.setHorizontalAlignment (JLabel.CENTER);
-    
     Buttons.addWordToList.setMnemonic ('a');
     Buttons.removeWordFromList.setMnemonic ('r');
     Buttons.clearList.setMnemonic ('c');
     Buttons.loadList.setMnemonic ('l');
-    
-    
-    buttonPanel = new JPanel (new GridLayout (5, 1, 5, 5));
+    JPanel buttonPanel = new JPanel (new GridLayout (5, 1, 5, 5));
     buttonPanel.add (wordField);
     buttonPanel.add (Buttons.addWordToList);
     buttonPanel.add (Buttons.removeWordFromList);
     buttonPanel.add (Buttons.clearList);
     buttonPanel.add (Buttons.loadList);
-    
     wordList = new MutableList ();
     wordList.setFocusable (false);
     scrollArea = new JScrollPane (wordList);
-    
-    sidebarPanel = new JPanel (new BorderLayout (5, 5));
+    JPanel sidebarPanel = new JPanel (new BorderLayout (5, 5));
     sidebarPanel.add (wordListLabel, BorderLayout.NORTH);
     sidebarPanel.add (buttonPanel, BorderLayout.SOUTH);
     sidebarPanel.add (scrollArea, BorderLayout.CENTER);
     return sidebarPanel;
   }
 
-  /**
-   * Builds the toolbar
-   * @return JToolBar the toolbar at the top of the screen
-   */
+  /** Builds the toolbar
+   * @return JToolBar the toolbar at the top of the screen */
   public static JToolBar buildToolbar () {
-    toolBar = new JToolBar ();
-    JToolBar centerBar = new JToolBar ();
-    leftBar = new JToolBar ();
-    rightBar = new JToolBar ();
-    
+    JToolBar toolBar = new JToolBar ();
+    JToolBar leftBar = new JToolBar ();
+    JToolBar rightBar = new JToolBar ();
     toolBar.setLayout (new BorderLayout ());
-    leftBar.setLayout (new GridLayout (1, 6));
+    leftBar.setLayout (new GridLayout (1, 4));
     rightBar.setLayout (new BorderLayout ());
-    
     leftBar.setFloatable (false);
     rightBar.setFloatable (false);
-    centerBar.setFloatable (false);
     leftBar.setRollover (true);
     rightBar.setRollover (true);
-    centerBar.setRollover (true);
-    
-    centerBar.add (new JLabel(" "));
-    
     String [] s = Puzzle.getPuzzleTypes ();
     dropDown = new JComboBox (s);
     dropDown.setFocusable (false);
-    dropDownPanel = new JPanel (new GridLayout (3, 1));
+    JPanel dropDownPanel = new JPanel (new GridLayout (3, 1));
     dropDownPanel.add (EMPTY_LABEL);
     dropDownPanel.add (EMPTY_LABEL);
     dropDownPanel.add (dropDown);
-    
     leftBar.add (generateButton (NEW));
     leftBar.add (generateButton (OPEN));
     leftBar.add (generateButton (SAVE));
     leftBar.add (generateButton (EXPORT));
-    
     rightBar.add (dropDownPanel, BorderLayout.CENTER);
     rightBar.add (generateButton (GENERATE), BorderLayout.EAST);
-    
     toolBar.add (leftBar, BorderLayout.WEST);
     toolBar.add (rightBar, BorderLayout.EAST);
-    toolBar.add (centerBar, BorderLayout.CENTER);
-    
-    toolBar.setSize (toolBar.getWidth () * 2, toolBar.getHeight () * 2);
+    toolBar.setSize (toolBar.getWidth (), toolBar.getHeight () * 2);
     toolBar.setFloatable (false);
     toolBar.setRollover (true);
-    
     return toolBar;
   }
 
-  /**
-   * Gets the output panel
-   * @return panel the panel where puzzles are displayed
-   */
+  /** Gets the output panel
+   * @return panel the panel where puzzles are displayed */
   public static OutputPanel getOutputPanel () {
     return outputPanel;
   }
   
-  /**
-   * Gets the scroll pane
-   * @return the scroll pane that contains the output panel
-   */
+  /** Gets the scroll pane
+   * @return the scroll pane that contains the output panel */
   public static JScrollPane getScrollPanel() {
     return scrollArea;
   }
   
-  /**
-   * Gets the name of the currently drop-down item
-   * @return selected drop-down item name
-   */
+  /** Gets the name of the currently drop-down item
+   * @return selected drop-down item name */
   public static String getSelectedPuzzleOption () {
     return ((String) (dropDown.getSelectedItem ()));
   }
 
-  /**
-   * gets the input word field
-   * @return wordField the word field
-   */
+  /** gets the input word field
+   * @return wordField the word field */
   public static JTextField getWordField() {
     return wordField;
   }
   
-  /**
-   * Sets the word field text to the passed string
-   * @param s the text
-   */
+  /** Sets the word field text to the passed string
+   * @param s the text */
   public static void setWordFieldText (String s) {
     wordField.setText (s);
   }
   
-  /**
-   * Returns the currently inputed word in upper-case
-   * @return text of the word field
-   */
+  /** Returns the currently inputed word in upper-case
+   * @return text text of the word field*/
   public static String getWordFieldText () {
     return (wordField.getText ().toUpperCase ());
   }
 
-  /**
-   * Sets the output panel
-   * @param p
-   *          an OutputPanel to draw puzzles
-   */
+  /** Sets the output panel
+   * @param p an OutputPanel to draw puzzles */
   public static void setOutputPanel (OutputPanel p) {
     outputPanel = p;
   }
 
-  /**
-   * Generates a button given its name
-   * 
-   * @param name
-   *          the name of the Button
-   * @return a created JButton
-   */
+  /** Generates a button given its name
+   * @param name the name of the Button
+   * @return a created JButton */
   private static JButton generateButton (String name) {
-    
-    JButton button;
-    button = new JButton (name, new ImageIcon ("images/" + name.toLowerCase () + ".png"));
+    JButton button = new JButton (name, new ImageIcon ("images/" + name.toLowerCase () + ".png"));
     button.setVerticalTextPosition (SwingConstants.BOTTOM);
     button.setHorizontalTextPosition (SwingConstants.CENTER);
     button.setRolloverEnabled (true);
     button.setFocusable (false);
     button.setDisplayedMnemonicIndex (0);
-    // Assign to the correct value
     if (name.equals (NEW)) {
       Buttons.newButton = button;
       Buttons.newButton.setMnemonic ('N');
@@ -292,15 +186,12 @@ public class Components {
       Buttons.generateButton = button;
       Buttons.generateButton.setMnemonic ('G');
     }  
-    
     return (button);
   }
   
-  /**
-   * Buttons used in the interface
+  /** Buttons used in the interface
    * @author Sad Panda Software
-   * @version 3.0
-   */
+   * @version 3.0 */
   public static final class Buttons {
     
     /** the new button */

@@ -1,11 +1,8 @@
 package puzzle;
 
-/**
- * All possible directions that words can be oriented
- * 
+/** All possible directions that words can be oriented
  * @author Sad Panda Software
- * @version 3.0
- */
+ * @version 3.0 */
 public enum Direction {
   /** East */
   EAST,
