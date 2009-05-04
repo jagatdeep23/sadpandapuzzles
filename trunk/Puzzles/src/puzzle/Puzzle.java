@@ -82,7 +82,7 @@ public abstract class Puzzle {
    * @return int[] [0] is the x value, and [1] is the y value. */
   protected abstract int [] generatePosition (int length, int colSize, int rowSize, Direction dir);
 
-  /** generates a new instance of a class
+  /** generates a new instance of a Puzzle
    * @param type the type of puzzle to "create"
    * @return a new instance of the specified class type
    * @throws IllegalArgumentException */
@@ -258,23 +258,14 @@ public abstract class Puzzle {
     int dC = 0;
     switch (dir) {
       case NORTHEAST:
-        dC = 1;
-        break;
       case EAST:
-        dC = 1;
-        break;
       case SOUTHEAST:
         dC = 1;
         break;
       case NORTHWEST:
-        dC = -1;
-        break;
       case WEST:
-        dC = -1;
-        break;
       case SOUTHWEST:
         dC = -1;
-        break;
     }
     return dC;
   }
@@ -286,23 +277,14 @@ public abstract class Puzzle {
     int dR = 0;
     switch (dir) {
       case NORTHWEST:
-        dR = -1;
-        break;
       case NORTH:
-        dR = -1;
-        break;
       case NORTHEAST:
         dR = -1;
         break;
       case SOUTHWEST:
-        dR = 1;
-        break;
       case SOUTH:
-        dR = 1;
-        break;
       case SOUTHEAST:
         dR = 1;
-        break;
     }
     return dR;
   }
@@ -386,7 +368,6 @@ public abstract class Puzzle {
    * @throws ClassNotFoundException */
   private static ArrayList<String> getClasses() throws ClassNotFoundException { 
     ArrayList<String> classes = new ArrayList<String>(); 
-    // Get a File object for the package 
     File directory=null;
     try { 
       directory=new File("src/puzzle"); 
@@ -398,7 +379,7 @@ public abstract class Puzzle {
       for(int i=0; i<files.length; i++) {
         if(files[i].endsWith(".java")) {
           files[i] = files[i].substring(0, files[i].length()-5);
-          classes.add(files[i]); 
+          classes.add(files[i]);
         } 
       } 
     } else
